@@ -5,6 +5,22 @@ node-stratum
 
 High performance Stratum poolserver in Node.js
 
+Features (mostly untested)
+--------------------------
+
+* Daemon interface
+* Stratum TCP socket server
+* Block template / job manager
+
+TODO
+----
+
+* Handle share submissions
+* Payment processing module
+* Support more algos (scrypt, scrypt-jane, quark)
+* Statistics module
+* Web frontend
+
 License
 -------
 
