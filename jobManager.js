@@ -1,9 +1,7 @@
 var events = require('events');
 
-var binpack = require('/usr/lib/node_modules/binpack');
-var bignum = require('/usr/lib/node_modules/bignum');
+var binpack = require('binpack');
 
-var merkleTree = require('./merkleTree.js');
 var coinbase = require('./coinbase.js');
 var util = require('./util.js');
 var blockTemplate = require('./blockTemplate.js');

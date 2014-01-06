@@ -1,8 +1,8 @@
 var crypto = require('crypto');
 
-var binpack = require('/usr/lib/node_modules/binpack');
-var base58 = require('/usr/lib/node_modules/base58-native');
-var bignum = require('/usr/lib/node_modules/bignum');
+var binpack = require('binpack');
+var base58 = require('base58-native');
+var bignum = require('bignum');
 
 
 exports.bignumFromBits = function(bitsString){

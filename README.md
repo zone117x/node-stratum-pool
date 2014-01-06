@@ -29,6 +29,7 @@ Requirements
 * npm dependencies
   * [binpack](https://github.com/russellmcc/node-binpack)
   * [bignum](https://github.com/justmoon/node-bignum)
+  * [buffertools] (https://github.com/bnoordhuis/node-buffertools)
   * [base58-native](https://github.com/gasteve/node-base58)
 
 

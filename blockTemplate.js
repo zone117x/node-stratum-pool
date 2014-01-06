@@ -1,3 +1,6 @@
+
+var binpack = require('binpack');
+
 var merkleTree = require('./merkleTree.js');
 var coinbase = require('./coinbase.js');
 var util = require('./util.js');
