@@ -11,8 +11,7 @@ Features (mostly untested)
 * Daemon interface
 * Stratum TCP socket server
 * Block template / job manager
-
-
+  
   #### To do
 * Integrate with PostgreSQL database
 * Handle share submissions
