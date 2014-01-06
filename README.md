@@ -39,6 +39,10 @@ Credits
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
 * [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful on irc
 
+Donations
+---------
+BTC: 1KRotMnQpxu3sePQnsVLRy3EraRFYfJQFR
+
 License
 -------
 node-stratum is released under the GNU General Public License v2
