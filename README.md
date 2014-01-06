@@ -13,7 +13,7 @@ Features (mostly untested)
 * Block template / job manager
 
 
-#### To do
+  #### To do
 * Integrate with PostgreSQL database
 * Handle share submissions
 * Payment processing module
