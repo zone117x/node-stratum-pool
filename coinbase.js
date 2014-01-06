@@ -1,3 +1,10 @@
+/*
+
+Ported from https://github.com/slush0/stratum-mining
+
+ */
+
+
 var binpack = require('/usr/lib/node_modules/binpack');
 var buffertools = require('/usr/lib/node_modules/buffertools');
 
