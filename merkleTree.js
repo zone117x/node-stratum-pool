@@ -4,7 +4,6 @@ Ported from https://github.com/slush0/stratum-mining/blob/master/lib/merkletree.
 
  */
 
-
 var util = require('./util.js');
 
 var MerkleTree = module.exports = function MerkleTree(data){
