@@ -1,4 +1,5 @@
 var net = require('net');
+var events = require('events');
 
 var bignum = require('bignum');
 
@@ -10,47 +11,50 @@ var coinbase = require('./coinbase.js');
 
 
 
-exports.pool = function pool(coin){
+var pool = module.exports = function pool(coin){
 
-    coin.jobManager = new jobManager({
+    var _this = this;
+
+    this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
         address: coin.options.address
     });
-    coin.jobManager.on('newBlock', function(blockTemplate){
-        coin.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
+    this.jobManager.on('newBlock', function(blockTemplate){
+        _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
     });
 
 
-    coin.daemon = new daemon.interface(coin.options.daemon);
-    coin.daemon.on('online', function(){
-        coin.daemon.cmd(
+    this.daemon = new daemon.interface(coin.options.daemon);
+    this.daemon.on('online', function(){
+        this.cmd(
             'getblocktemplate',
             [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
             function(error, response){
-                coin.jobManager.newTemplate(response.result);
-                console.log(coin.jobManager.currentJob.getJobParams());
+                _this.jobManager.newTemplate(response.result);
+                console.log(_this.jobManager.currentJob.getJobParams());
             }
         );
     }).on('startFailed', function(){
-            console.log('Failed to start daemon for ' + coin.name);
-        });
+        console.log('Failed to start daemon for ' + coin.name);
+    });
 
 
-    coin.stratumServer = new stratum.Server({
+    this.stratumServer = new stratum.Server({
         port: 3333
     });
-    coin.stratumServer.on('client', function(client){
+    this.stratumServer.on('client', function(client){
         client.on('subscription', function(params, result){
-            var extraNonce = coin.jobManager.extraNonceCounter.next();
-            var extraNonce2Size = coinbase.extranonce_size - coin.jobManager.extraNonceCounter.size();
+            var extraNonce = _this.jobManager.extraNonceCounter.next();
+            var extraNonce2Size = coinbase.extranonce_size - _this.jobManager.extraNonceCounter.size();
             result(extraNonce, extraNonce2Size);
-            client.sendDifficulty(1);
-            client.sendMiningJob(coin.jobManager.currentJob.getJobParams());
+            this.sendDifficulty(1);
+            this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
         }).on('authorize', function(params, result){
-                result(true);
-            }).on('submit', function(params, result){
+            result(true);
+        }).on('submit', function(params, result){
 
-                result(true);
-            });
+            result(true);
+        });
     });
 };
+pool.prototype.__proto__ = events.EventEmitter.prototype;

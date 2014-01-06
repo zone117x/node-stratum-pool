@@ -10,6 +10,7 @@ function DaemonInterface(options){
 
     //private members
     var _this = this;
+    this.options = options;
 
     (function init(){
         isOnline(function(online){
@@ -38,7 +39,7 @@ function DaemonInterface(options){
     }
 
     function isOnline(callback){
-        this.cmd('getinfo', [], function(error, result){
+        cmd('getinfo', [], function(error, result){
             if (error)
                 callback(false);
             else
@@ -46,24 +47,7 @@ function DaemonInterface(options){
         });
     }
 
-
-    //public members
-
-    this.isOnline = isOnline;
-
-    this.start = function(){
-        var cmdArgs = [
-            '-rpcport=' + this.options.port,
-            '-rpcuser=' + this.options.user,
-            '-rpcpassword=' + this.options.password,
-            '-blocknotify=' + this.options.blocknotify
-        ];
-        var child = cp.spawn(this.options.bin, cmdArgs, { detached: true, stdio: [ 'ignore', 'ignore', 'ignore' ] });
-        child.unref();
-        console.log('started daemon');
-    };
-
-    this.cmd = function(method, params, callback){
+    function cmd(method, params, callback){
 
         var requestJson = JSON.stringify({
             id: Date.now() + Math.floor(Math.random() * 10),
@@ -73,9 +57,9 @@ function DaemonInterface(options){
 
         var options = {
             hostname: 'localhost',
-            port: this.options.port,
+            port: _this.options.port,
             method: 'POST',
-            auth: this.options.user + ':' + this.options.password,
+            auth: _this.options.user + ':' + _this.options.password,
             headers: {
                 'Content-Length': requestJson.length
             }
@@ -103,6 +87,22 @@ function DaemonInterface(options){
         req.end(requestJson);
     }
 
+
+    //public members
+
+    this.isOnline = isOnline;
+    this.cmd = cmd;
+    this.start = function(){
+        var cmdArgs = [
+            '-rpcport=' + _this.options.port,
+            '-rpcuser=' + _this.options.user,
+            '-rpcpassword=' + _this.options.password,
+            '-blocknotify=' + _this.options.blocknotify
+        ];
+        var child = cp.spawn(_this.options.bin, cmdArgs, { detached: true, stdio: [ 'ignore', 'ignore', 'ignore' ] });
+        child.unref();
+        console.log('started daemon');
+    };
 }
 
 DaemonInterface.prototype.__proto__ = events.EventEmitter.prototype;

@@ -62,7 +62,7 @@ exports.uint256BufferFromHash = function(hex){
 
     var fromHex = new Buffer(hex, 'hex');
 
-    if (buffer.length != 32){
+    if (fromHex.length != 32){
         var empty = new Buffer(32);
         empty.fill(0);
         fromHex.copy(empty);
@@ -76,16 +76,6 @@ exports.hexFromReversedBuffer = function(buffer){
     return exports.reverseBuffer(buffer).toString('hex');
 };
 
-
-exports.randomId = function(){
-    var text = "";
-    var possible = "abcdef0123456789";
-
-    for (var i = 0; i < 32; i++)
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
-};
 
 exports.uint256_from_compact = function(c){
     var nbytes = (c >> 24) & 0xFF;

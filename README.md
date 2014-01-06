@@ -46,5 +46,6 @@ BTC: 1KRotMnQpxu3sePQnsVLRy3EraRFYfJQFR
 
 License
 -------
-node-stratum is released under the GNU General Public License v2
+Released under the GNU General Public License v2
+
 http://www.gnu.org/licenses/gpl-2.0.html
