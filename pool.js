@@ -1,6 +1,6 @@
 var net = require('net');
 
-var bignum = require('/usr/lib/node_modules/bignum');
+var bignum = require('bignum');
 
 var daemon = require('./daemon.js');
 var stratum = require('./stratum.js');

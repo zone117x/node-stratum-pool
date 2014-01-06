@@ -1,7 +1,7 @@
 var net = require('net');
 var events = require('events');
 
-var binpack = require('/usr/lib/node_modules/binpack');
+var binpack = require('binpack');
 
 var util = require('./util.js');
 
