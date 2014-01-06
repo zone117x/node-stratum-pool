@@ -27,9 +27,9 @@ Requirements
 * coin daemon
 * PostgreSQL
 * npm dependencies
-..* [binpack](https://github.com/russellmcc/node-binpack)
-..* [bignum](https://github.com/justmoon/node-bignum)
-..* [base58-native](https://github.com/gasteve/node-base58)
+⋅⋅* [binpack](https://github.com/russellmcc/node-binpack)
+⋅⋅* [bignum](https://github.com/justmoon/node-bignum)
+⋅⋅* [base58-native](https://github.com/gasteve/node-base58)
 
 
 Credits
