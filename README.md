@@ -13,6 +13,7 @@ High performance Stratum poolserver in Node.js
 
 ### To do
 
+* Integrate with PostgreSQL database
 * Handle share submissions
 * Payment processing module
 * Support more algos (scrypt, scrypt-jane, quark)
