@@ -1,25 +1,11 @@
+/*
+
+Ported from https://github.com/slush0/stratum-mining/blob/master/lib/merkletree.py
+
+ */
+
+
 var util = require('./util.js');
-
-
-/*var merkleJoin = function(h1, h2){
-    var buff1 = new Buffer(h1, 'hex');
-    var buff2 = new Buffer(h2, 'hex');
-    var buffJoined = Buffer.concat([buff2, buff1]);
-
-    var buffJSON = buffJoined.toJSON();
-    buffJSON.reverse();
-    var buffReversed = new Buffer(buffJSON);
-
-    var hash2 = util.doublesha(buffReversed);
-
-    var dhashJSON = hash2.toJSON();
-    dhashJSON.reverse();
-    var dhash = new Buffer(dhashJSON);
-
-    return dhash.toString('hex');
-};*/
-
-
 
 var MerkleTree = module.exports = function MerkleTree(data){
 
