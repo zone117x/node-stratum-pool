@@ -1,6 +1,8 @@
 node-stratum
 ============
 
+    Under development
+
 High performance Stratum poolserver in Node.js
 
 License
