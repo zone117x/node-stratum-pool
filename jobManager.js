@@ -2,7 +2,7 @@ var events = require('events');
 
 var binpack = require('binpack');
 
-var coinbase = require('./coinbase.js');
+var transactions = require('./transactions.js');
 var util = require('./util.js');
 var blockTemplate = require('./blockTemplate.js');
 

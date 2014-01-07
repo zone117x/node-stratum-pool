@@ -2,7 +2,7 @@ var binpack = require('/usr/lib/node_modules/binpack');
 var bignum = require('/usr/lib/node_modules/bignum');
 
 var merkle = require('./merkleTree.js');
-var coinbase = require('./coinbase.js');
+var coinbase = require('./transactions.js');
 var util = require('./util.js');
 
 
@@ -11,7 +11,7 @@ exports.submit = function(job_id, worker_name, extranonce1_bin, extranonce2, nti
 
     var job = JobStore.find(job_id);
 
-    var extraNonce2Size = coinbase.extranonce_size - ExtraNonceCounter.size();
+    var extraNonce2Size = transactions.extranonce_size - ExtraNonceCounter.size();
 
     if (extranonce2.length != extraNonce2Size * 2)
         return {error: 'rejected'} //Incorrect size of extranonce2

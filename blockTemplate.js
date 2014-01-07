@@ -2,7 +2,7 @@
 var binpack = require('binpack');
 
 var merkleTree = require('./merkleTree.js');
-var coinbase = require('./coinbase.js');
+var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
@@ -30,7 +30,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, addr
     this.jobId = jobId;
     this.merkleTree = new merkleTree(getTransactionBuffers(rpcData.transactions));
     this.merkleBranch = getMerkleHashes(this.merkleTree.steps);
-    this.coinbase = new coinbase.GenerationTransaction(
+    this.coinbase = new transactions.Generation(
         rpcData.coinbasevalue,
         rpcData.coinbaseaux.flags,
         rpcData.height,
