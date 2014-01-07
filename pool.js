@@ -80,7 +80,7 @@ var pool = module.exports = function pool(coin){
 
 
     this.stratumServer = new stratum.Server({
-        port: 3333
+        port: coin.options.stratumPort
     });
     this.stratumServer.on('client', function(client){
         client.on('subscription', function(params, result){

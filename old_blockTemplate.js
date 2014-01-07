@@ -1,3 +1,5 @@
+/*
+
 function BlockTemplate(jobId, data){
 
 
@@ -119,7 +121,7 @@ BlockTemplate.prototype = {
         this.sha256 = null;
     },
 
-    /* CBlock */
+    //CBlock
 
     deserialize: function(f){
         util.makeBufferReadable(f);
@@ -172,6 +174,8 @@ BlockTemplate.prototype = {
     }
 
 
-     /* --- */
+
 
 };
+
+*/

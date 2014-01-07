@@ -1,3 +1,6 @@
+
+
+/*
 var binpack = require('/usr/lib/node_modules/binpack');
 var bignum = require('/usr/lib/node_modules/bignum');
 
@@ -44,3 +47,5 @@ exports.submit = function(job_id, worker_name, extranonce1_bin, extranonce2, nti
 
 
 };
+
+    */

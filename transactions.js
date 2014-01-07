@@ -114,7 +114,7 @@ var buildScriptSig = function(height, flags){
         util.serializeNumber(Date.now() / 1000 | 0),
         new Buffer([exports.extranonce_size]),
         extranonce_placeholder,
-        util.ser_string('/nodeStratum/')
+        util.serializeString('/nodeStratum/')
     ]);
 };
 
