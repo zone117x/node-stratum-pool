@@ -48,7 +48,15 @@ var StratumClient = function(options){
     function handleSubscribe(message){
         _this.emit('subscription',
             {},
-            function(extraNonce1, extraNonce2Size){
+            function(error, extraNonce1, extraNonce2Size){
+                if (error){
+                    sendJson({
+                        id: message.id,
+                        result: null,
+                        error: error
+                    });
+                    return;
+                }
                 _this.extraNonce1 = extraNonce1;
                 sendJson({
                     id: message.id,
@@ -69,12 +77,12 @@ var StratumClient = function(options){
                 name: message.params[0][0],
                 password: message.params[0][1]
             },
-            function(authorized){
-                _this.authorized = authorized;
+            function(error, result){
+                _this.authorized = result;
                 sendJson({
                     id: message.id,
-                    result: authorized,
-                    error: null
+                    result: result,
+                    error: error
                 });
             }
         );
@@ -105,11 +113,11 @@ var StratumClient = function(options){
                 nTime: message.params[3],
                 nonce: message.params[4]
             },
-            function(accepted){
+            function(error, result){
                 sendJson({
                     id: message.id,
-                    result: accepted,
-                    error: null
+                    result: result,
+                    error: error
                 });
             }
         );

@@ -129,7 +129,7 @@ var JobManager = module.exports = function JobManager(options){
         }
 
 
-        return true;
+        return {result: true};
     };
 };
 JobManager.prototype.__proto__ = events.EventEmitter.prototype;

@@ -21,6 +21,13 @@ var pool = module.exports = function pool(coin){
     });
     this.jobManager.on('newBlock', function(blockTemplate){
         _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
+    }).on('blockFound', function(blockBuffer){
+        _this.daemon.cmd('submitblock',
+            [blockBuffer.toString('hex')],
+            function(error, result){
+
+            }
+        );
     });
 
 
@@ -82,16 +89,16 @@ var pool = module.exports = function pool(coin){
         port: coin.options.stratumPort
     });
     this.stratumServer.on('client', function(client){
-        client.on('subscription', function(params, result){
+        client.on('subscription', function(params, resultCallback){
             var extraNonce = _this.jobManager.extraNonceCounter.next();
             var extraNonce2Size = _this.jobManager.extraNonce2Size;
-            result(extraNonce, extraNonce2Size);
+            resultCallback(null, extraNonce, extraNonce2Size);
             this.sendDifficulty(1);
             this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
-        }).on('authorize', function(params, result){
-            result(true);
-        }).on('submit', function(params, result){
-            var accepted =_this.jobManager.processShare(
+        }).on('authorize', function(params, resultCallback){
+                resultCallback(null, true);
+        }).on('submit', function(params, resultCallback){
+            var result =_this.jobManager.processShare(
                 result.jobId,
                 client.difficulty,
                 client.extraNonce1,
@@ -99,7 +106,11 @@ var pool = module.exports = function pool(coin){
                 result.nTime,
                 result.nonce
             );
-            result(accepted);
+            if (result.error){
+                resultCallback(result.error);
+                return;
+            }
+            resultCallback(null, true);
         });
     });
 };
