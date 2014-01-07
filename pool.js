@@ -60,7 +60,7 @@ var pool = module.exports = function pool(coin){
         }, function(err, results){
             if (err) return;
 
-            //console.log(results);
+
 
             publicKeyBuffer = coin.options.reward === 'POW' ?
                 util.script_to_address(results.addressInfo.address) :
@@ -68,6 +68,7 @@ var pool = module.exports = function pool(coin){
 
             _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
 
+            console.log(results.rpcTemplate);
             console.log(_this.jobManager.currentJob.getJobParams());
 
         });

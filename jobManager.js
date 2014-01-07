@@ -67,9 +67,66 @@ var JobManager = module.exports = function JobManager(options){
         jobs[this.currentJob.jobId] = this.currentJob;
         CheckNewIfNewBlock(this.currentJob);
     };
-    this.processShare = function(jobId, difficulty, extraNonce1, extraNonce2, nTime, nonce){
+    this.processShare = function(jobId, difficulty, extraNonce1Buffer, extraNonce2, nTime, nonce){
 
         var submitTime = Date.now() / 1000 | 0;
+
+        if (extraNonce2.length / 2 !== _this.extraNonce2Size)
+            return {error: [20, 'incorrect size of extranonce2', null]};
+
+
+        var job = jobs[jobId];
+        if (!job)
+            return {error: [21, 'job not found', null]};
+
+
+        if (nTime.length !== 8)
+            return {error: [20, 'incorrect size of ntime']};
+
+
+        var nTimeInt = parseInt(nTime, 16);
+        if (nTimeInt < job.rpcData.curtime || nTime > submitTime + 7200)
+            return {error: [20, 'ntime out of range', null]};
+
+
+        if (nonce.length !== 8)
+            return {error: [20, 'incorrect size of nonce']};
+
+
+        if (!job.registerSubmit(extraNonce1Buffer, extraNonce2, nTime, nonce))
+            return {error: [22, 'duplicate share', null]};
+
+
+        var extraNonce2Buffer = new Buffer(extraNonce2, 'hex');
+        var nTimeBuffer = new Buffer(nTime, 'hex');
+        var nonceBuffer = new Buffer(nonce, 'hex');
+
+
+        var coinbaseBuffer = job.serializeCoinbase(extraNonce1Buffer, extraNonce2Buffer);
+        var coinbaseHash = util.doublesha(coinbaseBuffer);
+
+
+        var merkleRootBuffer = job.merkleTree.withFirst(coinbaseHash);
+        for (var i = 0; i < 8; i++)
+            merkleRootBuffer.writeUInt32LE(merkleRootBuffer.readUInt32BE(i * 4), i * 4);
+
+
+        var headerBuffer = job.serializeHeader(merkleRootBuffer, nTimeBuffer, nonceBuffer);
+        for (var i = 0; i < 20; i++) headerBuffer.writeUInt32LE(headerBuffer.readUInt32BE(i * 4), i * 4);
+        var headerHash = util.doublesha(headerBuffer);
+        var headerBigNum = bignum.fromBuffer(headerHash);
+
+
+        var targetUser = bignum.fromBuffer(
+            new Buffer('00000000ffff0000000000000000000000000000000000000000000000000000', 'hex')
+        ).div(difficulty);
+        if (headerBigNum.gt(targetUser))
+            return {error: [23, 'low difficulty share', null]};
+
+
+        if (headerBigNum.gt(job.target)){
+            _this.emit('blockFound', job.serializeBlock(headerBuffer, coinbaseBuffer));
+        }
 
 
         return true;

@@ -12,9 +12,9 @@ Features (mostly untested)
 * Stratum TCP socket server
 * Block template / job manager
 * Optimized generation transaction building
+* Process share submissions
 
 #### To do
-* Handle share submissions
 * Payment processing module
 * Support more algos (scrypt, scrypt-jane, quark)
   * Port [scrypt hash](https://github.com/Tydus/litecoin_scrypt) to node module
