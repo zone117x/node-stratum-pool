@@ -43,7 +43,7 @@ Credits
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
-* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful on irc
+* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
 
 Donations
 ---------
