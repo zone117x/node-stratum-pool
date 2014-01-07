@@ -11,14 +11,14 @@ Features (mostly untested)
 * Daemon interface
 * Stratum TCP socket server
 * Block template / job manager
+* Optimized generation transaction building
 
 #### To do
-* Optimized generation transaction building
-* Integrate with PostgreSQL database
 * Handle share submissions
 * Payment processing module
 * Support more algos (scrypt, scrypt-jane, quark)
 * Statistics module
+* Integrate with PostgreSQL database
 * Web frontend
 
 
@@ -32,6 +32,7 @@ Requirements
   * [bignum](https://github.com/justmoon/node-bignum)
   * [buffertools] (https://github.com/bnoordhuis/node-buffertools)
   * [base58-native](https://github.com/gasteve/node-base58)
+  * [async](https://github.com/caolan/async)
 
 
 Credits

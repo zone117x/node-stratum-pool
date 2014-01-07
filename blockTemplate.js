@@ -6,7 +6,7 @@ var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
-var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, address){
+var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publicKey, reward){
 
     //private members
 
@@ -30,11 +30,10 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, addr
     this.jobId = jobId;
     this.merkleTree = new merkleTree(getTransactionBuffers(rpcData.transactions));
     this.merkleBranch = getMerkleHashes(this.merkleTree.steps);
-    this.coinbase = new transactions.Generation(
-        rpcData.coinbasevalue,
-        rpcData.coinbaseaux.flags,
-        rpcData.height,
-        address
+    this.generationTransaction = new transactions.Generation(
+        rpcData,
+        publicKey,
+        reward
     );
 
     this.getJobParams = function(){
@@ -42,8 +41,8 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, addr
             this.jobParams = [
                 this.jobId,
                 util.reverseHex(this.rpcData.previousblockhash),
-                this.coinbase.serialized[0].toString('hex'),
-                this.coinbase.serialized[1].toString('hex'),
+                this.generationTransaction.coinbase[0].toString('hex'),
+                this.generationTransaction.coinbase[1].toString('hex'),
                 this.merkleBranch,
                 binpack.packInt32(this.rpcData.version, 'big').toString('hex'),
                 this.rpcData.bits,

@@ -2,6 +2,7 @@ var net = require('net');
 var events = require('events');
 
 var bignum = require('bignum');
+var async = require('async');
 
 var daemon = require('./daemon.js');
 var stratum = require('./stratum.js');
@@ -14,6 +15,7 @@ var transactions = require('./transactions.js');
 var pool = module.exports = function pool(coin){
 
     var _this = this;
+    var publicKeyBuffer;
 
     this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
@@ -26,15 +28,52 @@ var pool = module.exports = function pool(coin){
 
     this.daemon = new daemon.interface(coin.options.daemon);
     this.daemon.on('online', function(){
-        this.cmd(
-            'getblocktemplate',
-            [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
-            function(error, response){
-                _this.jobManager.newTemplate(response.result);
-                console.log(response.result);
-                //console.log(_this.jobManager.currentJob.getJobParams());
+        async.parallel({
+            rpcTemplate: function(callback){
+                _this.daemon.cmd('getblocktemplate',
+                    [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
+                    function(error, result){
+                        if (error){
+                            console.log('getblocktemplate rpc error for ' + coin.options.name);
+                            callback(error);
+                        }
+                        else
+                            callback(null, result);
+                    }
+                );
+            },
+            addressInfo: function(callback){
+                _this.daemon.cmd('validateaddress',
+                    [coin.options.address],
+                    function(error, result){
+                        if (error){
+                            console.log('validateaddress rpc error for ' + coin.options.name);
+                            callback(error);
+                        }
+                        else if (!result.isvalid){
+                            console.log('address is not valid for ' + coin.options.name);
+                            callback(error);
+                        }
+                        else
+                            callback(error, result);
+                    }
+                );
             }
-        );
+        }, function(err, results){
+            if (err) return;
+
+            //console.log(results);
+
+            publicKeyBuffer = coin.options.reward === 'POW' ?
+                util.script_to_address(results.addressInfo.address) :
+                util.script_to_pubkey(results.addressInfo.pubkey);
+
+            _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
+
+            console.log(_this.jobManager.currentJob.getJobParams());
+
+        });
+
     }).on('startFailed', function(){
         console.log('Failed to start daemon for ' + coin.name);
     });

@@ -1,15 +1,152 @@
-/*
-
-Ported from https://github.com/slush0/stratum-mining
-
- */
-
-
 var binpack = require('binpack');
 var buffertools = require('buffertools');
 
 var util = require('./util.js');
 
+
+var extranonce_placeholder = new Buffer('f000000ff111111f', 'hex');
+exports.extranonce_size = extranonce_placeholder.length;
+
+
+function Transaction(params){
+    var version;
+    var inputs;
+    var outputs;
+    var lockTime;
+
+    (function init(){
+        if (typeof(params) === "object"){
+            version = params.version || 1;
+            inputs = params.inputs || [];
+            outputs = params.outputs || [];
+            lockTime = params.lockTime || 0;
+        }
+        else if (typeof(params) === "string"){
+            fromRaw(params);
+        }
+    })();
+
+    function fromRaw(raw){
+
+    }
+
+    this.toBuffer = function(){
+        return Buffer.concat([
+            binpack.packUInt32(version, 'little'),
+            util.varIntBuffer(inputs.length),
+            Buffer.concat(inputs.map(function(i){ return i.toBuffer() })),
+            util.varIntBuffer(outputs.length),
+            Buffer.concat(outputs.map(function(o){ return o.toBuffer() })),
+            binpack.packUInt32(lockTime, 'little')
+        ]);
+    };
+
+    this.inputs = inputs;
+    this.outputs = outputs;
+
+}
+
+function TransactionInput(params){
+    var prevOutHash;
+    var prevOutIndex;
+    var sigScriptBuffer;
+    var sequence;
+
+    (function init(){
+        if (typeof(params) === "object"){
+            prevOutHash = params.prevOutHash || 0;
+            prevOutIndex = params.prevOutIndex;
+            sigScriptBuffer = params.sigScriptBuffer;
+            sequence = params.sequence || 0;
+        }
+        else if (typeof(params) === "string"){
+            fromRaw(params);
+        }
+    })();
+
+    function fromRaw(raw){
+
+    }
+
+    this.toBuffer = function(){
+        return Buffer.concat([
+            util.uint256BufferFromHash(prevOutHash),
+            binpack.packUInt32(prevOutIndex, 'little'),
+            util.varIntBuffer(sigScriptBuffer.length),
+            sigScriptBuffer,
+            binpack.packUInt32(sequence)
+        ]);
+    };
+}
+
+function TransactionOutput(params){
+
+    var value;
+    var pkScriptBuffer;
+
+    (function init(){
+        if (typeof(params) === "object"){
+            value = params.value;
+            pkScriptBuffer = params.pkScriptBuffer;
+        }
+        else if (typeof(params) === "string"){
+            fromRaw(params);
+        }
+    })();
+
+    function fromRaw(raw){
+
+    }
+
+    this.toBuffer = function(){
+        return Buffer.concat([
+            binpack.packInt64(value, 'little'),
+            util.varIntBuffer(pkScriptBuffer.length),
+            pkScriptBuffer
+        ]);
+    };
+}
+
+var buildScriptSig = function(height, flags){
+    return Buffer.concat([
+        util.serializeNumber(height),
+        new Buffer(flags, 'hex'),
+        util.serializeNumber(Date.now() / 1000 | 0),
+        new Buffer([exports.extranonce_size]),
+        extranonce_placeholder,
+        util.ser_string('/nodeStratum/')
+    ]);
+};
+
+var Generation = exports.Generation = function Generation(rpcData, publicKey){
+
+    var scriptSig = buildScriptSig(rpcData.height, rpcData.coinbaseaux.flags);
+
+    var tx = new Transaction({
+        inputs: [new TransactionInput({
+            prevOutIndex: Math.pow(2, 32) - 1,
+            sigScriptBuffer: scriptSig
+        })],
+        outputs: [new TransactionOutput({
+            value: rpcData.coinbasevalue,
+            pkScriptBuffer: publicKey
+        })]
+    });
+
+    var txBuffer = tx.toBuffer();
+    var epIndex = buffertools.indexOf(txBuffer, extranonce_placeholder);
+    var p1 = txBuffer.slice(0, epIndex);
+    var p2 = txBuffer.slice(epIndex + extranonce_placeholder.length);
+
+    this.transaction = tx;
+    this.coinbase = [p1, p2];
+
+};
+
+
+
+
+/*
 
 function COutPoint(){
     this.hash = 0;
@@ -97,36 +234,6 @@ CTransaction.prototype = {
 exports.CTransaction = CTransaction;
 
 
-var extranonce_placeholder = new Buffer('f000000ff111111f', 'hex');
-exports.extranonce_size = extranonce_placeholder.length;
-
-
-var GenerationNew = function(blockTemplate, address){
-    return Buffer.concat([
-        binpack.packInt32(1, 'little'), //transaction version
-        new Buffer([1]), //length of transaction inputs (which is 1, the coinbase)
-        Buffer.concat([ //serialized coinbase tx input
-            Buffer.concat([ //prevout
-                util.uint256BufferFromHash(0), //hash
-                binpack.packUInt32(Math.pow(2, 32) - 1, 'little') //index
-            ]),
-            util.ser_string(Buffer.concat([ //script length (varint), script
-                Buffer.concat([
-                    util.serializeNumber(blockTemplate.rpcData.height),
-                    new Buffer(blockTemplate.rpcData.coinbaseaux.flags, 'hex'),
-                    util.serializeNumber(Date.now() / 1000 | 0),
-                    new Buffer([exports.extranonce_size])
-                ]),
-                extranonce_placeholder,
-                util.ser_string('/stratum/')
-            ])),
-            binpack.packUInt32(0, 'little') //sequence number
-        ]),
-        util.ser_vector(this.vout),
-        binpack.packUInt32(0, 'little') //locktime
-    ]);
-};
-
 var Generation = exports.Generation = function Generation(coinbaseValue, coinbaseAuxFlags, height, address){
     var CTrans = new CTransaction();
 
@@ -180,3 +287,4 @@ Generation.prototype = {
 
     }
 };
+*/

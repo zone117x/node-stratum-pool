@@ -194,6 +194,29 @@ exports.deser_string = function(f){
     return f.read(nit);
 };
 
+exports.varIntBuffer = function(n){
+    if (n < 0xfd)
+        return new Buffer([n]);
+    else if (n < 0xffff){
+        var buff = new Buffer(3);
+        buff[0] = 0xfd;
+        buff.writeUInt16LE(n, 1);
+        return buff;
+    }
+    else if (n < 0xffffffff){
+        var buff = new Buffer(5);
+        buff[0] = 0xfe;
+        buff.writeUInt32LE(n, 1);
+        return buff;
+    }
+    else{
+        var buff = new Buffer(9);
+        buff[0] = 0xff;
+        binpack.packUInt64(n, 'little').copy(buff, 1);
+        return buff;
+    }
+};
+
 exports.ser_vector = function(l){
     var r;
     if (l.length < 253)
@@ -266,6 +289,16 @@ exports.address_to_pubkeyhash = function(addr){
         throw 'checksum did not match';
 
     return [ver, addr.slice(1,-4)];
+};
+
+exports.script_to_pubkey = function(key){
+    if (key.length === 66) key = new Buffer(key, 'hex');
+    if (key !== 33) throw 'Invalid address';
+    var pubkey = new Buffer(35);
+    pubkey[0] = 0x21;
+    pubkey[34] = 0xac;
+    key.copy(pubkey, 1);
+    return pubkey;
 };
 
 exports.script_to_address = function(addr){

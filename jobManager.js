@@ -67,8 +67,8 @@ var JobManager = module.exports = function JobManager(options){
 
     this.extraNonceCounter = new ExtraNonceCounter();
     this.currentJob;
-    this.newTemplate = function(rpcData){
-        this.currentJob = new blockTemplate(jobCounter.next(), rpcData, options.address);
+    this.newTemplate = function(rpcData, publicKey){
+        this.currentJob = new blockTemplate(jobCounter.next(), rpcData, publicKey);
         jobs[this.currentJob.jobId] = this.currentJob;
         CheckNewIfNewBlock(this.currentJob);
     };

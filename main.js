@@ -12,6 +12,7 @@ var coins = [
         name: 'Dogecoin',
         symbol: 'doge',
         algorithm: 'scrypt',
+        reward: 'POW', //or POS
         address: 'D5uXR7F6bTCJKRZBqj1D4gyHF9MHAd5oNs',
         daemon: {
             bin: 'dogecoind',

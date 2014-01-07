@@ -8,7 +8,7 @@ var util = require('./util.js');
 
 var SubscriptionCounter = function(){
     var count = 0;
-    var padding = 'deadbeefdeadbeef';
+    var padding = 'deadbeefcafebabe';
     return {
         next: function(){
             count++;
@@ -167,15 +167,15 @@ var StratumServer = exports.Server = function StratumServer(options){
     //private members
 
     var _this = this;
-    var _socketServer;
-    var _stratumClients = {};
-    var _subscriptionCounter = SubscriptionCounter();
+    var socketServer;
+    var stratumClients = {};
+    var subscriptionCounter = SubscriptionCounter();
 
     (function init(){
         _socketServer = socketServer = net.createServer(function(c){
-            var subscriptionId = _subscriptionCounter.next();
+            var subscriptionId = subscriptionCounter.next();
             var client = new StratumClient({subscriptionId: subscriptionId, socket: c});
-            _stratumClients[subscriptionId] = client;
+            stratumClients[subscriptionId] = client;
             _this.emit('client', client);
         });
         _socketServer.listen(options.port, function(){});
@@ -186,7 +186,7 @@ var StratumServer = exports.Server = function StratumServer(options){
 
     this.broadcastMiningJobs = function(jobParams){
         for (var clientId in _stratumClients){
-            _stratumClients[clientId].sendMiningJob(jobParams)
+            stratumClients[clientId].sendMiningJob(jobParams)
         }
     };
 };
