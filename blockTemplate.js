@@ -6,7 +6,7 @@ var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
-var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publicKey, reward){
+var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publicKey, reward, extraNoncePlaceholder){
 
     //private members
 
@@ -33,7 +33,8 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     this.generationTransaction = new transactions.Generation(
         rpcData,
         publicKey,
-        reward
+        reward,
+        extraNoncePlaceholder
     );
 
     this.getJobParams = function(){

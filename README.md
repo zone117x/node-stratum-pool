@@ -17,6 +17,9 @@ Features (mostly untested)
 * Handle share submissions
 * Payment processing module
 * Support more algos (scrypt, scrypt-jane, quark)
+  * Port [scrypt hash](https://github.com/Tydus/litecoin_scrypt) to node module
+  * Port [scrypt-jane hash](https://github.com/Rav3nPL/p2pool-yac/tree/master/yac_scrypt) to node module
+  * Port [quark hash](https://github.com/Neisklar/quarkcoin-hash-python) to node module
 * Statistics module
 * Integrate with PostgreSQL database
 * Web frontend

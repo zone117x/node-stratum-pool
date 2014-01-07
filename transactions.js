@@ -4,10 +4,6 @@ var buffertools = require('buffertools');
 var util = require('./util.js');
 
 
-var extranonce_placeholder = new Buffer('f000000ff111111f', 'hex');
-exports.extranonce_size = extranonce_placeholder.length;
-
-
 function Transaction(params){
     var version;
     var inputs;
@@ -107,20 +103,20 @@ function TransactionOutput(params){
     };
 }
 
-var buildScriptSig = function(height, flags){
+var buildScriptSig = function(height, flags, extraNoncePlaceholder){
     return Buffer.concat([
         util.serializeNumber(height),
         new Buffer(flags, 'hex'),
         util.serializeNumber(Date.now() / 1000 | 0),
-        new Buffer([exports.extranonce_size]),
-        extranonce_placeholder,
+        new Buffer([extraNoncePlaceholder.length]),
+        extraNoncePlaceholder,
         util.serializeString('/nodeStratum/')
     ]);
 };
 
-var Generation = exports.Generation = function Generation(rpcData, publicKey){
+var Generation = exports.Generation = function Generation(rpcData, publicKey, extraNoncePlaceholder){
 
-    var scriptSig = buildScriptSig(rpcData.height, rpcData.coinbaseaux.flags);
+    var scriptSig = buildScriptSig(rpcData.height, rpcData.coinbaseaux.flags, extraNoncePlaceholder);
 
     var tx = new Transaction({
         inputs: [new TransactionInput({
@@ -134,9 +130,9 @@ var Generation = exports.Generation = function Generation(rpcData, publicKey){
     });
 
     var txBuffer = tx.toBuffer();
-    var epIndex = buffertools.indexOf(txBuffer, extranonce_placeholder);
+    var epIndex = buffertools.indexOf(txBuffer, extraNoncePlaceholder);
     var p1 = txBuffer.slice(0, epIndex);
-    var p2 = txBuffer.slice(epIndex + extranonce_placeholder.length);
+    var p2 = txBuffer.slice(epIndex + extraNoncePlaceholder.length);
 
     this.transaction = tx;
     this.coinbase = [p1, p2];

@@ -1,14 +1,12 @@
 var net = require('net');
 var events = require('events');
 
-var bignum = require('bignum');
 var async = require('async');
 
 var daemon = require('./daemon.js');
 var stratum = require('./stratum.js');
 var jobManager = require('./jobManager.js');
 var util = require('./util.js');
-var transactions = require('./transactions.js');
 
 
 
@@ -85,15 +83,22 @@ var pool = module.exports = function pool(coin){
     this.stratumServer.on('client', function(client){
         client.on('subscription', function(params, result){
             var extraNonce = _this.jobManager.extraNonceCounter.next();
-            var extraNonce2Size = transactions.extranonce_size - _this.jobManager.extraNonceCounter.size();
+            var extraNonce2Size = _this.jobManager.extraNonce2Size;
             result(extraNonce, extraNonce2Size);
             this.sendDifficulty(1);
             this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
         }).on('authorize', function(params, result){
             result(true);
         }).on('submit', function(params, result){
-
-            result(true);
+            var accepted =_this.jobManager.processShare(
+                result.jobId,
+                client.difficulty,
+                client.extraNonce1,
+                result.extraNonce2,
+                result.nTime,
+                result.nonce
+            );
+            result(accepted);
         });
     });
 };

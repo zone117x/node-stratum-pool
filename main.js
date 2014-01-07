@@ -11,7 +11,7 @@ var coins = [
     new Coin({
         name: 'Dogecoin',
         symbol: 'doge',
-        algorithm: 'scrypt',
+        algorithm: 'scrypt', //or sha256, scrypt-jane, quark
         reward: 'POW', //or POS
         address: 'D5uXR7F6bTCJKRZBqj1D4gyHF9MHAd5oNs',
         stratumPort: 3333,
@@ -26,13 +26,11 @@ var coins = [
     })
 ];
 
-
 coins.forEach(function(coin){
 
     coin.pool = new pool(coin);
 
 });
-
 
 
 

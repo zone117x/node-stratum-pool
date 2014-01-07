@@ -49,7 +49,7 @@ var StratumClient = function(options){
         _this.emit('subscription',
             {},
             function(extraNonce1, extraNonce2Size){
-                _this.extraNonce = extraNonce1;
+                _this.extraNonce1 = extraNonce1;
                 sendJson({
                     id: message.id,
                     result: [
@@ -70,6 +70,7 @@ var StratumClient = function(options){
                 password: message.params[0][1]
             },
             function(authorized){
+                _this.authorized = authorized;
                 sendJson({
                     id: message.id,
                     result: authorized,
@@ -80,6 +81,22 @@ var StratumClient = function(options){
     }
 
     function handleSubmit(message){
+        if (!_this.authorized){
+            sendJson({
+                id: message.id,
+                result: null,
+                error: [24, "unauthorized worker", null]
+            });
+            return;
+        }
+        if (!_this.extraNonce1){
+            sendJson({
+                id: message.id,
+                result: null,
+                error: [25, "not subscribed", null]
+            });
+            return;
+        }
         _this.emit('submit',
             {
                 name: message.params[0],
@@ -144,6 +161,7 @@ var StratumClient = function(options){
     //public members
 
     this.sendDifficulty = function(difficulty){
+        _this.difficulty = difficulty;
         sendJson({
             id: null,
             method: "mining.set_difficulty",

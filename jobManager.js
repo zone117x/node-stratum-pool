@@ -1,26 +1,18 @@
 var events = require('events');
 
 var binpack = require('binpack');
+var bignum = require('bignum');
 
-var transactions = require('./transactions.js');
 var util = require('./util.js');
 var blockTemplate = require('./blockTemplate.js');
 
-/*
-
-For each crypto currency have a templating instance which holds an array of jobs.
-jobs all hold slightly modified block templates that all have the same prev hash.
-any jobs with outdated prevhash should be purged.
-
-
- */
 
 
 //Unique extranonce per subscriber
 var ExtraNonceCounter = function(){
     var instanceId = 31;
     var counter = instanceId << 27;
-    var size = 4;
+    var size = binpack.packUInt32(counter, 'big').length;
 
     this.next = function(){
         var extraNonce = binpack.packUInt32(counter++, 'big');
@@ -66,11 +58,21 @@ var JobManager = module.exports = function JobManager(options){
     //public members
 
     this.extraNonceCounter = new ExtraNonceCounter();
+    this.extraNoncePlaceholder = new Buffer('f000000ff111111f', 'hex');
+    this.extraNonce2Size = this.extraNoncePlaceholder.length - this.extraNonceCounter.size();
+
     this.currentJob;
     this.newTemplate = function(rpcData, publicKey){
-        this.currentJob = new blockTemplate(jobCounter.next(), rpcData, publicKey);
+        this.currentJob = new blockTemplate(jobCounter.next(), rpcData, publicKey, _this.extraNoncePlaceholder);
         jobs[this.currentJob.jobId] = this.currentJob;
         CheckNewIfNewBlock(this.currentJob);
+    };
+    this.processShare = function(jobId, difficulty, extraNonce1, extraNonce2, nTime, nonce){
+
+        var submitTime = Date.now() / 1000 | 0;
+
+
+        return true;
     };
 };
 JobManager.prototype.__proto__ = events.EventEmitter.prototype;
