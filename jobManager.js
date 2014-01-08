@@ -2,6 +2,8 @@ var events = require('events');
 
 var binpack = require('binpack');
 var bignum = require('bignum');
+var scrypt = require('scrypt-hash');
+var quark = require('quark-hash');
 
 var util = require('./util.js');
 var blockTemplate = require('./blockTemplate.js');
@@ -98,24 +100,29 @@ var JobManager = module.exports = function JobManager(options){
 
 
         var extraNonce2Buffer = new Buffer(extraNonce2, 'hex');
-        var nTimeBuffer = new Buffer(nTime, 'hex');
-        var nonceBuffer = new Buffer(nonce, 'hex');
-
 
         var coinbaseBuffer = job.serializeCoinbase(extraNonce1Buffer, extraNonce2Buffer);
         var coinbaseHash = util.doublesha(coinbaseBuffer);
 
 
-        var merkleRootBuffer = job.merkleTree.withFirst(coinbaseHash);
-        for (var i = 0; i < 8; i++)
-            merkleRootBuffer.writeUInt32LE(merkleRootBuffer.readUInt32BE(i * 4), i * 4);
+        var merkleRoot = job.merkleTree.withFirst(coinbaseHash).toString('hex');
 
+        var headerBuffer = job.serializeHeader(merkleRoot, nTime, nonce);
 
-        var headerBuffer = job.serializeHeader(merkleRootBuffer, nTimeBuffer, nonceBuffer);
-        for (var i = 0; i < 20; i++) headerBuffer.writeUInt32LE(headerBuffer.readUInt32BE(i * 4), i * 4);
-        var headerHash = util.doublesha(headerBuffer);
+        var headerHash = (function(){
+            switch(options.algorithm){
+                case 'sha256':
+                    return util.doublesha(headerBuffer);
+                case 'scrypt':
+                    return scrypt.digest(headerBuffer);
+                case 'scrypt-jane':
+                    return scryptJane.digest(headerBuffer);
+                case 'quark':
+                    return quark.digest(headerBuffer);
+            }
+        })();
+
         var headerBigNum = bignum.fromBuffer(headerHash);
-
 
         var targetUser = bignum.fromBuffer(
             new Buffer('00000000ffff0000000000000000000000000000000000000000000000000000', 'hex')
@@ -127,7 +134,6 @@ var JobManager = module.exports = function JobManager(options){
         if (headerBigNum.gt(job.target)){
             _this.emit('blockFound', job.serializeBlock(headerBuffer, coinbaseBuffer));
         }
-
 
         return {result: true};
     };

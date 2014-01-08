@@ -31,6 +31,8 @@ Requirements
 * coin daemon
 * PostgreSQL
 * npm dependencies
+  * [scrypt256-hash](https://github.com/zone117x/node-scrypt256-hash)
+  * [quark-hash](https://github.com/zone117x/node-quark-hash)
   * [binpack](https://github.com/russellmcc/node-binpack)
   * [bignum](https://github.com/justmoon/node-bignum)
   * [buffertools] (https://github.com/bnoordhuis/node-buffertools)
@@ -44,6 +46,7 @@ Credits
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
 * [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
+* [vekexasia](https://github.com/vekexasia) - bug fixes
 
 Donations
 ---------

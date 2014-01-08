@@ -53,15 +53,28 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         ]);
     };
 
-    this.serializeHeader = function(merkleRootBuffer, nTimeBuffer, nonceBuffer){
-        return Buffer.concat([
+    this.serializeHeader = function(merkleRoot, nTime, nonce){
+
+        var header =  new Buffer(80);
+        var position = 0;
+        header.writeUInt32BE(nonce, position);
+        header.write(rpcData.bits, position += 4, 4, 'hex');
+        header.writeUInt32BE(nTime, position += 4);
+        header.write(merkleRoot, position += 4, 32, 'hex');
+        header.write(rpcData.previousblockhash, position += 32, 32, 'hex');
+        header.writeUInt32BE(rpcData.version, position + 32);
+        //var header = reverseBuffer(header);
+
+        return header;
+
+        /*return Buffer.concat([
             binpack.packInt32(rpcData.version, 'big'),
             this.previousHashBuffer,
             merkleRootBuffer,
             nTimeBuffer,
             new Buffer(this.rpcData.bits, 'hex'),
             nonceBuffer
-        ]);
+        ]);*/
     };
 
     this.serializeBlock = function(header, coinbase){

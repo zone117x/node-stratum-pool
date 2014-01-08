@@ -37,9 +37,8 @@ exports.doublesha = function(buffer){
 
 exports.reverseBuffer = function(buff){
     var reversed = new Buffer(buff.length);
-    for (var i = 0; i < buff.length; i++){
-        reversed[buff.length - (i + 1)] = buff[i];
-    }
+    for (var i = buff.length - 1; i >= 0; i--)
+        reversed[buff.length - i - 1] = buff[i];
     return reversed;
 };
 
