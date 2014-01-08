@@ -63,7 +63,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         header.write(merkleRoot, position += 4, 32, 'hex');
         header.write(rpcData.previousblockhash, position += 32, 32, 'hex');
         header.writeUInt32BE(rpcData.version, position + 32);
-        //var header = reverseBuffer(header);
+        var header = reverseBuffer(header);
 
         return header;
 

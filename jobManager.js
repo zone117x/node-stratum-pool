@@ -2,8 +2,11 @@ var events = require('events');
 
 var binpack = require('binpack');
 var bignum = require('bignum');
-var scrypt = require('scrypt-hash');
+
+var scrypt = require('scrypt256-hash');
 var quark = require('quark-hash');
+var scryptJane = require('scrypt-jane-hash')
+
 
 var util = require('./util.js');
 var blockTemplate = require('./blockTemplate.js');
@@ -116,7 +119,7 @@ var JobManager = module.exports = function JobManager(options){
                 case 'scrypt':
                     return scrypt.digest(headerBuffer);
                 case 'scrypt-jane':
-                    return scryptJane.digest(headerBuffer);
+                    return scryptJane.digest(headerBuffer, nTimeInt);
                 case 'quark':
                     return quark.digest(headerBuffer);
             }
