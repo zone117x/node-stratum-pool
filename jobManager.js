@@ -34,7 +34,7 @@ var JobCounter = function(){
 
     this.next = function(){
         counter++;
-        if (counter % 0xffff == 0)
+        if (counter % 0xffff === 0)
             counter = 1;
         return counter.toString(16);
     };
@@ -49,15 +49,30 @@ var JobManager = module.exports = function JobManager(options){
     var jobCounter = new JobCounter();
     var jobs = {};
 
+
+
     function CheckNewIfNewBlock(blockTemplate){
         var newBlock = true;
         for(var job in jobs){
-            if (jobs[job].rpcData.previousblockhash == blockTemplate.rpcData.previousblockhash)
+            if (jobs[job].rpcData.previousblockhash === blockTemplate.rpcData.previousblockhash)
                 newBlock = false;
         }
         if (newBlock)
             _this.emit('newBlock', blockTemplate);
     }
+
+    var diffDividend = bignum.fromBuffer(new Buffer((function(){
+        switch(options.algorithm){
+            case 'sha256':
+                return '00000000ffff0000000000000000000000000000000000000000000000000000';
+            case 'scrypt':
+            case 'scrypt-jane':
+                return '0000ffff00000000000000000000000000000000000000000000000000000000';
+            case 'quark':
+                return '000000ffff000000000000000000000000000000000000000000000000000000'
+        }
+    })(), 'hex'));
+
 
 
     //public members
@@ -72,7 +87,7 @@ var JobManager = module.exports = function JobManager(options){
         jobs[this.currentJob.jobId] = this.currentJob;
         CheckNewIfNewBlock(this.currentJob);
     };
-    this.processShare = function(jobId, difficulty, extraNonce1Buffer, extraNonce2, nTime, nonce){
+    this.processShare = function(jobId, difficulty, extraNonce1, extraNonce2, nTime, nonce){
 
         var submitTime = Date.now() / 1000 | 0;
 
@@ -98,20 +113,22 @@ var JobManager = module.exports = function JobManager(options){
             return {error: [20, 'incorrect size of nonce']};
 
 
-        if (!job.registerSubmit(extraNonce1Buffer, extraNonce2, nTime, nonce))
+        if (!job.registerSubmit(extraNonce1, extraNonce2, nTime, nonce))
             return {error: [22, 'duplicate share', null]};
 
 
+        var extraNonce1Buffer = new Buffer(extraNonce1, 'hex');
         var extraNonce2Buffer = new Buffer(extraNonce2, 'hex');
 
         var coinbaseBuffer = job.serializeCoinbase(extraNonce1Buffer, extraNonce2Buffer);
         var coinbaseHash = util.doublesha(coinbaseBuffer);
 
-
-        var merkleRoot = job.merkleTree.withFirst(coinbaseHash).toString('hex');
+        var merkleRoot = job.merkleTree.withFirst(coinbaseHash);
+        for (var i = 0; i < 8; i++) merkleRoot.writeUInt32LE(merkleRoot.readUInt32BE(i * 4), i * 4);
+        merkleRoot = util.reverseBuffer(merkleRoot).toString('hex');
 
         var headerBuffer = job.serializeHeader(merkleRoot, nTime, nonce);
-
+        for (var i = 0; i < 20; i++) headerBuffer.writeUInt32LE(headerBuffer.readUInt32BE(i * 4), i * 4);
         var headerHash = (function(){
             switch(options.algorithm){
                 case 'sha256':
@@ -125,17 +142,19 @@ var JobManager = module.exports = function JobManager(options){
             }
         })();
 
-        var headerBigNum = bignum.fromBuffer(headerHash);
 
-        var targetUser = bignum.fromBuffer(
-            new Buffer('00000000ffff0000000000000000000000000000000000000000000000000000', 'hex')
-        ).div(difficulty);
-        if (headerBigNum.gt(targetUser))
+        var headerBigNum = bignum.fromBuffer(headerHash, {endian: 'little', size: 32});
+
+        if (job.target.ge(headerBigNum)){
+            var blockHex = job.serializeBlock(headerBuffer, coinbaseBuffer);
+            _this.emit('blockFound', blockHex);
+        }
+
+        var targetUser = diffDividend.div(difficulty);
+        if (headerBigNum.gt(targetUser)){
+            console.log('target:' + targetUser.toString());
+            console.log('share:' + headerBigNum.toString());
             return {error: [23, 'low difficulty share', null]};
-
-
-        if (headerBigNum.gt(job.target)){
-            _this.emit('blockFound', job.serializeBlock(headerBuffer, coinbaseBuffer));
         }
 
         return {result: true};

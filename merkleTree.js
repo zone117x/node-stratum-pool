@@ -24,7 +24,7 @@ var MerkleTree = module.exports = function MerkleTree(data){
         if (Ll > 1){
             while (true){
 
-                if (Ll == 1)
+                if (Ll === 1)
                     break;
 
                 steps.push(L[1]);

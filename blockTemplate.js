@@ -57,13 +57,16 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
 
         var header =  new Buffer(80);
         var position = 0;
-        header.writeUInt32BE(nonce, position);
+        header.write(nonce, position, 4, 'hex');
         header.write(rpcData.bits, position += 4, 4, 'hex');
-        header.writeUInt32BE(nTime, position += 4);
+        header.write(nTime, position += 4, 4, 'hex');
         header.write(merkleRoot, position += 4, 32, 'hex');
         header.write(rpcData.previousblockhash, position += 32, 32, 'hex');
         header.writeUInt32BE(rpcData.version, position + 32);
-        var header = reverseBuffer(header);
+        var header = util.reverseBuffer(header);
+
+        var test = header.toString('hex');
+
 
         return header;
 
@@ -86,8 +89,8 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         ]);
     };
 
-    this.registerSubmit = function(extraNonce1Buffer, extraNonce2, nTime, nonce){
-        var submission = extraNonce1Buffer.toString('hex') + extraNonce2 + nTime + nonce;
+    this.registerSubmit = function(extraNonce1, extraNonce2, nTime, nonce){
+        var submission = extraNonce1 + extraNonce2 + nTime + nonce;
         if (submits.indexOf(submission) === -1){
             submits.push(submission);
             return true;

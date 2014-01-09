@@ -21,13 +21,22 @@ var pool = module.exports = function pool(coin){
     });
     this.jobManager.on('newBlock', function(blockTemplate){
         _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
-    }).on('blockFound', function(blockBuffer){
-        _this.daemon.cmd('submitblock',
-            [blockBuffer.toString('hex')],
-            function(error, result){
+    }).on('blockFound', function(blockHex){
 
-            }
-        );
+        if (coin.options.hasSubmitMethod)
+            _this.daemon.cmd('submitblock',
+                [blockHex],
+                function(error, result){
+
+                }
+            );
+        else
+            _this.daemon.cmd('getblocktemplate',
+                [{'mode': 'submit', 'data': blockHex}],
+                function(error, result){
+
+                }
+            );
     });
 
 
@@ -68,7 +77,6 @@ var pool = module.exports = function pool(coin){
                 _this.daemon.cmd('submitblock',
                     [],
                     function(error, result){
-                        console.log(error);
                         if (error && error.message === 'Method not found')
                             callback(null, false);
                         else
@@ -104,19 +112,22 @@ var pool = module.exports = function pool(coin){
         client.on('subscription', function(params, resultCallback){
             var extraNonce = _this.jobManager.extraNonceCounter.next();
             var extraNonce2Size = _this.jobManager.extraNonce2Size;
-            resultCallback(null, extraNonce, extraNonce2Size);
-            this.sendDifficulty(1);
+            resultCallback(null,
+                extraNonce,
+                extraNonce2Size
+            );
+            this.sendDifficulty(coin.options.difficulty);
             this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
         }).on('authorize', function(params, resultCallback){
                 resultCallback(null, true);
         }).on('submit', function(params, resultCallback){
             var result =_this.jobManager.processShare(
-                result.jobId,
+                params.jobId,
                 client.difficulty,
                 client.extraNonce1,
-                result.extraNonce2,
-                result.nTime,
-                result.nonce
+                params.extraNonce2,
+                params.nTime,
+                params.nonce
             );
             if (result.error){
                 resultCallback(result.error);

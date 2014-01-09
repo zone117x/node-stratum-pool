@@ -139,11 +139,11 @@ exports.varIntBuffer = function(n){
 };
 
 exports.range = function(start, stop, step){
-    if (typeof stop == 'undefined'){
+    if (typeof stop === 'undefined'){
         stop = start;
         start = 0;
     }
-    if (typeof step == 'undefined'){
+    if (typeof step === 'undefined'){
         step = 1;
     }
     if ((step > 0 && start >= stop) || (step < 0 && start <= stop)){

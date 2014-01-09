@@ -1,3 +1,7 @@
+var bignum = require('bignum');
+var scrypt = require('scrypt256-hash');
+
+
 var reverseBuffer = function(buff){
     var reversed = new Buffer(buff.length);
     for (var i = buff.length - 1; i >= 0; i--)
@@ -5,6 +9,31 @@ var reverseBuffer = function(buff){
     return reversed;
 };
 
+var hash = new Buffer("38f3e68be0b74813af175b8da506dfa3c3017ff06fed7ae85e3efee655c9f7fd", 'hex');
+var goal = "8be6f3381348b7e08d5b17afa3df06a5f07f01c3e87aed6fe6fe3e5efdf7c955";
+
+var s = scrypt.digest(hash);
+console.log(s.toString('hex'));
+for (var i = 0; i < 20; i++) s.writeUInt32LE(s.readUInt32BE(i * 4), i * 4);
+
+
+var nHash = new Buffer(hash.length);
+for (var i = 0; i < 8; i++) nHash.writeUInt32LE(hash.readUInt32BE(i * 4), i * 4);
+console.log('maybe: ' + nHash.toString('hex'));
+
+
+var wow = bignum.fromBuffer(hash, {endian: 'little', size: 32}).toBuffer({endian: 'big', size: 32}).toString('hex');
+console.log(wow);
+console.log(wow == goal ? 'good' : 'fuck');
+
+
+/*
+var bb = new Buffer('0100000017a93c491d6e309cc53604cc32829a9610a95835e042f7c86a0b4455b8f5fbfe38f3e68be0b74813af175b8da506dfa3c3017ff06fed7ae85e3efee655c9f7fdb931ce520334011c000028cf', 'hex');
+var hash = scrypt.digest(bb);
+console.log(bignum.fromBuffer(hash, {endian: 'little', size: 32}).toString());
+*?
+
+/*
 var block = {
     hash: "409fd235e2fdc7182db92e13eed1b352081d9013ddc90e0acd817e378b8c1d1a",
     confirmations: 1,
@@ -47,3 +76,31 @@ if (phpResult === header.toString('hex'))
     console.log('works!!!!!');
 else
     console.log('fuck');
+    */
+
+nonce = "cf280000";
+bits = "1c013403";
+time = "52ce31b9";
+merkleroot = "38f3e68be0b74813af175b8da506dfa3c3017ff06fed7ae85e3efee655c9f7fd";
+pbh = "fefbf5b855440b6ac8f742e03558a910969a8232cc0436c59c306e1d493ca917";
+version = 1;
+
+merkleroot = reverseBuffer(new Buffer(merkleroot, 'hex')).toString('hex');
+
+var serializeHeader = function(){
+
+    var header =  new Buffer(80);
+    var position = 0;
+    header.write(nonce, position, 4, 'hex');
+    header.write(bits, position += 4, 4, 'hex');
+    header.write(time, position += 4, 4, 'hex');
+    header.write(merkleroot, position += 4, 32, 'hex');
+    header.write(pbh, position += 32, 32, 'hex');
+    header.writeUInt32BE(version, position + 32);
+    var header = reverseBuffer(header);
+
+    var test = header.toString('hex');
+
+    return header;
+
+};

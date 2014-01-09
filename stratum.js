@@ -12,7 +12,7 @@ var SubscriptionCounter = function(){
     return {
         next: function(){
             count++;
-            if (Number.MAX_VALUE == count) count = 0;
+            if (Number.MAX_VALUE === count) count = 0;
             return padding + binpack.packUInt64(count, 'big').toString('hex');
         }
     };
@@ -142,6 +142,7 @@ var StratumClient = function(options){
             if (dataBuffer.slice(-1) === '\n'){
                 var messages = dataBuffer.split('\n');
                 messages.forEach(function(message){
+                    if (message.trim() === '') return;
                     var messageJson;
                     try{
                         messageJson = JSON.parse(message);

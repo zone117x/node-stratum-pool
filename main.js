@@ -18,6 +18,7 @@ var coins = [
         reward: 'POW', //or POS
         address: 'D5uXR7F6bTCJKRZBqj1D4gyHF9MHAd5oNs',
         stratumPort: 3333,
+        difficulty: 8,
         daemon: {
             bin: 'dogecoind',
             port: 8332,
