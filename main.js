@@ -4,12 +4,6 @@ var bignum = require('bignum');
 
 var pool = require('./pool.js');
 
-var fff = "03be78733329d27a63d6ca058a1e3e1048d90e945c2ee985f4bc9042da280a4b";
-var ff = new Buffer(fff, 'hex');
-var nn = bignum.fromBuffer(ff);
-var aa = nn.toBuffer();
-console.log(aa.toString('hex'));
-
 
 function Coin(options){
     this.options = options;

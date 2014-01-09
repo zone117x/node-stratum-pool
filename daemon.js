@@ -73,7 +73,7 @@ function DaemonInterface(options){
             });
             res.on('end', function(){
                 var dataJson = JSON.parse(data);
-                callback(null, dataJson.result);
+                callback(dataJson.error, dataJson.result);
             });
         });
 

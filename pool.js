@@ -63,11 +63,23 @@ var pool = module.exports = function pool(coin){
                             callback(error, result);
                     }
                 );
+            },
+            submitMethod: function(callback){
+                _this.daemon.cmd('submitblock',
+                    [],
+                    function(error, result){
+                        console.log(error);
+                        if (error && error.message === 'Method not found')
+                            callback(null, false);
+                        else
+                            callback(null, true);
+                    }
+                );
             }
         }, function(err, results){
             if (err) return;
 
-
+            coin.options.hasSubmitMethod = results.submitMethod;
 
             publicKeyBuffer = coin.options.reward === 'POW' ?
                 util.script_to_address(results.addressInfo.address) :
@@ -75,8 +87,8 @@ var pool = module.exports = function pool(coin){
 
             _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
 
-            console.log(results.rpcTemplate);
-            console.log(_this.jobManager.currentJob.getJobParams());
+            //console.log(results.rpcTemplate);
+            //console.log(_this.jobManager.currentJob.getJobParams());
 
         });
 
