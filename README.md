@@ -49,23 +49,23 @@ Installation
   Example configuration for dogecoin.json:
 
     ```json
-{
-    "name": "Dogecoin",
-    "symbol": "doge",
-    "algorithm": "scrypt",
-    "reward": "POW",
-    "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
-    "stratumPort": 3334,
-    "difficulty": 8,
-    "daemon": {
-        "bin": "dogecoind",
-        "port": 8332,
-        "user": "test",
-        "password": "test",
-        "blocknotify": "blockNotify.js doge %s",
-        "startIfOffline": true
+    {
+        "name": "Dogecoin",
+        "symbol": "doge",
+        "algorithm": "scrypt",
+        "reward": "POW",
+        "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+        "stratumPort": 3334,
+        "difficulty": 8,
+        "daemon": {
+            "bin": "dogecoind",
+            "port": 8332,
+            "user": "test",
+            "password": "test",
+            "blocknotify": "blockNotify.js doge %s",
+            "startIfOffline": true
+        }
     }
-}
     ```
 
 * To start the poolserver run init.js
