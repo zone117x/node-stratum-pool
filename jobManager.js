@@ -61,19 +61,38 @@ var JobManager = module.exports = function JobManager(options){
             _this.emit('newBlock', blockTemplate);
     }
 
-    var diffDividend = bignum.fromBuffer(new Buffer((function(){
+    var diffDividend = (function(){
         switch(options.algorithm){
             case 'sha256':
-                return '00000000ffff0000000000000000000000000000000000000000000000000000';
+                return 0x00000000ffff0000000000000000000000000000000000000000000000000000;
             case 'scrypt':
             case 'scrypt-jane':
-                return '0000ffff00000000000000000000000000000000000000000000000000000000';
+                return 0x0000ffff00000000000000000000000000000000000000000000000000000000;
             case 'quark':
-                return '000000ffff000000000000000000000000000000000000000000000000000000'
+                return 0x000000ffff000000000000000000000000000000000000000000000000000000;
         }
-    })(), 'hex'));
+    })();
 
-
+    var hashDigest = (function(){
+        switch(options.algorithm){
+            case 'sha256':
+                return function(){
+                    return util.doublesha.apply(this, arguments);
+                }
+            case 'scrypt':
+                return function(){
+                    return scrypt.digest.apply(this, arguments);
+                }
+            case 'scrypt-jane':
+                return function(){
+                    return scryptJane.digest.apply(this, arguments);
+                }
+            case 'quark':
+                return function(){
+                    return quark.digest.apply(this, arguments);
+                }
+        }
+    })();
 
     //public members
 
@@ -94,24 +113,19 @@ var JobManager = module.exports = function JobManager(options){
         if (extraNonce2.length / 2 !== _this.extraNonce2Size)
             return {error: [20, 'incorrect size of extranonce2', null]};
 
-
         var job = jobs[jobId];
         if (!job)
             return {error: [21, 'job not found', null]};
 
-
         if (nTime.length !== 8)
             return {error: [20, 'incorrect size of ntime']};
-
 
         var nTimeInt = parseInt(nTime, 16);
         if (nTimeInt < job.rpcData.curtime || nTime > submitTime + 7200)
             return {error: [20, 'ntime out of range', null]};
 
-
         if (nonce.length !== 8)
             return {error: [20, 'incorrect size of nonce']};
-
 
         if (!job.registerSubmit(extraNonce1, extraNonce2, nTime, nonce))
             return {error: [22, 'duplicate share', null]};
@@ -124,25 +138,10 @@ var JobManager = module.exports = function JobManager(options){
         var coinbaseHash = util.doublesha(coinbaseBuffer);
 
         var merkleRoot = job.merkleTree.withFirst(coinbaseHash);
-        for (var i = 0; i < 8; i++) merkleRoot.writeUInt32LE(merkleRoot.readUInt32BE(i * 4), i * 4);
         merkleRoot = util.reverseBuffer(merkleRoot).toString('hex');
 
         var headerBuffer = job.serializeHeader(merkleRoot, nTime, nonce);
-        for (var i = 0; i < 20; i++) headerBuffer.writeUInt32LE(headerBuffer.readUInt32BE(i * 4), i * 4);
-        var headerHash = (function(){
-            switch(options.algorithm){
-                case 'sha256':
-                    return util.doublesha(headerBuffer);
-                case 'scrypt':
-                    return scrypt.digest(headerBuffer);
-                case 'scrypt-jane':
-                    return scryptJane.digest(headerBuffer, nTimeInt);
-                case 'quark':
-                    return quark.digest(headerBuffer);
-            }
-        })();
-
-
+        var headerHash = hashDigest(headerBuffer, nTimeInt);
         var headerBigNum = bignum.fromBuffer(headerHash, {endian: 'little', size: 32});
 
         if (job.target.ge(headerBigNum)){
@@ -150,10 +149,8 @@ var JobManager = module.exports = function JobManager(options){
             _this.emit('blockFound', blockHex);
         }
 
-        var targetUser = diffDividend.div(difficulty);
+        var targetUser = bignum(diffDividend / difficulty);
         if (headerBigNum.gt(targetUser)){
-            console.log('target:' + targetUser.toString());
-            console.log('share:' + headerBigNum.toString());
             return {error: [23, 'low difficulty share', null]};
         }
 

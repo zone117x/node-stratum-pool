@@ -46,6 +46,11 @@ exports.reverseHex = function(hex){
     return exports.reverseBuffer(new Buffer(hex, 'hex')).toString('hex');
 };
 
+exports.reverseByteOrder = function(buff){
+    for (var i = 0; i < 8; i++) buff.writeUInt32LE(buff.readUInt32BE(i * 4), i * 4);
+    return exports.reverseBuffer(buff);
+};
+
 exports.uint256BufferFromHash = function(hex){
 
     var fromHex = new Buffer(hex, 'hex');
@@ -64,6 +69,29 @@ exports.hexFromReversedBuffer = function(buffer){
     return exports.reverseBuffer(buffer).toString('hex');
 };
 
+exports.varIntBuffer = function(n){
+    if (n < 0xfd)
+        return new Buffer([n]);
+    else if (n < 0xffff){
+        var buff = new Buffer(3);
+        buff[0] = 0xfd;
+        buff.writeUInt16LE(n, 1);
+        return buff;
+    }
+    else if (n < 0xffffffff){
+        var buff = new Buffer(5);
+        buff[0] = 0xfe;
+        buff.writeUInt32LE(n, 1);
+        return buff;
+    }
+    else{
+        var buff = new Buffer(9);
+        buff[0] = 0xff;
+        binpack.packUInt64(n, 'little').copy(buff, 1);
+        return buff;
+    }
+};
+
 exports.serializeNumber = function(n){
     if (n < 0xfd){
         var buff = new Buffer(2);
@@ -74,13 +102,13 @@ exports.serializeNumber = function(n){
     else if (n <= 0xffff){
         var buff = new Buffer(4);
         buff[0] = 0x3;
-        buff.writeUInt16BE(n, 1);
+        buff.writeUInt16LE(n, 1);
         return buff;
     }
     else if (n <= 0xffffffff){
-        var buff = new Buffer(6);
-        buff[0] = 0x5;
-        buff.writeUInt32BE(n, 1);
+        var buff = new Buffer(5);
+        buff[0] = 0x4;
+        buff.writeUInt32LE(n, 1);
         return buff;
     }
     else{
@@ -113,29 +141,6 @@ exports.serializeString = function(s){
             binpack.packUInt64(s.length),
             new Buffer(s)
         ]);
-};
-
-exports.varIntBuffer = function(n){
-    if (n < 0xfd)
-        return new Buffer([n]);
-    else if (n < 0xffff){
-        var buff = new Buffer(3);
-        buff[0] = 0xfd;
-        buff.writeUInt16LE(n, 1);
-        return buff;
-    }
-    else if (n < 0xffffffff){
-        var buff = new Buffer(5);
-        buff[0] = 0xfe;
-        buff.writeUInt32LE(n, 1);
-        return buff;
-    }
-    else{
-        var buff = new Buffer(9);
-        buff[0] = 0xff;
-        binpack.packUInt64(n, 'little').copy(buff, 1);
-        return buff;
-    }
 };
 
 exports.range = function(start, stop, step){

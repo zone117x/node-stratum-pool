@@ -1,5 +1,6 @@
 var net = require('net');
 var events = require('events');
+var fs = require('fs');
 
 var async = require('async');
 
@@ -51,8 +52,10 @@ var pool = module.exports = function pool(coin){
                             console.log('getblocktemplate rpc error for ' + coin.options.name);
                             callback(error);
                         }
-                        else
+                        else{
+                            //result = JSON.parse(fs.readFileSync('example.json'));
                             callback(null, result);
+                        }
                     }
                 );
             },
@@ -94,9 +97,6 @@ var pool = module.exports = function pool(coin){
                 util.script_to_pubkey(results.addressInfo.pubkey);
 
             _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
-
-            //console.log(results.rpcTemplate);
-            //console.log(_this.jobManager.currentJob.getJobParams());
 
         });
 

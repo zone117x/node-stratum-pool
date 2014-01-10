@@ -14,7 +14,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
 
     function getMerkleHashes(steps){
         return steps.map(function(step){
-            return util.reverseBuffer(step).toString('hex');
+            return step.toString('hex');
         });
     }
 
@@ -31,7 +31,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     this.rpcData = rpcData;
     this.jobId = jobId;
     this.target = util.bignumFromBits(rpcData.bits);
-    this.previousHashBuffer = util.reverseHex(rpcData.previousblockhash);
+    this.prevHashReversed = util.reverseByteOrder(new Buffer(rpcData.previousblockhash, 'hex')).toString('hex');
     this.transactionData = Buffer.concat(rpcData.transactions.map(function(tx){
         return new Buffer(tx.data, 'hex');
     }));
@@ -65,19 +65,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         header.writeUInt32BE(rpcData.version, position + 32);
         var header = util.reverseBuffer(header);
 
-        var test = header.toString('hex');
-
-
         return header;
-
-        /*return Buffer.concat([
-            binpack.packInt32(rpcData.version, 'big'),
-            this.previousHashBuffer,
-            merkleRootBuffer,
-            nTimeBuffer,
-            new Buffer(this.rpcData.bits, 'hex'),
-            nonceBuffer
-        ]);*/
     };
 
     this.serializeBlock = function(header, coinbase){
@@ -102,7 +90,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         if (!this.jobParams){
             this.jobParams = [
                 this.jobId,
-                this.previousHashBuffer,
+                this.prevHashReversed,
                 this.generationTransaction.coinbase[0].toString('hex'),
                 this.generationTransaction.coinbase[1].toString('hex'),
                 this.merkleBranch,
@@ -114,4 +102,8 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         }
         return this.jobParams;
     }
+
+    //this.jobParams = this.getJobParams();
+    //console.log(JSON.stringify(this.jobParams, null, ' ').replace(/\n/g ,''));
+
 }

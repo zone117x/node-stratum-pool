@@ -16,8 +16,8 @@ var coins = [
         symbol: 'doge',
         algorithm: 'scrypt', //or sha256, scrypt-jane, quark
         reward: 'POW', //or POS
-        address: 'D5uXR7F6bTCJKRZBqj1D4gyHF9MHAd5oNs',
-        stratumPort: 3333,
+        address: 'DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS',
+        stratumPort: 3334,
         difficulty: 8,
         daemon: {
             bin: 'dogecoind',

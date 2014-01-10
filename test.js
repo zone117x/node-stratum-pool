@@ -9,6 +9,7 @@ var reverseBuffer = function(buff){
     return reversed;
 };
 
+/*
 var hash = new Buffer("38f3e68be0b74813af175b8da506dfa3c3017ff06fed7ae85e3efee655c9f7fd", 'hex');
 var goal = "8be6f3381348b7e08d5b17afa3df06a5f07f01c3e87aed6fe6fe3e5efdf7c955";
 
@@ -25,6 +26,7 @@ console.log('maybe: ' + nHash.toString('hex'));
 var wow = bignum.fromBuffer(hash, {endian: 'little', size: 32}).toBuffer({endian: 'big', size: 32}).toString('hex');
 console.log(wow);
 console.log(wow == goal ? 'good' : 'fuck');
+*/
 
 
 /*
@@ -88,7 +90,6 @@ version = 1;
 merkleroot = reverseBuffer(new Buffer(merkleroot, 'hex')).toString('hex');
 
 var serializeHeader = function(){
-
     var header =  new Buffer(80);
     var position = 0;
     header.write(nonce, position, 4, 'hex');
@@ -98,9 +99,23 @@ var serializeHeader = function(){
     header.write(pbh, position += 32, 32, 'hex');
     header.writeUInt32BE(version, position + 32);
     var header = reverseBuffer(header);
-
-    var test = header.toString('hex');
-
     return header;
-
 };
+
+var headerBuff = serializeHeader();
+var headerHashed = scrypt.digest(headerBuff);
+var hashInt = bignum.fromBuffer(headerHashed, {endian: 'little', size: 32});
+
+
+//var diffDividend = bignum.fromBuffer(new Buffer('0000ffff00000000000000000000000000000000000000000000000000000000'), 'hex');
+//var target = diffDividend.div(16)
+
+var dividend = 0x0000ffff00000000000000000000000000000000000000000000000000000000;
+var target = dividend / 16;
+
+var big = bignum(target);
+
+console.log('dividend ' + big.toString());
+
+console.log('hash ' + hashInt.toString())
+console.log('target ' + target.toString());
