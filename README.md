@@ -72,7 +72,10 @@ Installation
     * Supported `"reward"` options: `"POW"` `"POS"`
 
 * To start the poolserver run init.js
-  `node init.js`
+
+    ```bash
+    node init.js`
+    ```
 
 
 Credits
