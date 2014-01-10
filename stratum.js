@@ -205,7 +205,9 @@ var StratumServer = exports.Server = function StratumServer(options){
             stratumClients[subscriptionId] = client;
             _this.emit('client', client);
         });
-        _socketServer.listen(options.port, function(){});
+        _socketServer.listen(options.port, function(){
+            _this.emit('started');
+        });
     })();
 
 

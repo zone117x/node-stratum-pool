@@ -40,7 +40,7 @@ var pool = module.exports = function pool(coin){
             );
     });
 
-
+    console.log('Connecting to daemon for ' + coin.options.name);
     this.daemon = new daemon.interface(coin.options.daemon);
     this.daemon.on('online', function(){
         async.parallel({
@@ -89,7 +89,7 @@ var pool = module.exports = function pool(coin){
             }
         }, function(err, results){
             if (err) return;
-
+            console.log('Connected to daemon for ' + coin.options.name);
             coin.options.hasSubmitMethod = results.submitMethod;
 
             publicKeyBuffer = coin.options.reward === 'POW' ?
@@ -98,6 +98,8 @@ var pool = module.exports = function pool(coin){
 
             _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
 
+            StartStatumServer();
+
         });
 
     }).on('startFailed', function(){
@@ -105,36 +107,42 @@ var pool = module.exports = function pool(coin){
     });
 
 
-    this.stratumServer = new stratum.Server({
-        port: coin.options.stratumPort
-    });
-    this.stratumServer.on('client', function(client){
-        client.on('subscription', function(params, resultCallback){
-            var extraNonce = _this.jobManager.extraNonceCounter.next();
-            var extraNonce2Size = _this.jobManager.extraNonce2Size;
-            resultCallback(null,
-                extraNonce,
-                extraNonce2Size
-            );
-            this.sendDifficulty(coin.options.difficulty);
-            this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
-        }).on('authorize', function(params, resultCallback){
-                resultCallback(null, true);
-        }).on('submit', function(params, resultCallback){
-            var result =_this.jobManager.processShare(
-                params.jobId,
-                client.difficulty,
-                client.extraNonce1,
-                params.extraNonce2,
-                params.nTime,
-                params.nonce
-            );
-            if (result.error){
-                resultCallback(result.error);
-                return;
-            }
-            resultCallback(null, true);
+    function StartStatumServer(){
+
+        console.log('Stratum server starting on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
+        this.stratumServer = new stratum.Server({
+            port: coin.options.stratumPort
         });
-    });
+        this.stratumServer.on('started', function(){
+            console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
+        }).on('client', function(client){
+            client.on('subscription', function(params, resultCallback){
+                var extraNonce = _this.jobManager.extraNonceCounter.next();
+                var extraNonce2Size = _this.jobManager.extraNonce2Size;
+                resultCallback(null,
+                    extraNonce,
+                    extraNonce2Size
+                );
+                this.sendDifficulty(coin.options.difficulty);
+                this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+            }).on('authorize', function(params, resultCallback){
+                    resultCallback(null, true);
+            }).on('submit', function(params, resultCallback){
+                var result =_this.jobManager.processShare(
+                    params.jobId,
+                    client.difficulty,
+                    client.extraNonce1,
+                    params.extraNonce2,
+                    params.nTime,
+                    params.nonce
+                );
+                if (result.error){
+                    resultCallback(result.error);
+                    return;
+                }
+                resultCallback(null, true);
+            });
+        });
+    }
 };
 pool.prototype.__proto__ = events.EventEmitter.prototype;

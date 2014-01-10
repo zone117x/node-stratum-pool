@@ -1,4 +1,6 @@
 var net = require('net');
+var fs = require('fs');
+var path = require('path');
 
 var bignum = require('bignum');
 
@@ -10,6 +12,10 @@ function Coin(options){
 }
 Coin.prototype = {};
 
+
+var coins = [];
+
+/*
 var coins = [
     new Coin({
         name: 'Dogecoin',
@@ -28,12 +34,32 @@ var coins = [
             startIfOffline: true
         }
     })
-];
+];*/
 
-coins.forEach(function(coin){
 
-    coin.pool = new pool(coin);
+var logRef = console.log;
+console.log = function(s){
+    var time = new Date().toISOString();
+    logRef(time + ': ' + s);
+};
 
+var confFolder = 'coins';
+
+fs.readdir(confFolder, function(err, files){
+    if (err) throw err;
+    files.forEach(function(file){
+        var filePath = confFolder + '/' + file;
+        if (path.extname(filePath) !== '.json') return;
+        fs.readFile(filePath, {encoding: 'utf8'}, function(err, data){
+            if (err) throw err;
+            var coinJson = JSON.parse(data)
+            var coin = new Coin(coinJson);
+            console.log('Starting pool for ' + coin.options.name);
+            coin.pool = new pool(coin);
+            coins.push(coin);
+        });
+
+    });
 });
 
 
