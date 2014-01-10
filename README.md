@@ -6,7 +6,8 @@ node-stratum
 High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin pools, each with their own daemon and stratum port :)
 
 #### Why
-This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers which are written in python. Compared to the spaghetti state of the latest stratum-mining python server, this software should also have a lower barrier to entry for other developers to fork and add feature or fix bugs.
+This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers which are written in python.
+Compared to the spaghetti state of the latest stratum-mining python server, this software should also have a lower barrier to entry for other developers to fork and add features or fix bugs.
 
 
 Features (mostly untested)
