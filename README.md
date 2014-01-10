@@ -48,23 +48,23 @@ Installation
 * For each coin you would like to start a pool server for, create a file in the "coins" directory titled "(name of coin).json"
   Example configuration for dogecoin.json
   ```javascript
-    {
-        "name": "Dogecoin",
-        "symbol": "doge",
-        "algorithm": "scrypt",
-        "reward": "POW",
-        "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
-        "stratumPort": 3333,
-        "difficulty": 8,
-        "daemon": {
-            "bin": "dogecoind",
-            "port": 8332,
-            "user": "test",
-            "password": "test",
-            "blocknotify": "blockNotify.js doge %s",
-            "startIfOffline": true
-        }
+  {
+    "name": "Dogecoin",
+    "symbol": "doge",
+    "algorithm": "scrypt",
+    "reward": "POW",
+    "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+    "stratumPort": 3333,
+    "difficulty": 8,
+    "daemon": {
+      "bin": "dogecoind",
+      "port": 8332,
+      "user": "test",
+      "password": "test",
+      "blocknotify": "blockNotify.js doge %s",
+      "startIfOffline": true
     }
+  }
   ```
 * To start the poolserver run init.js
   `node init.js`
