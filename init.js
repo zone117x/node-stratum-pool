@@ -6,6 +6,11 @@ var bignum = require('bignum');
 
 var pool = require('./pool.js');
 
+var logRef = console.log;
+console.log = function(s){
+    var time = new Date().toISOString();
+    logRef(time + ': ' + s);
+};
 
 function Coin(options){
     this.options = options;
@@ -14,34 +19,6 @@ Coin.prototype = {};
 
 
 var coins = [];
-
-/*
-var coins = [
-    new Coin({
-        name: 'Dogecoin',
-        symbol: 'doge',
-        algorithm: 'scrypt', //or sha256, scrypt-jane, quark
-        reward: 'POW', //or POS
-        address: 'DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS',
-        stratumPort: 3334,
-        difficulty: 8,
-        daemon: {
-            bin: 'dogecoind',
-            port: 8332,
-            user: 'test',
-            password: 'test',
-            blocknotify: '"blockNotify.js doge %s"',
-            startIfOffline: true
-        }
-    })
-];*/
-
-
-var logRef = console.log;
-console.log = function(s){
-    var time = new Date().toISOString();
-    logRef(time + ': ' + s);
-};
 
 var confFolder = 'coins';
 
