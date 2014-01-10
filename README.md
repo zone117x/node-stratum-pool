@@ -46,7 +46,7 @@ Credits
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
 * [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
-* [vekexasia](https://github.com/vekexasia) - bug fixes
+* [vekexasia](https://github.com/vekexasia) - lots of help with research and development
 
 Donations
 ---------
