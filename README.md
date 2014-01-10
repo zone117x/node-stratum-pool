@@ -68,6 +68,9 @@ Installation
     }
     ```
 
+    * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
+    * Supported `"reward"` options: `"POW"` `"POS"`
+
 * To start the poolserver run init.js
   `node init.js`
 
