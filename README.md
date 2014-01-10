@@ -46,7 +46,7 @@ Requirements
 Installation
 ------------
 * For each coin you would like to start a pool server for, create a file in the "coins" directory titled "(name of coin).json"
-  Example configuration for dogecoin.json
+  Example configuration for dogecoin.json:
 
 ```json
 {
