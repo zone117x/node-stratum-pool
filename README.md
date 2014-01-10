@@ -3,12 +3,11 @@ node-stratum
 
     Under development
 
-High performance Stratum poolserver in Node.js
+High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin pools, each with their own daemon and stratum port :)
 
 
 Features (mostly untested)
 --------------------------
-* One instance of this software can startup and manage multiple coin pools, each with their own daemon and stratum port :)
 * Daemon interface
 * Stratum TCP socket server
 * Block template / job manager
