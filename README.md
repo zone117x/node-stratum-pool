@@ -74,7 +74,7 @@ Installation
 * To start the poolserver run init.js
 
     ```bash
-    node init.js`
+    node init.js
     ```
 
 
