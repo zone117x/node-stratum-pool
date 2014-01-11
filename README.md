@@ -82,7 +82,14 @@ Installation
 * Setting up blocknotify (optional, recommended)
   * Inside `config.json` make sure `blockNotifyListener.enabled` is set to true
   * Set the `blockNotifyListener.port` and `blockNotifyListener.password`
-  * Inside your daemon startup parameters or conf file, use `-blocknotify="[path to blockNotify.js] [pool host]:[pool blockNotifyListener port] [blockNotifyListener password] [coin symbole set in coin's json config] %s"`
+  * For the blocknotify arguments in your daemon startup parameters or conf file, use:
+    ```
+    [path to blockNotify.js]
+    [pool host]:[pool blockNotifyListener port]
+    [blockNotifyListener password]
+    [coin symbole set in coin's json config]
+    %s"
+    ```
     * Example: `dogecoind -blocknotify="blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
     * If your daemon is on a different host you will have to copy the `blockNotify.js` to it
 
