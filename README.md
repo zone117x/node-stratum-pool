@@ -88,12 +88,12 @@ Installation
     [path to blockNotify.js]
     [pool host]:[pool blockNotifyListener port]
     [blockNotifyListener password]
-    [coin symbole set in coin's json config]
+    [coin symbol set in coin's json config]
     %s"
     ```
 
     * Example: `dogecoind -blocknotify="blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
-    * If your daemon is on a different host you will have to copy the `blockNotify.js` to it
+    * If your daemon is on a different host you will have to copy over `blockNotify.js`
 
 * To start the poolserver run:
 

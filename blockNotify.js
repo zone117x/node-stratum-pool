@@ -14,6 +14,7 @@ var client = net.connect(port, host, function() {
     console.log('client connected');
     client.write(JSON.stringify({
         password: password,
+        coin: coin,
         blockHash: blockHash
     }) + '\n');
 });

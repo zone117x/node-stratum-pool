@@ -44,21 +44,7 @@ var pool = module.exports = function pool(coin){
     this.daemon = new daemon.interface(coin.options.daemon);
     this.daemon.on('online', function(){
         async.parallel({
-            rpcTemplate: function(callback){
-                _this.daemon.cmd('getblocktemplate',
-                    [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
-                    function(error, result){
-                        if (error){
-                            console.log('getblocktemplate rpc error for ' + coin.options.name);
-                            callback(error);
-                        }
-                        else{
-                            //result = JSON.parse(fs.readFileSync('example.json'));
-                            callback(null, result);
-                        }
-                    }
-                );
-            },
+            rpcTemplate: GetBlockTemplate,
             addressInfo: function(callback){
                 _this.daemon.cmd('validateaddress',
                     [coin.options.address],
@@ -144,5 +130,33 @@ var pool = module.exports = function pool(coin){
             });
         });
     }
+
+    function GetBlockTemplate(callback){
+        _this.daemon.cmd('getblocktemplate',
+            [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
+            function(error, result){
+                if (error){
+                    console.log('getblocktemplate rpc error for ' + coin.options.name);
+                    callback(error);
+                }
+                else{
+                    callback(null, result);
+                }
+            }
+        );
+    }
+
+    this.processBlockNotify = function(blockHash){
+        if (blockHash !== _this.jobManager.currentJob.rpcData.previousblockhash){
+            GetBlockTemplate(function(error, result){
+                if (error){
+                    console.log('Error getting block template for ' + coin.options.name);
+                    return;
+                }
+                _this.jobManager.newTemplate(result, publicKeyBuffer);
+            })
+        }
+    }
+
 };
 pool.prototype.__proto__ = events.EventEmitter.prototype;

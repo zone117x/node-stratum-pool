@@ -54,6 +54,17 @@ if (config.blockNotifyListener.enabled){
         });
         c.on('end', function() {
             console.log(data);
+
+            var message = JSON.parse(data);
+            if (message.password === config.blockNotifyListener.password){
+                coins.forEach(function(coin){
+                    if (coin.options.symbol === message.coin){
+                        coin.pool.processBlockNotify(message.blockHash);
+                        return false;
+                    }
+                });
+            }
+
             console.log('server disconnected');
         });
     });
