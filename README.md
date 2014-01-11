@@ -58,7 +58,7 @@ Installation
   Example configuration for dogecoin.json:
 
     ```json
-      {
+    {
         "name": "Dogecoin",
         "symbol": "doge",
         "algorithm": "scrypt",
@@ -72,7 +72,7 @@ Installation
             "user": "test",
             "password": "test"
         }
-      }
+    }
     ```
 
   * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
