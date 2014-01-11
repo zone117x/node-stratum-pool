@@ -59,21 +59,21 @@ Installation
 
 
     ```json
-    {
-        "name": "Dogecoin",
-        "symbol": "doge",
-        "algorithm": "scrypt",
-        "reward": "POW",
-        "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
-        "stratumPort": 3334,
-        "difficulty": 8,
-        "daemon": {
-            "host": "localhost",
-            "port": 8332,
-            "user": "test",
-            "password": "test"
+        {
+            "name": "Dogecoin",
+            "symbol": "doge",
+            "algorithm": "scrypt",
+            "reward": "POW",
+            "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+            "stratumPort": 3334,
+            "difficulty": 8,
+            "daemon": {
+                "host": "localhost",
+                "port": 8332,
+                "user": "test",
+                "password": "test"
+            }
         }
-    }
     ```
 
 
