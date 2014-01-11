@@ -59,27 +59,27 @@ Installation
 
 
     ```json
-        {
-            "name": "Dogecoin",
-            "symbol": "doge",
-            "algorithm": "scrypt",
-            "reward": "POW",
-            "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
-            "stratumPort": 3334,
-            "difficulty": 8,
-            "daemon": {
-                "host": "localhost",
-                "port": 8332,
-                "user": "test",
-                "password": "test"
-            }
+    {
+        "name": "Dogecoin",
+        "symbol": "doge",
+        "algorithm": "scrypt",
+        "reward": "POW",
+        "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+        "stratumPort": 3334,
+        "difficulty": 8,
+        "daemon": {
+            "host": "localhost",
+            "port": 8332,
+            "user": "test",
+            "password": "test"
         }
+    }
     ```
 
 
-    * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
-    * Supported `"reward"` options: `"POW"` `"POS"`
-    * Ensure the `daemon` properties are configured correctly for RPC communication
+  * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
+  * Supported `"reward"` options: `"POW"` `"POS"`
+  * Ensure the `daemon` properties are configured correctly for RPC communication
 
 * Setting up blocknotify (optional, recommended)
   * Inside `config.json` make sure `blockNotifyListener.enabled` is set to true
