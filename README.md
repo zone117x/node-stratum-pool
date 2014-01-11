@@ -57,7 +57,7 @@ Installation
 * For each coin you would like to start a pool server for, create a file in the "coins" directory titled "(name of coin).json"
   Example configuration for dogecoin.json:
 
-      ```json
+  ```json
       {
         "name": "Dogecoin",
         "symbol": "doge",
@@ -73,7 +73,7 @@ Installation
             "password": "test"
         }
       }
-      ```
+  ```
 
   * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
   * Supported `"reward"` options: `"POW"` `"POS"`
