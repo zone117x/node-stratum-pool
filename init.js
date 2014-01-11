@@ -2,8 +2,6 @@ var net = require('net');
 var fs = require('fs');
 var path = require('path');
 
-var bignum = require('bignum');
-
 var pool = require('./pool.js');
 
 var logRef = console.log;
@@ -12,11 +10,14 @@ console.log = function(s){
     logRef(time + ': ' + s);
 };
 
+
+var config = JSON.parse(fs.readFileSync("config.json"));
+
+
 function Coin(options){
     this.options = options;
 }
 Coin.prototype = {};
-
 
 var coins = [];
 
@@ -40,20 +41,21 @@ fs.readdir(confFolder, function(err, files){
 });
 
 
-
-var blockNotifyServer = net.createServer(function(c) {
-    console.log('server connected');
-    var data = '';
-    c.on('data', function(d){
-        console.log('got blocknotify data');
-        data += d;
-        if (data.slice(-1) === '\n'){
-            c.end();
-        }
+if (config.blockNotifyListener.enabled){
+    var blockNotifyServer = net.createServer(function(c) {
+        console.log('server connected');
+        var data = '';
+        c.on('data', function(d){
+            console.log('got blocknotify data');
+            data += d;
+            if (data.slice(-1) === '\n'){
+                c.end();
+            }
+        });
+        c.on('end', function() {
+            console.log(data);
+            console.log('server disconnected');
+        });
     });
-    c.on('end', function() {
-        console.log(data);
-        console.log('server disconnected');
-    });
-});
-//blockNotifyServer.listen(8124, function() {});
+    blockNotifyServer.listen(config.blockNotifyListener.port, function() {});
+}
