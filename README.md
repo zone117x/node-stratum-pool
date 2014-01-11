@@ -75,7 +75,7 @@ Installation
         }
     }
     ```
-    
+
 
     * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
     * Supported `"reward"` options: `"POW"` `"POS"`
