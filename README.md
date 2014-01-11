@@ -79,7 +79,7 @@ Installation
   * Supported `"reward"` options: `"POW"` `"POS"`
   * Ensure the `daemon` properties are configured correctly for RPC communication
 
-* Setting up blocknotify (optional, recommended)
+* [Optional, recommended] Setting up blocknotify
   * Inside `config.json` make sure `blockNotifyListener.enabled` is set to true
   * Set the `blockNotifyListener.port` and `blockNotifyListener.password`
   * For the blocknotify arguments in your daemon startup parameters or conf file, use:
@@ -91,7 +91,7 @@ Installation
     [coin symbole set in coin's json config]
     %s"
     ```
-    
+
     * Example: `dogecoind -blocknotify="blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
     * If your daemon is on a different host you will have to copy the `blockNotify.js` to it
 
