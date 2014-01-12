@@ -36,6 +36,10 @@ var JobCounter = function(){
         counter++;
         if (counter % 0xffff === 0)
             counter = 1;
+        return this.cur();
+    };
+
+    this.cur = function () {
         return counter.toString(16);
     };
 };
@@ -50,15 +54,19 @@ var JobManager = module.exports = function JobManager(options){
     var jobs = {};
 
 
-
+    /**
+     * It only checks if the blockTemplate is already in our jobs list.
+     * @returns true if it's a new block, false otherwise.
+     * used by onNewTemplate
+    **/
     function CheckNewIfNewBlock(blockTemplate){
         var newBlock = true;
         for(var job in jobs){
-            if (jobs[job].rpcData.previousblockhash === blockTemplate.rpcData.previousblockhash)
+            if (jobs[job].rpcData.previousblockhash === blockTemplate.rpcData.previousblockhash) {
                 newBlock = false;
+            }
         }
-        if (newBlock)
-            _this.emit('newBlock', blockTemplate);
+        return newBlock;            
     }
 
     var diffDividend = (function(){
@@ -102,9 +110,14 @@ var JobManager = module.exports = function JobManager(options){
 
     this.currentJob;
     this.newTemplate = function(rpcData, publicKey){
-        this.currentJob = new blockTemplate(jobCounter.next(), rpcData, publicKey, _this.extraNoncePlaceholder);
-        jobs[this.currentJob.jobId] = this.currentJob;
-        CheckNewIfNewBlock(this.currentJob);
+        var tmpBlockTemplate = new blockTemplate(rpcData, publicKey, _this.extraNoncePlaceholder);
+        if ( CheckNewIfNewBlock(tmpBlockTemplate) ) {
+            tmpBlockTemplate.setJobId(jobCounter.next());
+            jobs[tmpBlockTemplate.jobId] = tmpBlockTemplate; 
+            this.currentJob = jobs[tmpBlockTemplate.jobId];
+            _this.emit('newBlock', tmpBlockTemplate);
+        }
+        
     };
     this.processShare = function(jobId, difficulty, extraNonce1, extraNonce2, nTime, nonce){
 

@@ -214,7 +214,7 @@ var StratumServer = exports.Server = function StratumServer(options){
     //public members
 
     this.broadcastMiningJobs = function(jobParams){
-        for (var clientId in _stratumClients){
+        for (var clientId in stratumClients){
             stratumClients[clientId].sendMiningJob(jobParams)
         }
     };

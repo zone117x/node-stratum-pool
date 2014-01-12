@@ -6,7 +6,7 @@ var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
-var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publicKey, reward, extraNoncePlaceholder){
+var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, reward, extraNoncePlaceholder){
 
     //private members
 
@@ -29,7 +29,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     //public members
 
     this.rpcData = rpcData;
-    this.jobId = jobId;
+    this.jobId = null;
     this.target = util.bignumFromBits(rpcData.bits);
     this.prevHashReversed = util.reverseByteOrder(new Buffer(rpcData.previousblockhash, 'hex')).toString('hex');
     this.transactionData = Buffer.concat(rpcData.transactions.map(function(tx){
@@ -44,12 +44,11 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         extraNoncePlaceholder
     );
 
-    /**
-     * Checks if the rpcData provided as argument contains the same previousblockhash of the current job.
-    **/
-    this.isRPCDataFromSameBlock = function(rpcData) {
-        return this.rpcData.previousblockhash == rpcData.previousblockhash;
+    this.setJobId = function (jobId) {
+        console.log("SETJOBID "+jobId);
+        this.jobId = jobId;
     }
+
     this.serializeCoinbase = function(extraNonce1, extraNonce2){
         return Buffer.concat([
             this.generationTransaction.coinbase[0],

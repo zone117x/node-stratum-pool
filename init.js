@@ -35,6 +35,20 @@ fs.readdir(confFolder, function(err, files){
             console.log('Starting pool for ' + coin.options.name);
             coin.pool = new pool(coin);
             coins.push(coin);
+            if ( ! config.blockNotifyListener.enabled ) {
+                // as soon as the pool is started we start polling
+                var pollingTime = typeof(config.blockPollingTime) === 'undefined' ? 5000 : parseInt(config.blockPollingTime, 10);
+                coin.pool.on('started', function() {
+                    var curPool = this;
+                    console.log("STARTED?");
+                    setInterval(
+                        function() {
+                            curPool.processBlockPolling();
+                        },
+                        pollingTime
+                    );
+                });
+            }
         });
 
     });
@@ -70,16 +84,4 @@ if (config.blockNotifyListener.enabled){
         });
     });
     blockNotifyServer.listen(config.blockNotifyListener.port, function() {});
-} else {
-    console.log("NOT ENABLED");
-    // If blockNotifyListener isn't enabled then we need to set up some polling parameters.
-    var pollingTime = typeof(config.blockPollingTime) === 'undefined' ? 5000 : parseInt(config.blockPollingTime, 10);
-    setInterval(
-        function () {
-            coins.forEach(function(coin) {
-                //coin.pool.
-            });
-        },
-        pollingTime
-    );
-}
+} 
