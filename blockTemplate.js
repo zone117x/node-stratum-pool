@@ -44,6 +44,12 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
         extraNoncePlaceholder
     );
 
+    /**
+     * Checks if the rpcData provided as argument contains the same previousblockhash of the current job.
+    **/
+    this.isRPCDataFromSameBlock = function(rpcData) {
+        return this.rpcData.previousblockhash == rpcData.previousblockhash;
+    }
     this.serializeCoinbase = function(extraNonce1, extraNonce2){
         return Buffer.concat([
             this.generationTransaction.coinbase[0],
@@ -71,7 +77,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     this.serializeBlock = function(header, coinbase){
         return Buffer.concat([
             header,
-            util.varIntBuffer(this.rpcData.transaction.length + 1),
+            util.varIntBuffer(this.rpcData.transactions.length + 1),
             coinbase,
             this.transactionData
         ]);

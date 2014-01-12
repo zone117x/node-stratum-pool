@@ -42,6 +42,7 @@ fs.readdir(confFolder, function(err, files){
 
 
 if (config.blockNotifyListener.enabled){
+    console.log("ENABLED");
     var blockNotifyServer = net.createServer(function(c) {
         console.log('server connected');
         var data = '';
@@ -69,4 +70,16 @@ if (config.blockNotifyListener.enabled){
         });
     });
     blockNotifyServer.listen(config.blockNotifyListener.port, function() {});
+} else {
+    console.log("NOT ENABLED");
+    // If blockNotifyListener isn't enabled then we need to set up some polling parameters.
+    var pollingTime = typeof(config.blockPollingTime) === 'undefined' ? 5000 : parseInt(config.blockPollingTime, 10);
+    setInterval(
+        function () {
+            coins.forEach(function(coin) {
+                //coin.pool.
+            });
+        },
+        pollingTime
+    );
 }

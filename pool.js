@@ -24,20 +24,25 @@ var pool = module.exports = function pool(coin){
         _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
     }).on('blockFound', function(blockHex){
 
-        if (coin.options.hasSubmitMethod)
+        if (coin.options.hasSubmitMethod) {
             _this.daemon.cmd('submitblock',
                 [blockHex],
                 function(error, result){
-
+                    console.log(JSON.stringify(error));
+                    console.log(JSON.stringify(result));
+                    console.log("submitblock", JSON.stringify(error), JSON.stringify(result));
                 }
             );
-        else
+        } else {
             _this.daemon.cmd('getblocktemplate',
                 [{'mode': 'submit', 'data': blockHex}],
                 function(error, result){
-
+                    console.log(JSON.stringify(error));
+                    console.log(JSON.stringify(result));
+                    console.log("submitblockgetBlockTEmplate", JSON.stringify(error), JSON.stringify(result));
                 }
             );
+        }
     });
 
     console.log('Connecting to daemon for ' + coin.options.name);
@@ -132,11 +137,11 @@ var pool = module.exports = function pool(coin){
     }
 
     function GetBlockTemplate(callback){
+        console.log("getBlockTemplate");
         _this.daemon.cmd('getblocktemplate',
             [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
             function(error, result){
                 if (error){
-                    console.log('getblocktemplate rpc error for ' + coin.options.name);
                     callback(error);
                 }
                 else{
@@ -144,6 +149,13 @@ var pool = module.exports = function pool(coin){
                 }
             }
         );
+    }
+
+    this.processBlockPolling = function() {
+        GetBlockTemplate(function(error, result) {
+            console.log(JSON.stringify(result));
+            _this.jobManager.newTemplate(result, publicKeyBuffer);
+        });
     }
 
     this.processBlockNotify = function(blockHash){

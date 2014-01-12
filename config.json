@@ -1,6 +1,6 @@
 {
     "blockNotifyListener": {
-        "enabled": true,
+        "enabled": false,
         "port": 8117,
         "password": "test"
     }

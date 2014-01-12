@@ -55,6 +55,11 @@ function DaemonInterface(options){
             params: params
         });
 
+        if (method == 'submitblock') {
+            console.log("SUBMITBLOCK daemon");
+            console.log(requestJson);
+        }
+
         var options = {
             hostname: 'localhost',
             port: _this.options.port,

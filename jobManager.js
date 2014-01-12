@@ -145,8 +145,8 @@ var JobManager = module.exports = function JobManager(options){
         var headerBigNum = bignum.fromBuffer(headerHash, {endian: 'little', size: 32});
 
         if (job.target.ge(headerBigNum)){
-            var blockHex = job.serializeBlock(headerBuffer, coinbaseBuffer);
-            _this.emit('blockFound', blockHex);
+            var blockBuf = job.serializeBlock(headerBuffer, coinbaseBuffer);
+            _this.emit('blockFound', blockBuf.toString('hex'));
         }
 
         var targetUser = bignum(diffDividend / difficulty);
