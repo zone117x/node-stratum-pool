@@ -23,7 +23,6 @@ var SubscriptionCounter = function(){
  * Defining each client that connects to the stratum server. 
  * Emits:
  *  - 'subscription'(obj, cback(error, extraNonce1, extraNonce2Size)) 
- *  - 'authorize'() FIX THIS
  *  - 'submit' FIX THIS.
 **/
 var StratumClient = function(options){
@@ -80,21 +79,21 @@ var StratumClient = function(options){
     }
 
     function handleAuthorize(message){
-        _this.emit('authorize',
-            {
-                name: message.params[0][0],
-                password: message.params[0][1]
-            },
-            function(error, result){
-                _this.authorized = result;
-                
-                sendJson({
-                    id    : message.id,
-                    result: result,
-                    error : error
+        var workerName = message.params[0];
+        var workerPass = message.params[1];
+        options.authorizeFn(options.socket.address().address, workerName, workerPass, function(err, authorized, shouldCloseSocket) {
+            _this.authorized =  ( ! err && authorized );
+            sendJson({
+                    id     : message.id,
+                    result : _this.authorized,
+                    error  : err
                 });
+
+            // If the authorizer wants us to close the socket lets do it.
+            if (typeof(shouldCloseSocket) === 'boolean' && shouldCloseSocket) {
+                options.socket.end();
             }
-        );
+        });
     }
 
     function handleSubmit(message){
@@ -117,17 +116,17 @@ var StratumClient = function(options){
         console.log("SUBMIT "+JSON.stringify(message));
         _this.emit('submit',
             {
-                name       : message.params[0],
-                jobId      : message.params[1],
-                extraNonce2: message.params[2],
-                nTime      : message.params[3],
-                nonce      : message.params[4]
+                name        : message.params[0],
+                jobId       : message.params[1],
+                extraNonce2 : message.params[2],
+                nTime       : message.params[3],
+                nonce       : message.params[4]
             },
             function(error, result){
                 sendJson({
-                    id    : message.id,
-                    result: result,
-                    error : error
+                    id     : message.id,
+                    result : result,
+                    error  : error
                 });
             }
         );
@@ -187,6 +186,7 @@ var StratumClient = function(options){
             params: [difficulty]//[512],
         });
     };
+
     this.sendMiningJob = function(jobParams){
         sendJson({
             id    : null,
@@ -211,7 +211,13 @@ var StratumServer = exports.Server = function StratumServer(options){
     (function init(){
         _socketServer = socketServer = net.createServer(function(c){
             var subscriptionId = subscriptionCounter.next();
-            var client = new StratumClient({subscriptionId: subscriptionId, socket: c});
+            var client = new StratumClient(
+                {
+                    subscriptionId : subscriptionId, 
+                    socket         : c,
+                    authorizeFn    : options.authorizeFn
+                }
+            );
             stratumClients[subscriptionId] = client;
             _this.emit('client', client);
         });

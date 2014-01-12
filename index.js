@@ -22,6 +22,23 @@ var pool = module.exports = function pool(coin){
         algorithm: coin.options.algorithm,
         address: coin.options.address
     });
+
+    
+    // Worker authorizer fn. 
+    var authorizeFn;
+    if ( typeof (coin.authorizeFn) === 'function' ) {
+        authorizeFn = coin.authorizeFn;
+    } else {
+        authorizeFn = function (ip, workerName, password, cback) {
+            // Default implementation just returns true
+            console.log("Athorize ["+ip+"] "+workerName+":"+password);
+            cback(null, true, true);
+        };
+    }
+
+
+
+
     this.jobManager.on('newBlock', function(blockTemplate){
         if ( typeof(_this.stratumServer ) === 'undefined') {
             console.warn("Stratum server still not started! cannot broadcast block!"); 
@@ -108,7 +125,8 @@ var pool = module.exports = function pool(coin){
 
         console.log('Stratum server starting on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         _this.stratumServer = new stratum.Server({
-            port: coin.options.stratumPort
+            port        : coin.options.stratumPort,
+            authorizeFn : authorizeFn,
         });
         _this.stratumServer.on('started', function(){
             _this.emit('started');
@@ -127,8 +145,6 @@ var pool = module.exports = function pool(coin){
                 } else {
                     this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
                 }
-            }).on('authorize', function(params, resultCallback){
-                    resultCallback(null, true);
             }).on('submit', function(params, resultCallback){
                 var result =_this.jobManager.processShare(
                     params.jobId,
@@ -147,14 +163,14 @@ var pool = module.exports = function pool(coin){
                 } else {
                     resultCallback(null, true);
                     _this.emit('share', true, {
-                        blockHeaderHex    : result.headerHEX,
-                        workerName        : params.name,
-                        jobId             : params.jobId,
-                        clientDifficulty  : client.difficulty,
-                        extraNonce1       : client.extraNonce1,
-                        extraNonce2       : params.extraNonce2,
-                        nTime             : params.nTime,
-                        nonce             : params.nonce  
+                        blockHeaderHex   : result.headerHEX,
+                        workerName       : params.name,
+                        jobId            : params.jobId,
+                        clientDifficulty : client.difficulty,
+                        extraNonce1      : client.extraNonce1,
+                        extraNonce2      : params.extraNonce2,
+                        nTime            : params.nTime,
+                        nonce            : params.nonce  
                     });
                 }
                 
