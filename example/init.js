@@ -2,7 +2,7 @@ var net = require('net');
 var fs = require('fs');
 var path = require('path');
 
-var pool = require('./pool.js');
+var pool = require('../index.js');
 var ShareManager = require('./shareManager.js').ShareManager;
 
 var logRef = console.log;

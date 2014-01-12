@@ -18,6 +18,14 @@ var SubscriptionCounter = function(){
     };
 };
 
+
+/**
+ * Defining each client that connects to the stratum server. 
+ * Emits:
+ *  - 'subscription'(obj, cback(error, extraNonce1, extraNonce2Size)) 
+ *  - 'authorize'() FIX THIS
+ *  - 'submit' FIX THIS.
+**/
 var StratumClient = function(options){
 
     //private members
@@ -79,16 +87,11 @@ var StratumClient = function(options){
             },
             function(error, result){
                 _this.authorized = result;
-                /*if (_this.authorized) {
-                    // if authorized lets store the workername
-                    // so that when a share is found we can get it for the accounting
-                    _this.workerName = message.params[0][0];
-                }*/
                 
                 sendJson({
-                    id: message.id,
+                    id    : message.id,
                     result: result,
-                    error: error
+                    error : error
                 });
             }
         );
@@ -97,34 +100,34 @@ var StratumClient = function(options){
     function handleSubmit(message){
         if (!_this.authorized){
             sendJson({
-                id: message.id,
+                id    : message.id,
                 result: null,
-                error: [24, "unauthorized worker", null]
+                error : [24, "unauthorized worker", null]
             });
             return;
         }
         if (!_this.extraNonce1){
             sendJson({
-                id: message.id,
+                id    : message.id,
                 result: null,
-                error: [25, "not subscribed", null]
+                error : [25, "not subscribed", null]
             });
             return;
         }
         console.log("SUBMIT "+JSON.stringify(message));
         _this.emit('submit',
             {
-                name: message.params[0],
-                jobId: message.params[1],
+                name       : message.params[0],
+                jobId      : message.params[1],
                 extraNonce2: message.params[2],
-                nTime: message.params[3],
-                nonce: message.params[4]
+                nTime      : message.params[3],
+                nonce      : message.params[4]
             },
             function(error, result){
                 sendJson({
-                    id: message.id,
+                    id    : message.id,
                     result: result,
-                    error: error
+                    error : error
                 });
             }
         );
@@ -179,14 +182,14 @@ var StratumClient = function(options){
     this.sendDifficulty = function(difficulty){
         _this.difficulty = difficulty;
         sendJson({
-            id: null,
+            id    : null,
             method: "mining.set_difficulty",
             params: [difficulty]//[512],
         });
     };
     this.sendMiningJob = function(jobParams){
         sendJson({
-            id: null,
+            id    : null,
             method: "mining.notify",
             params: jobParams
         });

@@ -44,7 +44,11 @@ var JobCounter = function(){
     };
 };
 
-
+/**
+ * Emits:
+ * - 'newBlock'(blockTemplate) - when a new block (previously unknown to the JobManager) is being added
+ * - 'blockFound'(serializedBlock) - when a worker finds a block. 
+**/
 var JobManager = module.exports = function JobManager(options){
 
     //private members
@@ -165,7 +169,7 @@ var JobManager = module.exports = function JobManager(options){
         if (job.target.ge(headerBigNum)){
             var blockBuf = job.serializeBlock(headerBuffer, coinbaseBuffer);
 
-            _this.emit('blockFound', blockBuf.toString('hex'), headerBigNum.toString(16), coinbaseHash.toString('hex'));
+            _this.emit('blockFound', blockBuf.toString('hex'));
         }
 
         return {result: true, headerHEX: headerBigNum.toString(16)};

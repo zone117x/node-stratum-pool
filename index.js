@@ -1,14 +1,17 @@
-var net = require('net');
-var events = require('events');
-var fs = require('fs');
+var net        = require('net');
+var events     = require('events');
+var fs         = require('fs');
+var async      = require('async');
+var daemon     = require('./libs/daemon.js');
+var stratum    = require('./libs/stratum.js');
+var jobManager = require('./libs/jobManager.js');
+var util       = require('./libs/util.js');
 
-var async = require('async');
-
-var daemon = require('./daemon.js');
-var stratum = require('./stratum.js');
-var jobManager = require('./jobManager.js');
-var util = require('./util.js');
-
+/**
+ * Main pool object. It emits the following events:
+ *  - 'started'() - when the pool is effectively started.
+ *  - 'share'(isValid, dataObj) - In case it's valid the dataObj variable will contain (TODO) and in case it's invalid (TODO) 
+ */
 var pool = module.exports = function pool(coin){
 
     var _this = this;
@@ -27,9 +30,6 @@ var pool = module.exports = function pool(coin){
         }
         
     }).on('blockFound', function(blockHex, headerHex, third){
-        console.log("BLOCK "+blockHex);
-        console.log("HEADER "+headerHex);
-        console.log("THIRD "+third);
         if (coin.options.hasSubmitMethod) {
             _this.daemon.cmd('submitblock',
                 [blockHex],
