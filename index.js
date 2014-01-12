@@ -12,7 +12,7 @@ var util       = require('./libs/util.js');
  *  - 'started'() - when the pool is effectively started.
  *  - 'share'(isValid, dataObj) - In case it's valid the dataObj variable will contain (TODO) and in case it's invalid (TODO) 
  */
-var pool = module.exports = function pool(coin){
+var pool = module.exports = function pool(coin, authFn){
 
     var _this = this;
     var publicKeyBuffer;
@@ -23,17 +23,15 @@ var pool = module.exports = function pool(coin){
         address: coin.options.address
     });
 
-    
+
+
     // Worker authorizer fn. 
     var authorizeFn;
-    if ( typeof (coin.authorizeFn) === 'function' ) {
-        authorizeFn = coin.authorizeFn;
+    if ( typeof (authFn) === 'function' ) {
+        authorizeFn = authFn;
     } else {
-        authorizeFn = function (ip, workerName, password, cback) {
-            // Default implementation just returns true
-            console.log("Athorize ["+ip+"] "+workerName+":"+password);
-            cback(null, true, true);
-        };
+        // probably undefined. 
+        process.exit("ERROR: an authorize Function is needed.")
     }
 
 
@@ -133,18 +131,19 @@ var pool = module.exports = function pool(coin){
             console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         }).on('client', function(client){
             client.on('subscription', function(params, resultCallback){
+
                 var extraNonce = _this.jobManager.extraNonceCounter.next();
                 var extraNonce2Size = _this.jobManager.extraNonce2Size;
                 resultCallback(null,
                     extraNonce,
                     extraNonce2Size
                 );
-                this.sendDifficulty(coin.options.difficulty);
-                if (typeof(_this.jobManager.currentJob) === 'undefined') {
-                    console.warn("[subscription] Cannot send job to client. No jobs in jobManager!");
-                } else {
-                    this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
-                }
+                var clientThis = this;
+
+                //if (clientThis.authorized) {
+                clientThis.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                //}
+                
             }).on('submit', function(params, resultCallback){
                 var result =_this.jobManager.processShare(
                     params.jobId,

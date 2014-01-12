@@ -53,6 +53,9 @@ var StratumClient = function(options){
     }
 
     function handleSubscribe(message){
+        if (! _this._authorized ) {
+            _this.requestedSubscriptionBeforeAuth = true;
+        }
         _this.emit('subscription',
             {},
             function(error, extraNonce1, extraNonce2Size){
@@ -79,9 +82,10 @@ var StratumClient = function(options){
     }
 
     function handleAuthorize(message){
-        var workerName = message.params[0];
-        var workerPass = message.params[1];
-        options.authorizeFn(options.socket.address().address, workerName, workerPass, function(err, authorized, shouldCloseSocket) {
+        this.workerIP   = options.socket.address().address; 
+        this.workerName = message.params[0];
+        this.workerPass = message.params[1];
+        options.authorizeFn(this.workerIP, this.workerName, this.workerPass, function(err, authorized, shouldCloseSocket, difficulty) {
             _this.authorized =  ( ! err && authorized );
             sendJson({
                     id     : message.id,
@@ -93,6 +97,29 @@ var StratumClient = function(options){
             if (typeof(shouldCloseSocket) === 'boolean' && shouldCloseSocket) {
                 options.socket.end();
             }
+
+            // Send difficulty
+            if (typeof(difficulty) === 'function') {
+                difficulty(_this.workerName, function(err, diff) {
+                    if (err) {
+                        console.error("Cannot set difficulty for "+_this.workernName+" error: "+JSON.stringify(err));
+                        options.socket.end();
+                    } else {
+                        _this.sendDifficulty(diff);    
+                    }
+                    
+                });
+            } else if (typeof(difficulty) === 'number') {
+                _this.sendDifficulty(difficulty);
+            } else {
+                process.exit("Difficulty from authorizeFn callback is neither a function or a number");
+            }
+
+            if (_this.requestedSubscriptionBeforeAuth === true) {
+                delete _this.requestedSubscriptionBeforeAuth; // we do not need this anymore.
+                //TODO: We should send a mining job here. For now we send it before the auth has taken place but.....
+            }
+
         });
     }
 
@@ -180,6 +207,7 @@ var StratumClient = function(options){
 
     this.sendDifficulty = function(difficulty){
         _this.difficulty = difficulty;
+        console.log("SENDING DIFFICULTY "+difficulty);
         sendJson({
             id    : null,
             method: "mining.set_difficulty",
