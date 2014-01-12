@@ -6,7 +6,7 @@ var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
-var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, reward, extraNoncePlaceholder){
+var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, extraNoncePlaceholder){
 
     //private members
 
@@ -40,12 +40,10 @@ var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, 
     this.generationTransaction = new transactions.Generation(
         rpcData,
         publicKey,
-        reward,
         extraNoncePlaceholder
     );
 
     this.setJobId = function (jobId) {
-        console.log("SETJOBID "+jobId);
         this.jobId = jobId;
     }
 

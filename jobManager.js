@@ -157,17 +157,18 @@ var JobManager = module.exports = function JobManager(options){
         var headerHash = hashDigest(headerBuffer, nTimeInt);
         var headerBigNum = bignum.fromBuffer(headerHash, {endian: 'little', size: 32});
 
-        if (job.target.ge(headerBigNum)){
-            var blockBuf = job.serializeBlock(headerBuffer, coinbaseBuffer);
-            _this.emit('blockFound', blockBuf.toString('hex'));
-        }
-
         var targetUser = bignum(diffDividend / difficulty);
         if (headerBigNum.gt(targetUser)){
             return {error: [23, 'low difficulty share', null]};
         }
 
-        return {result: true};
+        if (job.target.ge(headerBigNum)){
+            var blockBuf = job.serializeBlock(headerBuffer, coinbaseBuffer);
+
+            _this.emit('blockFound', blockBuf.toString('hex'), headerBigNum.toString(16), coinbaseHash.toString('hex'));
+        }
+
+        return {result: true, headerHEX: headerBigNum.toString(16)};
     };
 };
 JobManager.prototype.__proto__ = events.EventEmitter.prototype;

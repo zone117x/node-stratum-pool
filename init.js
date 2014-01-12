@@ -3,6 +3,7 @@ var fs = require('fs');
 var path = require('path');
 
 var pool = require('./pool.js');
+var ShareManager = require('./shareManager.js').ShareManager;
 
 var logRef = console.log;
 console.log = function(s){
@@ -33,14 +34,18 @@ fs.readdir(confFolder, function(err, files){
             var coinJson = JSON.parse(data)
             var coin = new Coin(coinJson);
             console.log('Starting pool for ' + coin.options.name);
+            
             coin.pool = new pool(coin);
+            coin.shareManager = new ShareManager(coin.pool);
+
             coins.push(coin);
+
+            // If the block notify listener is not enabled lets set up the polling.
             if ( ! config.blockNotifyListener.enabled ) {
                 // as soon as the pool is started we start polling
                 var pollingTime = typeof(config.blockPollingTime) === 'undefined' ? 5000 : parseInt(config.blockPollingTime, 10);
                 coin.pool.on('started', function() {
                     var curPool = this;
-                    console.log("STARTED?");
                     setInterval(
                         function() {
                             curPool.processBlockPolling();
@@ -48,6 +53,8 @@ fs.readdir(confFolder, function(err, files){
                         pollingTime
                     );
                 });
+
+
             }
         });
 

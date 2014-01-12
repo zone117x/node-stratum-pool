@@ -14,6 +14,7 @@ var pool = module.exports = function pool(coin){
     var _this = this;
     var publicKeyBuffer;
 
+    this.shareManager = undefined; // just for us to know that the variable should be this one.
     this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
         address: coin.options.address
@@ -25,7 +26,10 @@ var pool = module.exports = function pool(coin){
             _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());    
         }
         
-    }).on('blockFound', function(blockHex){
+    }).on('blockFound', function(blockHex, headerHex, third){
+        console.log("BLOCK "+blockHex);
+        console.log("HEADER "+headerHex);
+        console.log("THIRD "+third);
         if (coin.options.hasSubmitMethod) {
             _this.daemon.cmd('submitblock',
                 [blockHex],
@@ -121,8 +125,6 @@ var pool = module.exports = function pool(coin){
                 if (typeof(_this.jobManager.currentJob) === 'undefined') {
                     console.warn("[subscription] Cannot send job to client. No jobs in jobManager!");
                 } else {
-                    console.log("ANTANI?");
-                    console.log(JSON.stringify(_this.jobManager.currentJob.getJobParams()));
                     this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
                 }
             }).on('authorize', function(params, resultCallback){
@@ -138,9 +140,24 @@ var pool = module.exports = function pool(coin){
                 );
                 if (result.error){
                     resultCallback(result.error);
-                    return;
+                    _this.emit('share', false, {
+                        workerName : params.name,
+                        error      : result.error
+                    });
+                } else {
+                    resultCallback(null, true);
+                    _this.emit('share', true, {
+                        blockHeaderHex    : result.headerHEX,
+                        workerName        : params.name,
+                        jobId             : params.jobId,
+                        clientDifficulty  : client.difficulty,
+                        extraNonce1       : client.extraNonce1,
+                        extraNonce2       : params.extraNonce2,
+                        nTime             : params.nTime,
+                        nonce             : params.nonce  
+                    });
                 }
-                resultCallback(null, true);
+                
             });
         });
     }
@@ -149,10 +166,9 @@ var pool = module.exports = function pool(coin){
         _this.daemon.cmd('getblocktemplate',
             [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
             function(error, result){
-                if (error){
+                if (error) {
                     callback(error);
-                }
-                else{
+                } else {
                     callback(null, result);
                 }
             }
