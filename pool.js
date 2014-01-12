@@ -9,19 +9,16 @@ var stratum = require('./stratum.js');
 var jobManager = require('./jobManager.js');
 var util = require('./util.js');
 
-console.log("BOIADIO");
-
 var pool = module.exports = function pool(coin){
 
     var _this = this;
     var publicKeyBuffer;
-    var boiadio = this;
+
     this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
         address: coin.options.address
     });
     this.jobManager.on('newBlock', function(blockTemplate){
-        console.log("NEWBLOCK ");
         if ( typeof(_this.stratumServer ) === 'undefined') {
             console.warn("Stratum server still not started! cannot broadcast block!"); 
         } else {
@@ -29,7 +26,6 @@ var pool = module.exports = function pool(coin){
         }
         
     }).on('blockFound', function(blockHex){
-        console.log("BLOCKFOUND");
         if (coin.options.hasSubmitMethod) {
             _this.daemon.cmd('submitblock',
                 [blockHex],
