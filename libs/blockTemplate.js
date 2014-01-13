@@ -1,11 +1,13 @@
-
-var binpack = require('binpack');
-
-var merkleTree = require('./merkleTree.js');
+var binpack      = require('binpack');
+var merkleTree   = require('./merkleTree.js');
 var transactions = require('./transactions.js');
-var util = require('./util.js');
+var util         = require('./util.js');
 
 
+/**
+ * The BlockTemplate class holds a single job.
+ * and provides serveral methods to validate and submit it to the daemon coin
+**/
 var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, extraNoncePlaceholder){
 
     //private members

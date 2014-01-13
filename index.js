@@ -1,15 +1,18 @@
-var net = require('net');
-var events = require('events');
-var fs = require('fs');
+var net        = require('net');
+var events     = require('events');
+var fs         = require('fs');
+var async      = require('async');
+var daemon     = require('./libs/daemon.js');
+var stratum    = require('./libs/stratum.js');
+var jobManager = require('./libs/jobManager.js');
+var util       = require('./libs/util.js');
 
-var async = require('async');
-
-var daemon = require('./daemon.js');
-var stratum = require('./stratum.js');
-var jobManager = require('./jobManager.js');
-var util = require('./util.js');
-
-var pool = module.exports = function pool(coin){
+/**
+ * Main pool object. It emits the following events:
+ *  - 'started'() - when the pool is effectively started.
+ *  - 'share'(isValid, dataObj) - In case it's valid the dataObj variable will contain (TODO) and in case it's invalid (TODO) 
+ */
+var pool = module.exports = function pool(coin, authFn){
 
     var _this = this;
     var publicKeyBuffer;
@@ -114,26 +117,26 @@ var pool = module.exports = function pool(coin){
     function StartStratumServer(){
         console.log('Stratum server starting on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         _this.stratumServer = new stratum.Server({
-            port: coin.options.stratumPort
+            port        : coin.options.stratumPort,
+            authorizeFn : authorizeFn,
         });
         _this.stratumServer.on('started', function(){
             console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
-        }).on('client', function(client){
+        }).on('client.connected', function(client){
             client.on('subscription', function(params, resultCallback){
+
                 var extraNonce = _this.jobManager.extraNonceCounter.next();
                 var extraNonce2Size = _this.jobManager.extraNonce2Size;
                 resultCallback(null,
                     extraNonce,
                     extraNonce2Size
                 );
-                this.sendDifficulty(coin.options.difficulty);
-                if (typeof(_this.jobManager.currentJob) === 'undefined') {
-                    console.warn("[subscription] Cannot send job to client. No jobs in jobManager!");
-                } else {
-                    this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
-                }
-            }).on('authorize', function(params, resultCallback){
-                    resultCallback(null, true);
+                var clientThis = this;
+
+                //if (clientThis.authorized) {
+                clientThis.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                //}
+                
             }).on('submit', function(params, resultCallback){
                 var result =_this.jobManager.processShare(
                     params.jobId,
@@ -146,20 +149,19 @@ var pool = module.exports = function pool(coin){
                 if (result.error){
                     resultCallback(result.error);
                     _this.emit('share', false, {
-                        workerName : params.name,
+                        client     : client,
                         error      : result.error
                     });
                 } else {
                     resultCallback(null, true);
                     _this.emit('share', true, {
-                        blockHeaderHex    : result.headerHEX,
-                        workerName        : params.name,
-                        jobId             : params.jobId,
-                        clientDifficulty  : client.difficulty,
-                        extraNonce1       : client.extraNonce1,
-                        extraNonce2       : params.extraNonce2,
-                        nTime             : params.nTime,
-                        nonce             : params.nonce
+                        client           : client,
+                        blockHeaderHex   : result.headerHEX,
+                        workerName       : params.name,
+                        jobId            : params.jobId,
+                        extraNonce2      : params.extraNonce2,
+                        nTime            : params.nTime,
+                        nonce            : params.nonce  
                     });
                 }
 

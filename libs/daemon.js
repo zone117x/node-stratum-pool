@@ -1,10 +1,16 @@
-var http = require('http');
-var cp = require('child_process');
-var events = require('events');
-
-
+var http               = require('http');
+var cp                 = require('child_process');
+var events             = require('events');
 var startFailedTimeout = 120; //seconds
 
+/** 
+ * The daemon interface interacts with the coin daemon by using the rpc interface.
+ * in otder to make it work it needs, as constructor, an object containing
+ * - 'host'    : hostname where the coin lives
+ * - 'port'    : port where the coin accepts rpc connections
+ * - 'user'    : username of the coin for the rpc interface
+ * - 'password': password for the rpc interface of the coin
+**/
 
 function DaemonInterface(options){
 
@@ -61,11 +67,11 @@ function DaemonInterface(options){
         }
 
         var options = {
-            hostname: 'localhost',
-            port: _this.options.port,
-            method: 'POST',
-            auth: _this.options.user + ':' + _this.options.password,
-            headers: {
+            hostname: (typeof(_this.options.host) === 'undefined'?'localhost':_this.options.host),
+            port    : _this.options.port,
+            method  : 'POST',
+            auth    : _this.options.user + ':' + _this.options.password,
+            headers : {
                 'Content-Length': requestJson.length
             }
         };

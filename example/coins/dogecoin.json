@@ -10,8 +10,9 @@
     "merkleRefreshInterval": 60,
     "daemon": {
         "host": "localhost",
-        "port": 8332,
-        "user": "test",
-        "password": "test"
+        "port": 19334,
+        "user": "testnet",
+        "password": "testnet1"
+
     }
 }

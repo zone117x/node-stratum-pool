@@ -1,8 +1,7 @@
-var net = require('net');
-var fs = require('fs');
-var path = require('path');
-
-var pool = require('./pool.js');
+var net          = require('net');
+var fs           = require('fs');
+var path         = require('path');
+var pool         = require('../index.js');
 var ShareManager = require('./shareManager.js').ShareManager;
 
 var logRef = console.log;
@@ -24,6 +23,18 @@ var coins = [];
 
 var confFolder = 'coins';
 
+
+var authorizeFN = function (ip, workerName, password, cback) {
+    // Default implementation just returns true
+    console.log("Athorize ["+ip+"] "+workerName+":"+password);
+    cback(
+        null,  // error
+        true,  // authorized?
+        false, // should disconnect user?
+        16    // difficulty
+    );
+}
+
 fs.readdir(confFolder, function(err, files){
     if (err) throw err;
     files.forEach(function(file){
@@ -35,8 +46,8 @@ fs.readdir(confFolder, function(err, files){
             var coin = new Coin(coinJson);
             console.log('Starting pool for ' + coin.options.name);
             
-            coin.pool = new pool(coin);
-            coin.shareManager = new ShareManager(coin.pool);
+            coin.pool = new pool(coin, authorizeFN );
+            var shareManager = new ShareManager(coin.pool);
 
             coins.push(coin);
         });
