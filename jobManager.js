@@ -59,7 +59,7 @@ var JobManager = module.exports = function JobManager(options){
      * @returns true if it's a new block, false otherwise.
      * used by onNewTemplate
     **/
-    function CheckNewIfNewBlock(blockTemplate){
+    function CheckNewIfNewBlock(prevBlockHash){
         var newBlock = true;
         for(var job in jobs){
             if (jobs[job].rpcData.previousblockhash === blockTemplate.rpcData.previousblockhash) {
@@ -109,16 +109,17 @@ var JobManager = module.exports = function JobManager(options){
     this.extraNonce2Size = this.extraNoncePlaceholder.length - this.extraNonceCounter.size();
 
     this.currentJob;
-    this.newTemplate = function(rpcData, publicKey){
-        var tmpBlockTemplate = new blockTemplate(rpcData, publicKey, _this.extraNoncePlaceholder);
-        if ( CheckNewIfNewBlock(tmpBlockTemplate) ) {
+
+    this.processTemplate = function(rpcData, publicKey){
+        if (CheckNewIfNewBlock(rpcData.previousblockhash)){
+            var tmpBlockTemplate = new blockTemplate(rpcData, publicKey, _this.extraNoncePlaceholder);
             tmpBlockTemplate.setJobId(jobCounter.next());
             jobs[tmpBlockTemplate.jobId] = tmpBlockTemplate; 
             this.currentJob = jobs[tmpBlockTemplate.jobId];
             _this.emit('newBlock', tmpBlockTemplate);
         }
-        
     };
+
     this.processShare = function(jobId, difficulty, extraNonce1, extraNonce2, nTime, nonce){
 
         var submitTime = Date.now() / 1000 | 0;

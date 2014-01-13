@@ -39,23 +39,6 @@ fs.readdir(confFolder, function(err, files){
             coin.shareManager = new ShareManager(coin.pool);
 
             coins.push(coin);
-
-            // If the block notify listener is not enabled lets set up the polling.
-            if ( ! config.blockNotifyListener.enabled ) {
-                // as soon as the pool is started we start polling
-                var pollingTime = typeof(config.blockPollingTime) === 'undefined' ? 5000 : parseInt(config.blockPollingTime, 10);
-                coin.pool.on('started', function() {
-                    var curPool = this;
-                    setInterval(
-                        function() {
-                            curPool.processBlockPolling();
-                        },
-                        pollingTime
-                    );
-                });
-
-
-            }
         });
 
     });
@@ -63,7 +46,7 @@ fs.readdir(confFolder, function(err, files){
 
 
 if (config.blockNotifyListener.enabled){
-    console.log("ENABLED");
+    console.log("Block listener is enabled, starting server on port " + config.blockNotifyListener.port);
     var blockNotifyServer = net.createServer(function(c) {
         console.log('server connected');
         var data = '';
@@ -90,5 +73,7 @@ if (config.blockNotifyListener.enabled){
             console.log('server disconnected');
         });
     });
-    blockNotifyServer.listen(config.blockNotifyListener.port, function() {});
+    blockNotifyServer.listen(config.blockNotifyListener.port, function() {
+        console.log('Block notify listener server started on port ' + config.blockNotifyListener.port)
+    });
 } 
