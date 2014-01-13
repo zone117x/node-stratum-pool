@@ -12,7 +12,7 @@ var util       = require('./libs/util.js');
  *  - 'started'() - when the pool is effectively started.
  *  - 'share'(isValid, dataObj) - In case it's valid the dataObj variable will contain (TODO) and in case it's invalid (TODO) 
  */
-var pool = module.exports = function pool(coin, authFn){
+var pool = module.exports = function pool(coin, authorizeFn){
 
     var _this = this;
     var publicKeyBuffer;
@@ -25,11 +25,11 @@ var pool = module.exports = function pool(coin, authFn){
 
 
     function SetupJobManager(){
-        this.jobManager = new jobManager({
-            algorithm: coin.options.algorithm,
-            address: coin.options.address
+        _this.jobManager = new jobManager({
+            algorithm : coin.options.algorithm,
+            address   : coin.options.address
         });
-        this.jobManager.on('newBlock', function(blockTemplate){
+        _this.jobManager.on('newBlock', function(blockTemplate){
             if ( typeof(_this.stratumServer ) === 'undefined') {
                 console.warn("Stratum server still not started! cannot broadcast block!");
             } else {
@@ -62,8 +62,8 @@ var pool = module.exports = function pool(coin, authFn){
 
     function SetupDaemonInterface(){
         console.log('Connecting to daemon for ' + coin.options.name);
-        this.daemon = new daemon.interface(coin.options.daemon);
-        this.daemon.on('online', function(){
+        _this.daemon = new daemon.interface(coin.options.daemon);
+        _this.daemon.on('online', function(){
             async.parallel({
                 addressInfo: function(callback){
                     _this.daemon.cmd('validateaddress',
@@ -72,13 +72,13 @@ var pool = module.exports = function pool(coin, authFn){
                             if (error){
                                 console.log('validateaddress rpc error for ' + coin.options.name);
                                 callback(error);
-                            }
-                            else if (!result.isvalid){
+                            } else if (!result.isvalid) {
                                 console.log('address is not valid for ' + coin.options.name);
-                                callback(error);
-                            }
-                            else
+                                callback("address-not-valid");
+                            } else {
+                                console.log("LOALASD"+JSON.stringify(result))
                                 callback(error, result);
+                            }
                         }
                     );
                 },
@@ -95,6 +95,7 @@ var pool = module.exports = function pool(coin, authFn){
                 }
             }, function(err, results){
                 if (err) return;
+
                 console.log('Connected to daemon for ' + coin.options.name);
                 coin.options.hasSubmitMethod = results.submitMethod;
 
@@ -103,7 +104,6 @@ var pool = module.exports = function pool(coin, authFn){
                     util.script_to_pubkey(results.addressInfo.pubkey);
 
                 StartStratumServer();
-                GetBlockTemplate();
                 SetupBlockPolling();
 
             });
@@ -134,7 +134,10 @@ var pool = module.exports = function pool(coin, authFn){
                 var clientThis = this;
 
                 //if (clientThis.authorized) {
-                clientThis.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                if (typeof(_this.jobManager.currentJob) !== 'undefined') {
+                    clientThis.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                } 
+                
                 //}
                 
             }).on('submit', function(params, resultCallback){
@@ -186,15 +189,14 @@ var pool = module.exports = function pool(coin, authFn){
         var pollTimeout;
         var setPoll;
 
-        setPoll = function(){
-            pollTimeout = setTimeout(function(){
-                GetBlockTemplate(function(error, result) {
-                    if (error)
-                        console.error("Block polling error getting block template for " + coin.options.name);
-                    setPoll();
-                });
-            }, pollingInterval);
-        };
+        setInterval(function () {
+            GetBlockTemplate(function(error, result) {
+                if (error)
+                    console.error("Block polling error getting block template for " + coin.options.name);
+                
+            });
+            
+        }, pollingInterval);
         console.log('Block polling setup for every ' + pollingInterval + ' milliseconds for ' + coin.options.name);
     }
 

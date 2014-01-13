@@ -3,10 +3,10 @@
     "symbol": "doge",
     "algorithm": "scrypt",
     "reward": "POW",
-    "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+    "address": "n3s8iDk1onxyY2nuC1k4HoRQFGJ7BhjFcq",
     "stratumPort": 3334,
     "difficulty": 8,
-    "blockRefreshInterval": 60,
+    "blockRefreshInterval": 1,
     "merkleRefreshInterval": 60,
     "daemon": {
         "host": "localhost",

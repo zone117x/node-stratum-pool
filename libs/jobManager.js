@@ -64,9 +64,10 @@ var JobManager = module.exports = function JobManager(options){
      * used by onNewTemplate
     **/
     function CheckNewIfNewBlock(prevBlockHash){
+        
         var newBlock = true;
         for(var job in jobs){
-            if (jobs[job].rpcData.previousblockhash === blockTemplate.rpcData.previousblockhash) {
+            if (jobs[job].rpcData.previousblockhash === prevBlockHash) {
                 newBlock = false;
             }
         }
