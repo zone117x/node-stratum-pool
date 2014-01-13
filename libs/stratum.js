@@ -248,6 +248,10 @@ var StratumServer = exports.Server = function StratumServer(options){
             );
             stratumClients[subscriptionId] = client;
             _this.emit('client', client);
+            c.on('disconnect', function() {
+                delete stratumClients[subscriptionId];
+                _this.emit('client.disconnected', client);
+            });
         });
         _socketServer.listen(options.port, function(){
             _this.emit('started');
@@ -258,7 +262,7 @@ var StratumServer = exports.Server = function StratumServer(options){
     //public members
 
     this.broadcastMiningJobs = function(jobParams){
-        for (var clientId in stratumClients){
+        for (var clientId in stratumClients) {
             stratumClients[clientId].sendMiningJob(jobParams)
         }
     };

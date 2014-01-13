@@ -76,15 +76,14 @@ var pool = module.exports = function pool(coin, authFn){
                     [coin.options.address],
                     function(error, result){
                         if (error){
-                            console.log('validateaddress rpc error for ' + coin.options.name);
+                            console.error('validateaddress rpc error for ' + coin.options.name);
                             callback(error);
-                        }
-                        else if (!result.isvalid){
-                            console.log('address is not valid for ' + coin.options.name);
+                        } else if (!result.isvalid) {
+                            console.error('address is not valid for ' + coin.options.name);
                             callback(error);
-                        }
-                        else
+                        } else {
                             callback(error, result);
+                        }
                     }
                 );
             },
