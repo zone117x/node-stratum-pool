@@ -79,6 +79,12 @@ var StratumClient = function(options){
             },
             function(error, result){
                 _this.authorized = result;
+                /*if (_this.authorized) {
+                    // if authorized lets store the workername
+                    // so that when a share is found we can get it for the accounting
+                    _this.workerName = message.params[0][0];
+                }*/
+                
                 sendJson({
                     id: message.id,
                     result: result,
@@ -105,6 +111,7 @@ var StratumClient = function(options){
             });
             return;
         }
+        console.log("SUBMIT "+JSON.stringify(message));
         _this.emit('submit',
             {
                 name: message.params[0],
@@ -214,7 +221,7 @@ var StratumServer = exports.Server = function StratumServer(options){
     //public members
 
     this.broadcastMiningJobs = function(jobParams){
-        for (var clientId in _stratumClients){
+        for (var clientId in stratumClients){
             stratumClients[clientId].sendMiningJob(jobParams)
         }
     };

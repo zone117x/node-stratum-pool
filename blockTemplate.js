@@ -6,7 +6,7 @@ var transactions = require('./transactions.js');
 var util = require('./util.js');
 
 
-var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publicKey, reward, extraNoncePlaceholder){
+var BlockTemplate = module.exports = function BlockTemplate(rpcData, publicKey, extraNoncePlaceholder){
 
     //private members
 
@@ -29,7 +29,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     //public members
 
     this.rpcData = rpcData;
-    this.jobId = jobId;
+    this.jobId = null;
     this.target = util.bignumFromBits(rpcData.bits);
     this.prevHashReversed = util.reverseByteOrder(new Buffer(rpcData.previousblockhash, 'hex')).toString('hex');
     this.transactionData = Buffer.concat(rpcData.transactions.map(function(tx){
@@ -40,9 +40,12 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     this.generationTransaction = new transactions.Generation(
         rpcData,
         publicKey,
-        reward,
         extraNoncePlaceholder
     );
+
+    this.setJobId = function (jobId) {
+        this.jobId = jobId;
+    }
 
     this.serializeCoinbase = function(extraNonce1, extraNonce2){
         return Buffer.concat([
@@ -71,7 +74,7 @@ var BlockTemplate = module.exports = function BlockTemplate(jobId, rpcData, publ
     this.serializeBlock = function(header, coinbase){
         return Buffer.concat([
             header,
-            util.varIntBuffer(this.rpcData.transaction.length + 1),
+            util.varIntBuffer(this.rpcData.transactions.length + 1),
             coinbase,
             this.transactionData
         ]);

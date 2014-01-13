@@ -9,35 +9,46 @@ var stratum = require('./stratum.js');
 var jobManager = require('./jobManager.js');
 var util = require('./util.js');
 
-
-
 var pool = module.exports = function pool(coin){
 
     var _this = this;
     var publicKeyBuffer;
 
+    this.shareManager = undefined; // just for us to know that the variable should be this one.
     this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
         address: coin.options.address
     });
     this.jobManager.on('newBlock', function(blockTemplate){
-        _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());
-    }).on('blockFound', function(blockHex){
-
-        if (coin.options.hasSubmitMethod)
+        if ( typeof(_this.stratumServer ) === 'undefined') {
+            console.warn("Stratum server still not started! cannot broadcast block!"); 
+        } else {
+            _this.stratumServer.broadcastMiningJobs(blockTemplate.getJobParams());    
+        }
+        
+    }).on('blockFound', function(blockHex, headerHex, third){
+        console.log("BLOCK "+blockHex);
+        console.log("HEADER "+headerHex);
+        console.log("THIRD "+third);
+        if (coin.options.hasSubmitMethod) {
             _this.daemon.cmd('submitblock',
                 [blockHex],
                 function(error, result){
-
+                    console.log(JSON.stringify(error));
+                    console.log(JSON.stringify(result));
+                    console.log("submitblock", JSON.stringify(error), JSON.stringify(result));
                 }
             );
-        else
+        } else {
             _this.daemon.cmd('getblocktemplate',
                 [{'mode': 'submit', 'data': blockHex}],
                 function(error, result){
-
+                    console.log(JSON.stringify(error));
+                    console.log(JSON.stringify(result));
+                    console.log("submitblockgetBlockTEmplate", JSON.stringify(error), JSON.stringify(result));
                 }
             );
+        }
     });
 
     console.log('Connecting to daemon for ' + coin.options.name);
@@ -84,7 +95,7 @@ var pool = module.exports = function pool(coin){
 
             _this.jobManager.newTemplate(results.rpcTemplate, publicKeyBuffer);
 
-            StartStatumServer();
+            StartStratumServer();
 
         });
 
@@ -93,13 +104,17 @@ var pool = module.exports = function pool(coin){
     });
 
 
-    function StartStatumServer(){
+    function StartStratumServer(){
 
         console.log('Stratum server starting on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         _this.stratumServer = new stratum.Server({
             port: coin.options.stratumPort
         });
         _this.stratumServer.on('started', function(){
+<<<<<<< HEAD
+=======
+            _this.emit('started');
+>>>>>>> a301c49943980d0209fb42114999099eeeb44ded
             console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         }).on('client', function(client){
             client.on('subscription', function(params, resultCallback){
@@ -110,7 +125,11 @@ var pool = module.exports = function pool(coin){
                     extraNonce2Size
                 );
                 this.sendDifficulty(coin.options.difficulty);
-                this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                if (typeof(_this.jobManager.currentJob) === 'undefined') {
+                    console.warn("[subscription] Cannot send job to client. No jobs in jobManager!");
+                } else {
+                    this.sendMiningJob(_this.jobManager.currentJob.getJobParams());
+                }
             }).on('authorize', function(params, resultCallback){
                     resultCallback(null, true);
             }).on('submit', function(params, resultCallback){
@@ -124,9 +143,24 @@ var pool = module.exports = function pool(coin){
                 );
                 if (result.error){
                     resultCallback(result.error);
-                    return;
+                    _this.emit('share', false, {
+                        workerName : params.name,
+                        error      : result.error
+                    });
+                } else {
+                    resultCallback(null, true);
+                    _this.emit('share', true, {
+                        blockHeaderHex    : result.headerHEX,
+                        workerName        : params.name,
+                        jobId             : params.jobId,
+                        clientDifficulty  : client.difficulty,
+                        extraNonce1       : client.extraNonce1,
+                        extraNonce2       : params.extraNonce2,
+                        nTime             : params.nTime,
+                        nonce             : params.nonce  
+                    });
                 }
-                resultCallback(null, true);
+                
             });
         });
     }
@@ -135,22 +169,37 @@ var pool = module.exports = function pool(coin){
         _this.daemon.cmd('getblocktemplate',
             [{"capabilities": [ "coinbasetxn", "workid", "coinbase/append" ]}],
             function(error, result){
-                if (error){
-                    console.log('getblocktemplate rpc error for ' + coin.options.name);
+                if (error) {
                     callback(error);
-                }
-                else{
+                } else {
                     callback(null, result);
                 }
             }
         );
     }
 
+    /**
+     * This method needs to be called to perform a block polling to the daemon so that we can notify our miners
+     * about new blocks
+    **/
+    this.processBlockPolling = function() {
+        GetBlockTemplate(function(error, result) {
+            if (error) {
+                console.error("[processBlockPolling] Error getting block template for " + coin.options.name);
+            }
+            _this.jobManager.newTemplate(result, publicKeyBuffer);
+        });
+    }
+
+    /**
+     * This method is being called from the blockNotify so that when a new block is discovered by the daemon
+     * We can inform our miners about the newly found block
+    **/
     this.processBlockNotify = function(blockHash){
         if (blockHash !== _this.jobManager.currentJob.rpcData.previousblockhash){
             GetBlockTemplate(function(error, result){
                 if (error){
-                    console.log('Error getting block template for ' + coin.options.name);
+                    console.error('[processBlockNotify] Error getting block template for ' + coin.options.name);
                     return;
                 }
                 _this.jobManager.newTemplate(result, publicKeyBuffer);

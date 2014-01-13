@@ -3,15 +3,15 @@
     "symbol": "doge",
     "algorithm": "scrypt",
     "reward": "POW",
-    "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
+    "address": "mkLyYQ5U8aFQ8aDAF1GS9zXStTzi3m29Tg",
     "stratumPort": 3334,
     "difficulty": 8,
     "templateRefreshInterval": 60,
     "merkleRefreshInterval": 60,
     "daemon": {
         "host": "localhost",
-        "port": 8332,
-        "user": "test",
-        "password": "test"
+        "port": 19334,
+        "user": "testnet",
+        "password": "AHhQYqfSZqzQvkSXAtHtDAbKaZaoPih3wfmJfgCtjRx9"
     }
 }
