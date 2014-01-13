@@ -17,7 +17,6 @@ var pool = module.exports = function pool(coin, authFn){
     var _this = this;
     var publicKeyBuffer;
 
-    this.shareManager = undefined; // just for us to know that the variable should be this one.
     this.jobManager = new jobManager({
         algorithm: coin.options.algorithm,
         address: coin.options.address
@@ -33,9 +32,6 @@ var pool = module.exports = function pool(coin, authFn){
         // probably undefined. 
         process.exit("ERROR: an authorize Function is needed.")
     }
-
-
-
 
     this.jobManager.on('newBlock', function(blockTemplate){
         if ( typeof(_this.stratumServer ) === 'undefined') {
@@ -128,7 +124,7 @@ var pool = module.exports = function pool(coin, authFn){
         _this.stratumServer.on('started', function(){
             _this.emit('started');
             console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
-        }).on('client', function(client){
+        }).on('client.connected', function(client){
             client.on('subscription', function(params, resultCallback){
 
                 var extraNonce = _this.jobManager.extraNonceCounter.next();
@@ -155,17 +151,16 @@ var pool = module.exports = function pool(coin, authFn){
                 if (result.error){
                     resultCallback(result.error);
                     _this.emit('share', false, {
-                        workerName : params.name,
+                        client     : client,
                         error      : result.error
                     });
                 } else {
                     resultCallback(null, true);
                     _this.emit('share', true, {
+                        client           : client,
                         blockHeaderHex   : result.headerHEX,
                         workerName       : params.name,
                         jobId            : params.jobId,
-                        clientDifficulty : client.difficulty,
-                        extraNonce1      : client.extraNonce1,
                         extraNonce2      : params.extraNonce2,
                         nTime            : params.nTime,
                         nonce            : params.nonce  

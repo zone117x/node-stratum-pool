@@ -1,8 +1,7 @@
-var net = require('net');
-var fs = require('fs');
-var path = require('path');
-
-var pool = require('../index.js');
+var net          = require('net');
+var fs           = require('fs');
+var path         = require('path');
+var pool         = require('../index.js');
 var ShareManager = require('./shareManager.js').ShareManager;
 
 var logRef = console.log;
@@ -48,7 +47,7 @@ fs.readdir(confFolder, function(err, files){
             console.log('Starting pool for ' + coin.options.name);
             
             coin.pool = new pool(coin, authorizeFN );
-            coin.shareManager = new ShareManager(coin.pool);
+            var shareManager = new ShareManager(coin.pool);
 
             coins.push(coin);
 
@@ -75,7 +74,7 @@ fs.readdir(confFolder, function(err, files){
 
 
 if (config.blockNotifyListener.enabled){
-    console.log("ENABLED");
+    console.log("blockNotifyListener ENABLED");
     var blockNotifyServer = net.createServer(function(c) {
         console.log('server connected');
         var data = '';

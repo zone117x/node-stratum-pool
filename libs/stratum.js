@@ -46,8 +46,15 @@ var StratumClient = function(options){
             case 'mining.submit':
                 handleSubmit(message);
                 break;
+            case 'mining.get_transactions':
+                sendJson({
+                    id     : null,
+                    result : [],
+                    error  : true
+                });
+                break;
             default:
-                console.dir('unknown stratum client message: ' + message);
+                console.dir('unknown stratum client message: ' + JSON.stringify(message));
                 break;
         }
     }
@@ -82,10 +89,10 @@ var StratumClient = function(options){
     }
 
     function handleAuthorize(message){
-        this.workerIP   = options.socket.address().address; 
-        this.workerName = message.params[0];
-        this.workerPass = message.params[1];
-        options.authorizeFn(this.workerIP, this.workerName, this.workerPass, function(err, authorized, shouldCloseSocket, difficulty) {
+        _this.workerIP   = options.socket.address().address; 
+        _this.workerName = message.params[0];
+        _this.workerPass = message.params[1];
+        options.authorizeFn(_this.workerIP, _this.workerName, _this.workerPass, function(err, authorized, shouldCloseSocket, difficulty) {
             _this.authorized =  ( ! err && authorized );
             sendJson({
                     id     : message.id,
@@ -105,12 +112,12 @@ var StratumClient = function(options){
                         console.error("Cannot set difficulty for "+_this.workernName+" error: "+JSON.stringify(err));
                         options.socket.end();
                     } else {
-                        _this.sendDifficulty(diff);    
+                        _this.sendAndSetDifficultyIfNew(diff);    
                     }
                     
                 });
             } else if (typeof(difficulty) === 'number') {
-                _this.sendDifficulty(difficulty);
+                _this.sendAndSetDifficultyIfNew(difficulty);
             } else {
                 process.exit("Difficulty from authorizeFn callback is neither a function or a number");
             }
@@ -140,7 +147,6 @@ var StratumClient = function(options){
             });
             return;
         }
-        console.log("SUBMIT "+JSON.stringify(message));
         _this.emit('submit',
             {
                 name        : message.params[0],
@@ -164,7 +170,6 @@ var StratumClient = function(options){
         for (var i = 0; i < arguments.length; i++){
             response += JSON.stringify(arguments[i]) + '\n';
         }
-        console.log('response: ' + response);
         options.socket.write(response);
     }
 
@@ -186,8 +191,9 @@ var StratumClient = function(options){
                     catch(e){
                         console.log('could not parse stratum client socket message: ' + message);
                     }
-                    if (messageJson)
+                    if (messageJson) {
                         handleMessage(messageJson);
+                    }
                 });
                 dataBuffer = '';
             }
@@ -205,14 +211,28 @@ var StratumClient = function(options){
 
     //public members
 
-    this.sendDifficulty = function(difficulty){
-        _this.difficulty = difficulty;
-        console.log("SENDING DIFFICULTY "+difficulty);
-        sendJson({
-            id    : null,
-            method: "mining.set_difficulty",
-            params: [difficulty]//[512],
-        });
+    /**
+     * IF the given difficulty is valid and new it'll send it to the client.
+     * returns boolean
+     **/
+    this.sendAndSetDifficultyIfNew = function(difficulty){
+        if (typeof(difficulty) != 'number') {
+            console.error('[StratumClient.sendAndSetDifficultyIfNew] given difficulty parameter is not a number: ['+difficulty+']');
+            return false;
+        }
+
+        if (difficulty !== this.difficulty) {
+            this.difficulty = difficulty;
+            sendJson({
+                id    : null,
+                method: "mining.set_difficulty",
+                params: [difficulty]//[512],
+            });
+            return true;
+        } else {
+            return false;
+        }
+
     };
 
     this.sendMiningJob = function(jobParams){
@@ -227,6 +247,13 @@ StratumClient.prototype.__proto__ = events.EventEmitter.prototype;
 
 
 
+/**
+ * The actual stratum server.
+ * It emits the following Events:
+ *   - 'client.connected'(StratumClientInstance) - when a new miner connects
+ *   - 'client.disconnected'(StratumClientInstance) - when a miner disconnects. Be aware that the socket cannot be used anymore.
+ *   - 'started' - when the server is up and running
+ **/
 var StratumServer = exports.Server = function StratumServer(options){
 
     //private members
@@ -247,8 +274,8 @@ var StratumServer = exports.Server = function StratumServer(options){
                 }
             );
             stratumClients[subscriptionId] = client;
-            _this.emit('client', client);
-            c.on('disconnect', function() {
+            _this.emit('client.connected', client);
+            client.on('socketDisconnect', function() {
                 delete stratumClients[subscriptionId];
                 _this.emit('client.disconnected', client);
             });
@@ -261,9 +288,13 @@ var StratumServer = exports.Server = function StratumServer(options){
 
     //public members
 
-    this.broadcastMiningJobs = function(jobParams){
+    this.broadcastMiningJobs = function(jobParams) {
         for (var clientId in stratumClients) {
-            stratumClients[clientId].sendMiningJob(jobParams)
+            // if a client gets disconnected WHILE doing this loop a crash might happen.
+            // 'm not sure if that can ever happn but an if here doesn't hurt!
+            if (typeof(stratumClients[clientId]) !== 'undefined') {
+                stratumClients[clientId].sendMiningJob(jobParams);
+            }
         }
     };
 };

@@ -86,23 +86,23 @@ var Generation = exports.Generation = function Generation(rpcData, publicKey, ex
 
     var tx = new Transaction({
         inputs: [new TransactionInput({
-            prevOutIndex: Math.pow(2, 32) - 1,
-            sigScript: new ScriptSig({
-                height: rpcData.height,
-                flags: rpcData.coinbaseaux.flags,
-                extraNoncePlaceholder: extraNoncePlaceholder
+            prevOutIndex : Math.pow(2, 32) - 1,
+            sigScript    : new ScriptSig({
+                height                : rpcData.height,
+                flags                 : rpcData.coinbaseaux.flags,
+                extraNoncePlaceholder : extraNoncePlaceholder
             })
         })],
         outputs: [new TransactionOutput({
-            value: rpcData.coinbasevalue,
-            pkScriptBuffer: publicKey
+            value          : rpcData.coinbasevalue,
+            pkScriptBuffer : publicKey
         })]
     });
 
     var txBuffer = tx.toBuffer();
-    var epIndex = buffertools.indexOf(txBuffer, extraNoncePlaceholder);
-    var p1 = txBuffer.slice(0, epIndex);
-    var p2 = txBuffer.slice(epIndex + extraNoncePlaceholder.length);
+    var epIndex  = buffertools.indexOf(txBuffer, extraNoncePlaceholder);
+    var p1       = txBuffer.slice(0, epIndex);
+    var p2       = txBuffer.slice(epIndex + extraNoncePlaceholder.length);
 
     this.transaction = tx;
     this.coinbase = [p1, p2];

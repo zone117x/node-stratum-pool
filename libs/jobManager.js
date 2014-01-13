@@ -106,6 +106,25 @@ var JobManager = module.exports = function JobManager(options){
         }
     })();
 
+    /**
+     * Tries to estimate the resulting block hash
+     * This is only valid for scrypt apparently.
+     * @author vekexasia
+    **/
+    function blockHashHex(headerBuffer) {
+        var result = new Buffer(80);
+        for (var i=0; i<20; i++) {
+            for (var j=0; j<4; j++) {
+                result[i*4+j] = headerBuffer[i*4+3-j];
+            }
+        }
+        var shaed    = util.reverseBuffer(util.doublesha(result));
+        
+        
+        return shaed.toString('hex'); // return the expected block hash
+        
+    }
+    
     //public members
 
     this.extraNonceCounter = new ExtraNonceCounter();
@@ -131,45 +150,55 @@ var JobManager = module.exports = function JobManager(options){
             return {error: [20, 'incorrect size of extranonce2', null]};
 
         var job = jobs[jobId];
-        if (!job)
+        if (!job) {
             return {error: [21, 'job not found', null]};
+        }
 
-        if (nTime.length !== 8)
+        if (nTime.length !== 8) {
             return {error: [20, 'incorrect size of ntime']};
+        }
 
         var nTimeInt = parseInt(nTime, 16);
-        if (nTimeInt < job.rpcData.curtime || nTime > submitTime + 7200)
+        if (nTimeInt < job.rpcData.curtime || nTime > submitTime + 7200) {
             return {error: [20, 'ntime out of range', null]};
+        }
 
-        if (nonce.length !== 8)
+        if (nonce.length !== 8) {
             return {error: [20, 'incorrect size of nonce']};
+        }
 
-        if (!job.registerSubmit(extraNonce1, extraNonce2, nTime, nonce))
+        if (!job.registerSubmit(extraNonce1, extraNonce2, nTime, nonce)) {
             return {error: [22, 'duplicate share', null]};
+        }
 
 
         var extraNonce1Buffer = new Buffer(extraNonce1, 'hex');
         var extraNonce2Buffer = new Buffer(extraNonce2, 'hex');
 
         var coinbaseBuffer = job.serializeCoinbase(extraNonce1Buffer, extraNonce2Buffer);
-        var coinbaseHash = util.doublesha(coinbaseBuffer);
+        var coinbaseHash   = util.doublesha(coinbaseBuffer);
 
         var merkleRoot = job.merkleTree.withFirst(coinbaseHash);
-        merkleRoot = util.reverseBuffer(merkleRoot).toString('hex');
+        merkleRoot     = util.reverseBuffer(merkleRoot).toString('hex');
 
         var headerBuffer = job.serializeHeader(merkleRoot, nTime, nonce);
-        var headerHash = hashDigest(headerBuffer, nTimeInt);
+        var headerHash   = hashDigest(headerBuffer, nTimeInt);
         var headerBigNum = bignum.fromBuffer(headerHash, {endian: 'little', size: 32});
 
-        var targetUser = bignum(diffDividend / difficulty);
-        if (headerBigNum.gt(targetUser)){
-            return {error: [23, 'low difficulty share', null]};
-        }
+        
 
         if (job.target.ge(headerBigNum)){
             var blockBuf = job.serializeBlock(headerBuffer, coinbaseBuffer);
-
+            console.log("EXPECTED BLOCK HASH: "+blockHashHex(headerBuffer)); // NOT WORKING :(?
             _this.emit('blockFound', blockBuf.toString('hex'));
+        } else {
+            // If block is not found we want also to check the difficulty of the share.
+            // TODO: this seems to not be working properly
+            var targetUser = bignum(diffDividend / difficulty);
+
+            if (headerBigNum.gt(targetUser)){
+                return {error: [23, 'low difficulty share', null]};
+            }
         }
 
         return {result: true, headerHEX: headerBigNum.toString(16)};
