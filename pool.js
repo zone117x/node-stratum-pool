@@ -96,10 +96,10 @@ var pool = module.exports = function pool(coin){
     function StartStatumServer(){
 
         console.log('Stratum server starting on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
-        this.stratumServer = new stratum.Server({
+        _this.stratumServer = new stratum.Server({
             port: coin.options.stratumPort
         });
-        this.stratumServer.on('started', function(){
+        _this.stratumServer.on('started', function(){
             console.log('Stratum server started on port ' + coin.options.stratumPort + ' for ' + coin.options.name);
         }).on('client', function(client){
             client.on('subscription', function(params, resultCallback){
