@@ -9,7 +9,7 @@
     "bin": {
         "block-notify": "./scripts/blockNotify.js"
     },
-    "main": "index.js",
+    "main": "lib/index.js",
     "repository": {
         "type": "git",
         "url": "https://github.com/zone117x/node-stratum.git"
@@ -23,15 +23,15 @@
         "litecoin",
         "scrypt"
     ],
-    "bundledDependencies": [
-        "scrypt256-hash",
-        "scrypt-jane-hash",
-        "quark-hash",
-        "binpack",
-        "bignum",
-        "buffertools",
-        "base58-native"
-    ],
+    "dependencies": {
+        "scrypt256-hash":  "*",
+        "scrypt-jane-hash":  "*",
+        "quark-hash":  "*",
+        "binpack":  "*",
+        "bignum":  "*",
+        "buffertools":  "*",
+        "base58-native":  "*"
+    },
     "license": "GPL-2.0",
     "engines": {
         "node": ">=0.10"

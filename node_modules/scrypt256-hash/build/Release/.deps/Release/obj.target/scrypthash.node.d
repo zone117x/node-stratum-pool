@@ -1,1 +1,0 @@
-cmd_Release/obj.target/scrypthash.node := flock ./Release/linker.lock g++ -shared -pthread -rdynamic -m64  -Wl,-soname=scrypthash.node -o Release/obj.target/scrypthash.node -Wl,--start-group Release/obj.target/scrypthash/scrypthash.o Release/obj.target/scrypthash/scrypt.o -Wl,--end-group 
