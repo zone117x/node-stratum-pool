@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var Stratum = require('../index.js'); //require('node-stratum')
+var Stratum = require('../index.js'); //require('stratum-pool')
 
 
 

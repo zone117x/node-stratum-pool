@@ -1,5 +1,5 @@
 {
-    "name": "http-server",
+    "name": "stratum-pool",
     "version": "0.0.1",
     "author": "Matthew Little",
     "description": "High performance Stratum poolserver in Node.js",
