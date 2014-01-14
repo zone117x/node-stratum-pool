@@ -32,16 +32,6 @@ Requirements
 ------------
 * node v0.10+
 * coin daemon
-* PostgreSQL
-* npm dependencies
-  * [scrypt256-hash](https://github.com/zone117x/node-scrypt256-hash)
-  * [scrypt-jane-hash](https://github.com/zone117x/node-scrypt-jane-hash)
-  * [quark-hash](https://github.com/zone117x/node-quark-hash)
-  * [binpack](https://github.com/russellmcc/node-binpack)
-  * [bignum](https://github.com/justmoon/node-bignum)
-  * [buffertools] (https://github.com/bnoordhuis/node-buffertools)
-  * [base58-native](https://github.com/gasteve/node-base58)
-  * [async](https://github.com/caolan/async)
 
 
 Installation
@@ -98,7 +88,7 @@ Installation
 * To start the poolserver run:
 
     ```bash
-    node init.js
+    node index.js
     ```
 
 
