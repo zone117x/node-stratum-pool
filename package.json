@@ -1,6 +1,6 @@
 {
     "name": "stratum-pool",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "author": "Matthew Little",
     "description": "High performance Stratum poolserver in Node.js",
     "contributors": [
@@ -30,7 +30,8 @@
         "binpack":  "*",
         "bignum":  "*",
         "buffertools":  "*",
-        "base58-native":  "*"
+        "base58-native":  "*",
+        "async": "*"
     },
     "license": "GPL-2.0",
     "engines": {
