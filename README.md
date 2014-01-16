@@ -44,6 +44,7 @@ npm update
 
 #### Module usage
 
+Initialize a new Stratum object
 ```javascript
 var Stratum = require('stratum-pool');
 
@@ -58,7 +59,11 @@ var stratum = new Stratum({
 stratum.on('log', function(text){
     console.log(text);
 });
+```
 
+
+Create and start new pool with configuration options and authentication function
+```javascript
 var pool = stratum.createPool({
 
     name: "Dogecoin",
@@ -93,9 +98,11 @@ var pool = stratum.createPool({
         disconnect: false
     });
 });
+```
 
 
-
+Listen to pool events
+```javascript
 /*
 'data' object contains:
     job: 4, //stratum work job ID
@@ -130,7 +137,10 @@ pool.on('share', function(isValidShare, isValidBlock, data){
 pool.on('log', function(severity, logKey, logText){
     console.log(severity + ': ' + '[' + logKey + '] ' + logText);
 };
+```
 
+Start pool
+```javascript
 pool.start();
 ```
 
