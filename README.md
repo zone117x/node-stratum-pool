@@ -168,7 +168,7 @@ pool.start();
 Credits
 -------
 * [vekexasia](https://github.com/vekexasia) - co-developer
-* pronooob from [https://dogehouse.org/] - being super knowledgeable & helpful
+* pronooob from https://dogehouse.org - being super knowledgeable & helpful
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
