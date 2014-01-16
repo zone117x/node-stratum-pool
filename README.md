@@ -136,7 +136,7 @@ pool.start();
 
 
 #### [Optional, recommended] Setting up blocknotify
-  * Inside `config.json` make sure `blockNotifyListener.enabled` is set to true
+  * For stratum initialization options set `blockNotifyListener.enabled` to true
   * Set the `blockNotifyListener.port` and `blockNotifyListener.password`
   * For the blocknotify arguments in your daemon startup parameters or conf file, use:
 
@@ -148,8 +148,8 @@ pool.start();
     %s"
     ```
 
-    * Example: `dogecoind -blocknotify="blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
-    * If your daemon is on a different host you will have to copy over `blockNotify.js`
+    * Example: `dogecoind -blocknotify="scripts/blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
+    * If your daemon is on a different host you will have to copy over `scripts/blockNotify.js`
 
 
 
