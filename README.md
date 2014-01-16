@@ -10,8 +10,8 @@ This server was built to be more efficient and easier to setup, maintain and sca
 Compared to the spaghetti state of the latest stratum-mining python server, this software should also have a lower barrier to entry for other developers to fork and add features or fix bugs.
 
 
-Features (mostly untested)
---------------------------
+Features (need additional testing)
+----------------------------------
 * Daemon interface
 * Stratum TCP socket server
 * Block template / job manager
