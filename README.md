@@ -35,14 +35,14 @@ Requirements
 Example Usage
 -------------
 
-* Install as a node module by cloning repository
+#### Install as a node module by cloning repository
 
-    ```bash
-    git clone https://github.com/zone117x/node-stratum node_modules/stratum-pool
-    npm update
-    ```
+```bash
+git clone https://github.com/zone117x/node-stratum node_modules/stratum-pool
+npm update
+```
 
-* Module usage
+#### Module usage
 
 ```javascript
 var Stratum = require('stratum-pool');
@@ -68,7 +68,7 @@ var pool = stratum.createPool({
     address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
     stratumPort: 3334,
     difficulty: 32,
-    blockRefreshInterval: 1,
+    blockRefreshInterval: 2, //seconds
     daemon: {
         host: "localhost",
         port: 19334,
@@ -94,19 +94,36 @@ var pool = stratum.createPool({
     });
 });
 
+
+
+/* 'data' object contains:
+{
+    job: 4, //stratum work job ID
+    ip: '71.33.19.37', //ip address of client
+    worker: 'matt.worker1', //stratum worker name
+    difficulty: 64, //stratum client difficulty
+    solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4', //block hash if found
+    error: 'low share difficulty' //set if share is rejected for some reason
+}
+*/
 pool.on('share', function(isValidShare, isValidBlock, data){
-    var shareData = JSON.stringify(data);
 
     if (isValidBlock)
-        console.log('Block found, share data: ' + shareData);
+        console.log('Block found');
     else if (isValidShare)
-        console.log('Valid share submitted, share data: ' + shareData);
+        console.log('Valid share submitted');
     else if (data.solution)
-        console.log('We thought a block solution was found but it was rejected by the daemon, share data: ' + shareData);
+        console.log('We thought a block solution was found but it was rejected by the daemon');
     else
-        console.log('Invalid share submitted, share data: ' + shareData)
+        console.log('Invalid share submitted')
+
+    console.log('share data: ' + JSON.stringify(data));
 });
 
+
+
+//'severity' can be 'debug', 'warning', 'error'
+//'logKey' can be 'system' or 'client' indicating if the error was caused by our system or a stratum client
 pool.on('log', function(severity, logKey, logText){
     console.log(severity + ': ' + '[' + logKey + '] ' + logText);
 };
