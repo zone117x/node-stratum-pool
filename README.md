@@ -23,6 +23,7 @@ Features (mostly untested)
 #### To do
 * Proof-of-stake support
 * Statistics module
+* Auto-banning flooders
 
 
 Requirements
@@ -31,39 +32,90 @@ Requirements
 * coin daemon
 
 
-Installation
-------------
+Example Usage
+-------------
 
-* Clone repository
+* Install as a node module by cloning repository
 
     ```bash
-    git clone https://github.com/zone117x/node-stratum.git
-    cd node-stratum
+    git clone https://github.com/zone117x/node-stratum node_modules/stratum-pool
+    npm update
     ```
 
-* For each coin you would like to start a pool server for, create a file in the "coins" directory titled "(name of coin).json"
-  Example configuration for dogecoin.json:
+* Module usage
 
-    ```json
-    {
-        "name": "Dogecoin",
-        "symbol": "doge",
-        "algorithm": "scrypt",
-        "reward": "POW",
-        "address": "DDt79i6P3Wro3SD3HSnkRLpMgUGUGdiNhS",
-        "stratumPort": 3334,
-        "difficulty": 8,
-        "daemon": {
-            "host": "localhost",
-            "port": 8332,
-            "user": "test",
-            "password": "test"
-        }
+```javascript
+var Stratum = require('stratum-pool');
+
+var stratum = new Stratum({
+    blockNotifyListener: {
+        enabled: false,
+        port: 8117,
+        password: "test"
     }
-    ```
+});
 
-  * Supported `"algorithm"` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
-  * Supported `"reward"` options: `"POW"` `"POS"`
+stratum.on('log', function(text){
+    console.log(text);
+});
+
+var pool = stratum.createPool({
+
+    name: "Dogecoin",
+    symbol: "doge",
+    algorithm: "scrypt",
+    reward: "POW",
+    address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
+    stratumPort: 3334,
+    difficulty: 32,
+    blockRefreshInterval: 1,
+    daemon: {
+        host: "localhost",
+        port: 19334,
+        user: "testnet",
+        password: "testnet"
+    },
+    varDiff: {
+        enabled: true, //set to false to disable vardiff functionality
+        minDifficulty: 16, //minimum difficulty. below 16 will cause problems
+        maxDifficulty: 1000, //network difficulty will be used if it is lower than this
+        daemonDiffUpdateFrequency: 3600, //get the network difficulty every this many seconds
+        targetTime: 30, //target time per share (i.e. try to get 1 share per this many seconds)
+        retargetTime: 120, //check to see if we should retarget every this many seconds
+        variancePercent: 20 //allow average time to very this % from target without retarget
+    }
+
+}, function(ip, workerName, password, callback){ //stratum authorization function
+    console.log("Authorize " + workerName + ":" + password + "@" + ip);
+    callback({
+        error: null,
+        authorized: true,
+        disconnect: false
+    });
+});
+
+pool.on('share', function(isValidShare, isValidBlock, data){
+    var shareData = JSON.stringify(data);
+
+    if (isValidBlock)
+        console.log('Block found, share data: ' + shareData);
+    else if (isValidShare)
+        console.log('Valid share submitted, share data: ' + shareData);
+    else if (data.solution)
+        console.log('We thought a block solution was found but it was rejected by the daemon, share data: ' + shareData);
+    else
+        console.log('Invalid share submitted, share data: ' + shareData)
+});
+
+pool.on('log', function(severity, logKey, logText){
+    console.log(severity + ': ' + '[' + logKey + '] ' + logText);
+};
+
+pool.start();
+```
+
+  * Supported `algorithm` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
+  * Supported `reward` options: `"POW"` `"POS"`
   * Ensure the `daemon` properties are configured correctly for RPC communication
 
 * [Optional, recommended] Setting up blocknotify
