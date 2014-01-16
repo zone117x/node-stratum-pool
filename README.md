@@ -63,8 +63,8 @@ var pool = stratum.createPool({
 
     name: "Dogecoin",
     symbol: "doge",
-    algorithm: "scrypt",
-    reward: "POW",
+    algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark"
+    reward: "POW", //or "POS"
     address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
     stratumPort: 3334,
     difficulty: 32,
@@ -96,15 +96,15 @@ var pool = stratum.createPool({
 
 
 
-/* 'data' object contains:
-{
+/*
+'data' object contains:
     job: 4, //stratum work job ID
     ip: '71.33.19.37', //ip address of client
     worker: 'matt.worker1', //stratum worker name
     difficulty: 64, //stratum client difficulty
-    solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4', //block hash if found
+    //solution is set if block was found
+    solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
     error: 'low share difficulty' //set if share is rejected for some reason
-}
 */
 pool.on('share', function(isValidShare, isValidBlock, data){
 
@@ -122,8 +122,11 @@ pool.on('share', function(isValidShare, isValidBlock, data){
 
 
 
-//'severity' can be 'debug', 'warning', 'error'
-//'logKey' can be 'system' or 'client' indicating if the error was caused by our system or a stratum client
+/*
+'severity': can be 'debug', 'warning', 'error'
+'logKey':   can be 'system' or 'client' indicating if the error
+            was caused by our system or a stratum client
+*/
 pool.on('log', function(severity, logKey, logText){
     console.log(severity + ': ' + '[' + logKey + '] ' + logText);
 };
@@ -131,11 +134,8 @@ pool.on('log', function(severity, logKey, logText){
 pool.start();
 ```
 
-  * Supported `algorithm` options: `"sha256"` `"scrypt"` `"scrypt-jane"` `"quark"`
-  * Supported `reward` options: `"POW"` `"POS"`
-  * Ensure the `daemon` properties are configured correctly for RPC communication
 
-* [Optional, recommended] Setting up blocknotify
+#### [Optional, recommended] Setting up blocknotify
   * Inside `config.json` make sure `blockNotifyListener.enabled` is set to true
   * Set the `blockNotifyListener.port` and `blockNotifyListener.password`
   * For the blocknotify arguments in your daemon startup parameters or conf file, use:
