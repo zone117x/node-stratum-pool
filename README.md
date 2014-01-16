@@ -18,14 +18,11 @@ Features (mostly untested)
 * Optimized generation transaction building
 * Process share submissions
 * Supports algos: scrypt, scrypt-jane, quark
+* Vardiff
 
 #### To do
 * Proof-of-stake support
-* Payment processing module
-* Vardiff
 * Statistics module
-* Integrate with PostgreSQL database
-* Web frontend
 
 
 Requirements
@@ -85,20 +82,16 @@ Installation
     * Example: `dogecoind -blocknotify="blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
     * If your daemon is on a different host you will have to copy over `blockNotify.js`
 
-* To start the poolserver run:
-
-    ```bash
-    node index.js
-    ```
 
 
 Credits
 -------
+* [vekexasia](https://github.com/vekexasia) - co-developer
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
 * [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
-* [vekexasia](https://github.com/vekexasia) - lots of help with research and development
+
 
 Donations
 ---------
