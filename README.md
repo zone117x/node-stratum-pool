@@ -1,11 +1,13 @@
 node-stratum
 ============
 
-[![Build Status](https://travis-ci.org/zone117x/node-stratum.png?branch=master)](https://travis-ci.org/zone117x/node-stratum)
-
     Under development
 
 High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin pools, each with their own daemon and stratum port :)
+
+[![Build Status](https://travis-ci.org/zone117x/node-stratum.png?branch=master)](https://travis-ci.org/zone117x/node-stratum)
+
+[![NPM](https://nodei.co/npm/stratum-pool.png?downloads=true&stars=true)](https://nodei.co/npm/stratum-pool/)
 
 #### Why
 This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers which are written in python.
