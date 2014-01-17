@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - "0.10"
+
+deploy:
+  provider: npm
+  email: "zone117x@gmail.com"
+  api_key: "YOUR-API-KEY"
