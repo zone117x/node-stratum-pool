@@ -136,7 +136,7 @@ pool.on('share', function(isValidShare, isValidBlock, data){
 */
 pool.on('log', function(severity, logKey, logText){
     console.log(severity + ': ' + '[' + logKey + '] ' + logText);
-};
+});
 ```
 
 Start pool
