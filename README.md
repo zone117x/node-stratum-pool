@@ -22,10 +22,10 @@ Features (need additional testing)
 * Optimized generation transaction building
 * Process share submissions
 * Supports algos: scrypt, scrypt-jane, quark
+* Proof-of-stake support
 * Vardiff
 
 #### To do
-* Proof-of-stake support
 * Statistics module
 * Auto-banning flooders
 
@@ -74,6 +74,7 @@ var pool = stratum.createPool({
     symbol: "doge",
     algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark"
     reward: "POW", //or "POS"
+    txMessages: false //or true
     address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
     stratumPort: 3334,
     difficulty: 32,
