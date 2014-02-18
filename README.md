@@ -16,14 +16,14 @@ Compared to the spaghetti state of the latest stratum-mining python server, this
 
 Features (need additional testing)
 ----------------------------------
-* Daemon interface
+* Daemon RPC interface
 * Stratum TCP socket server
 * Block template / job manager
 * Optimized generation transaction building
 * Process share submissions
-* Supports algos: scrypt, scrypt-jane, quark
+* Supports algorithms: scrypt, scrypt-jane, quark
 * POW (proof-of-work) & POS (proof-of-stake) support
-* Vardiff
+* Vardiff (variable difficulty / share limiter)
 
 #### To do
 * Statistics module
