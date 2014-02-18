@@ -27,9 +27,7 @@
         "scrypt256-hash":  "*",
         "scrypt-jane-hash":  "*",
         "quark-hash":  "*",
-        "binpack":  "*",
         "bignum":  "*",
-        "buffertools":  "*",
         "base58-native":  "*",
         "async": "*"
     },
