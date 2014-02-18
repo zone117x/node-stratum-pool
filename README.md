@@ -22,7 +22,7 @@ Features (need additional testing)
 * Optimized generation transaction building
 * Process share submissions
 * Supports algos: scrypt, scrypt-jane, quark
-* Proof-of-stake support
+* POW (proof-of-work) & POS (proof-of-stake) support
 * Vardiff
 
 #### To do
@@ -172,12 +172,13 @@ pool.start();
 
 Credits
 -------
-* [vekexasia](https://github.com/vekexasia) - co-developer
-* pronooob from https://dogehouse.org - being super knowledgeable & helpful
+* [vekexasia](https://github.com/vekexasia) - co-developer & great tester
+* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful with many bugs; he found the block 1-16 problem
+* [pronooob](https://dogehouse.org) - being knowledgeable & helpful
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
-* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
+
 
 
 Donations
