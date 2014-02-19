@@ -24,10 +24,10 @@ Features (need additional testing)
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Vardiff (variable difficulty / share limiter)
 * Supports algorithms:
-  * __SHA256__ (BitCoin, Freicoin, Peercoin/PPCoin, TerraCoin, etc..)
-  * __Scrypt__ (LiteCoin, Dogecoin, FeatherCoin, etc..)
+  * __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
+  * __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
   * __Scrypt-jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
-  * __Quark__ (QuarkCoin [QRK])
+  * __Quark__ (Quarkcoin [QRK])
   * __X11__ (Darkcoin [DRK])
 
 #### To do
