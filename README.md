@@ -16,14 +16,14 @@ Compared to the spaghetti state of the latest stratum-mining python server, this
 
 Features (need additional testing)
 ----------------------------------
-* Daemon interface
+* Daemon RPC interface
 * Stratum TCP socket server
 * Block template / job manager
 * Optimized generation transaction building
 * Process share submissions
-* Supports algos: scrypt, scrypt-jane, quark
-* Proof-of-stake support
-* Vardiff
+* Supports algorithms: scrypt, scrypt-jane, quark
+* POW (proof-of-work) & POS (proof-of-stake) support
+* Vardiff (variable difficulty / share limiter)
 
 #### To do
 * Statistics module
@@ -172,12 +172,13 @@ pool.start();
 
 Credits
 -------
-* [vekexasia](https://github.com/vekexasia) - co-developer
-* pronooob from https://dogehouse.org - being super knowledgeable & helpful
+* [vekexasia](https://github.com/vekexasia) - co-developer & great tester
+* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful with many bugs; he found the block 1-16 problem
+* [pronooob](https://dogehouse.org) - being knowledgeable & helpful
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
-* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful
+
 
 
 Donations
