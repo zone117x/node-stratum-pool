@@ -21,7 +21,7 @@ Features (need additional testing)
 * Block template / job manager
 * Optimized generation transaction building
 * Process share submissions
-* POW (proof-of-work) & POS (proof-of-stake) support
+* __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Vardiff (variable difficulty / share limiter)
 * Supports algorithms:
   * __SHA256__ (BitCoin, Freicoin, Peercoin/PPCoin, TerraCoin, etc..)
