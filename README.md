@@ -21,9 +21,14 @@ Features (need additional testing)
 * Block template / job manager
 * Optimized generation transaction building
 * Process share submissions
-* Supports algorithms: scrypt, scrypt-jane, quark
 * POW (proof-of-work) & POS (proof-of-stake) support
 * Vardiff (variable difficulty / share limiter)
+* Supports algorithms:
+  * __SHA256__ (BitCoin, Freicoin, Peercoin/PPCoin, TerraCoin, etc..)
+  * __Scrypt__ (LiteCoin, Dogecoin, FeatherCoin, etc..)
+  * __Scrypt-jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
+  * __Quark__ (QuarkCoin [QRK])
+  * __X11__ (Darkcoin [DRK])
 
 #### To do
 * Statistics module

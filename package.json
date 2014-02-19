@@ -1,6 +1,6 @@
 {
     "name": "stratum-pool",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "author": "Matthew Little",
     "description": "High performance Stratum poolserver in Node.js",
     "contributors": [
@@ -24,11 +24,12 @@
         "scrypt"
     ],
     "dependencies": {
-        "scrypt256-hash":  "*",
-        "scrypt-jane-hash":  "*",
-        "quark-hash":  "*",
-        "bignum":  "*",
-        "base58-native":  "*",
+        "scrypt256-hash": "zone117x/node-scrypt256-hash",
+        "scrypt-jane-hash": "zone117x/node-scrypt-jane-hash",
+        "quark-hash": "zone117x/node-quark-hash",
+        "x11-hash": "zone117x/node-x11-hash",
+        "bignum": "*",
+        "base58-native": "*",
         "async": "*"
     },
     "license": "GPL-2.0",
