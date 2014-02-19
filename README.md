@@ -77,7 +77,7 @@ var pool = stratum.createPool({
 
     name: "Dogecoin",
     symbol: "doge",
-    algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark"
+    algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark", "x11"
     reward: "POW", //or "POS"
     txMessages: false //or true
     address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
