@@ -38,7 +38,7 @@ Features (need additional testing)
 Requirements
 ------------
 * node v0.10+
-* coin daemon
+* coin daemon (preferably one with a relatively updated API and not some crapcoin :p)
 
 
 Example Usage
