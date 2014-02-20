@@ -16,8 +16,9 @@ site, you will have to use this code as module for another project that handles 
 
 #### Why
 This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers
-which are written in python. Compared to the spaghetti state of the latest stratum-mining python server, this software
-should also have a lower barrier to entry for other developers to fork and add features or fix bugs.
+which are written in python. Compared to the spaghetti state of the latest
+[stratum-mining python server](https://github.com/Crypto-Expert/stratum-mining/), this software should also have a
+lower barrier to entry for other developers to fork and add features or fix bugs.
 
 
 Features (need additional testing)
@@ -28,6 +29,7 @@ Features (need additional testing)
 * Optimized generation transaction building
 * Process share submissions
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
+* Transaction messages support
 * Vardiff (variable difficulty / share limiter)
 * Supports algorithms:
   * __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
