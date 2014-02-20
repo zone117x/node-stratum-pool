@@ -82,6 +82,7 @@ var pool = stratum.createPool({
     txMessages: false //or true
     address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
     stratumPort: 3334,
+    //instanceId: 37, //I recommend not to use this option as a crypto-random one will be generated
     difficulty: 32,
     blockRefreshInterval: 2, //seconds
     daemon: {
@@ -98,6 +99,10 @@ var pool = stratum.createPool({
         targetTime: 30, //target time per share (i.e. try to get 1 share per this many seconds)
         retargetTime: 120, //check to see if we should retarget every this many seconds
         variancePercent: 20 //allow average time to very this % from target without retarget
+
+        /* Enabling this option will queue client difficulty updates to be sent when a new job
+           is available. Otherwise new difficulties will be sent immediately. */
+        //mode: 'safe'
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
