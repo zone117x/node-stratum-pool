@@ -3,15 +3,22 @@ node-stratum
 
     Under development
 
-High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin pools, each with their own daemon and stratum port :)
+High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin
+pools, each with their own daemon and stratum port :)
+
+This project does the features listed below. It does not handle share rewards (payment processing). An
+[MPOS](https://github.com/MPOS/php-mpos) compatibility layer is in the works
+[here](https://github.com/zone117x/node-stratum-mpos). Otherwise, to setup a pool site, you will have to use this code
+ s a module for another project that handles share rewards.
 
 [![Build Status](https://travis-ci.org/zone117x/node-stratum.png?branch=master)](https://travis-ci.org/zone117x/node-stratum)
 
 [![NPM](https://nodei.co/npm/stratum-pool.png?downloads=true&stars=true)](https://nodei.co/npm/stratum-pool/)
 
 #### Why
-This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers which are written in python.
-Compared to the spaghetti state of the latest stratum-mining python server, this software should also have a lower barrier to entry for other developers to fork and add features or fix bugs.
+This server was built to be more efficient and easier to setup, maintain and scale than existing stratum poolservers
+which are written in python. Compared to the spaghetti state of the latest stratum-mining python server, this software
+should also have a lower barrier to entry for other developers to fork and add features or fix bugs.
 
 
 Features (need additional testing)
@@ -183,8 +190,8 @@ pool.start();
 Credits
 -------
 * [vekexasia](https://github.com/vekexasia) - co-developer & great tester
-* [TheSeven](https://github.com/TheSeven) - being super knowledgeable & helpful with many bugs; he found the block 1-16 problem
-* [pronooob](https://dogehouse.org) - being knowledgeable & helpful
+* [TheSeven](https://github.com/TheSeven) - knowledgeable & helpful & he found the block 1-16 problem
+* [pronooob](https://dogehouse.org) - knowledgeable & helpful
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
 * [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
 * [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
