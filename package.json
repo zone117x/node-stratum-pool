@@ -1,10 +1,11 @@
 {
     "name": "stratum-pool",
-    "version": "0.0.8",
+    "version": "0.0.9",
     "author": "Matthew Little",
     "description": "High performance Stratum poolserver in Node.js",
     "contributors": [
-        "vekexasia"
+        "vekexasia",
+        "TheSeven"
     ],
     "bin": {
         "block-notify": "./scripts/blockNotify.js"
