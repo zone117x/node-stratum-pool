@@ -8,7 +8,7 @@ pools, each with their own daemon and stratum port :)
 
 This project does not handle share rewards (payment processing). An [MPOS](https://github.com/MPOS/php-mpos)
 compatibility layer is in the works [here](https://github.com/zone117x/node-stratum-mpos). Otherwise, to setup a pool
-site, you will have to use this code as module for another project that handles share rewards.
+site, you will have to use this code as module for another project that handles share rewards. A portal (alternative to MPOS) that uses this module is [under development here](https://github.com/zone117x/node-stratum-portal). 
 
 [![Build Status](https://travis-ci.org/zone117x/node-stratum.png?branch=master)](https://travis-ci.org/zone117x/node-stratum)
 
