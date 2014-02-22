@@ -38,6 +38,10 @@ Features (need additional testing)
   * __Quark__ (Quarkcoin [QRK])
   * __X11__ (Darkcoin [DRK])
 
+
+#### Under development
+* P2P functionality for highly efficient block updates from daemon as a peer node
+
 #### To do
 * Statistics module
 * Auto-banning flooders
