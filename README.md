@@ -41,6 +41,8 @@ Features (need additional testing)
 
 #### Under development
 * P2P functionality for highly efficient block updates from daemon as a peer node
+* Ability to use multiple daemons for block updates and submitting blocks
+* Clustering to take advantage of multiple CPU cores
 
 #### To do
 * Statistics module
