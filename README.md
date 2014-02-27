@@ -41,7 +41,6 @@ Features
 
 
 #### Under development
-* Scrypt-VRT (Vertcoin) algorithm
 * Skein (Skeincoin) algorithm
 * Max (Maxcoin) algorithm
 * P2P functionality for highly efficient block updates from daemon as a peer node
@@ -92,21 +91,26 @@ Create and start new pool with configuration options and authentication function
 ```javascript
 var pool = stratum.createPool({
 
-    name: "Dogecoin",
-    symbol: "doge",
-    algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark", "x11"
-    reward: "POW", //or "POS"
-    txMessages: false //or true
-    address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
-    stratumPort: 3334,
-    //instanceId: 37, //I recommend not to use this option as a crypto-random one will be generated
-    difficulty: 32,
-    blockRefreshInterval: 2000, //milliseconds
+    coin: {
+        name: "Dogecoin",
+        symbol: "doge",
+        algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark", "x11"
+        reward: "POW", //or "POS"
+        txMessages: false //or true
+    },
+
+    pool: {
+        address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
+        stratumPort: 3334,
+        //instanceId: 37, //I recommend not to use this option as a crypto-random one will be generated
+        difficulty: 32,
+        blockRefreshInterval: 2000 //milliseconds
+    },
 
     /* Recommended to have at least two daemon instances running in case one drops out-of-sync
        or offline. For redundancy, all instances will be polled for block/transaction updates
        and be used for submitting blocks */
-    daemon: [
+    daemons: [
         {   //main daemon instance
             host: "localhost",
             port: 19334,
@@ -135,6 +139,25 @@ var pool = stratum.createPool({
            will almost immediately apply new difficulties. Set mode to fast for difficulty
            to be sent immediately. */
         //mode: 'fast'
+    },
+
+    p2p: {
+        enabled: false,
+        host: "localhost",
+        port: 19333,
+
+        /* Found in src as the PROTOCOL_VERSION variable, for example:
+             https://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/version.h#L28
+         */
+        protocolVersion: 70002,
+
+        /* Magic value is different for main/testnet and for each coin. It is found in the daemon
+          source code as the pchMessageStart variable. For example, litecoin mainnet:
+            http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L3059
+          And for litecoin testnet:
+            http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L2722-L2725
+         */
+        magic: "fcc1b7dc"
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
