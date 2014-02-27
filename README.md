@@ -100,8 +100,9 @@ var pool = stratum.createPool({
     difficulty: 32,
     blockRefreshInterval: 2000, //milliseconds
 
-    /* Recommended to have at least two daemon instances running in case one drops out-of-sync or offline. For
-       redundancy, all instances will be polled for block/transaction updates and be used for submitting blocks */
+    /* Recommended to have at least two daemon instances running in case one drops out-of-sync
+       or offline. For redundancy, all instances will be polled for block/transaction updates
+       and be used for submitting blocks */
     daemon: [
         {   //main daemon instance
             host: "localhost",
