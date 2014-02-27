@@ -27,6 +27,7 @@ Features (need additional testing)
 * Stratum TCP socket server
 * Block template / job manager
 * Optimized generation transaction building
+* Connecting to multiple daemons for redundancy
 * Process share submissions
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Transaction messages support
