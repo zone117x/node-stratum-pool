@@ -41,9 +41,9 @@ Features
 
 
 #### Under development
-* [Scrypt-VRT](https://github.com/scr34m/vertcoin_scrypt) (Scrypt-Adaptive-Nfactor) (Vertcoin) algorithm
-* [Skein](https://github.com/ahmedbodi/stratum-mining-maxcoin/blob/master/lib/skeinhash.py) (Skeincoin) algorithm
-* [Max](https://github.com/Prydie/maxcoin-hash-python) algorithm
+* Scrypt-VRT (Vertcoin) algorithm
+* Skein (Skeincoin) algorithm
+* Max (Maxcoin) algorithm
 * P2P functionality for highly efficient block updates from daemon as a peer node
 * Clustering to take advantage of multiple CPU cores
 
@@ -157,6 +157,7 @@ Listen to pool events
     worker: 'matt.worker1', //stratum worker name
     difficulty: 64, //stratum client difficulty
     height: 443795, //block height
+    difficulty: 3349 //network difficulty for this block
     //solution is set if block was found
     solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
     error: 'low share difficulty' //set if share is rejected for some reason
