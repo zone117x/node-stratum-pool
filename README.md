@@ -32,15 +32,18 @@ Features
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Transaction messages support
 * Vardiff (variable difficulty / share limiter)
-* Supports algorithms:
+* Supports the hashing algorithms:
   * __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
   * __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
-  * __Scrypt-jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
+  * __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
   * __Quark__ (Quarkcoin [QRK])
   * __X11__ (Darkcoin [DRK])
 
 
 #### Under development
+* [Scrypt-VRT](https://github.com/scr34m/vertcoin_scrypt) (Scrypt-Adaptive-Nfactor) (Vertcoin) algorithm
+* [Skein](https://github.com/ahmedbodi/stratum-mining-maxcoin/blob/master/lib/skeinhash.py) (Skeincoin) algorithm
+* [Max](https://github.com/Prydie/maxcoin-hash-python) algorithm
 * P2P functionality for highly efficient block updates from daemon as a peer node
 * Clustering to take advantage of multiple CPU cores
 
