@@ -157,7 +157,7 @@ Listen to pool events
     worker: 'matt.worker1', //stratum worker name
     difficulty: 64, //stratum client difficulty
     height: 443795, //block height
-    difficulty: 3349 //network difficulty for this block
+    networkDifficulty: 3349 //network difficulty for this block
     //solution is set if block was found
     solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
     error: 'low share difficulty' //set if share is rejected for some reason
