@@ -21,7 +21,7 @@ which are written in python. Compared to the spaghetti state of the latest
 lower barrier to entry for other developers to fork and add features or fix bugs.
 
 
-Features (need additional testing)
+Features
 ----------------------------------
 * Daemon RPC interface
 * Stratum TCP socket server
@@ -42,7 +42,6 @@ Features (need additional testing)
 
 #### Under development
 * P2P functionality for highly efficient block updates from daemon as a peer node
-* Ability to use multiple daemons for block updates and submitting blocks
 * Clustering to take advantage of multiple CPU cores
 
 #### To do
