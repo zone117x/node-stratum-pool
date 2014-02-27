@@ -126,9 +126,12 @@ var pool = stratum.createPool({
         retargetTime: 120, //check to see if we should retarget every this many seconds
         variancePercent: 20 //allow average time to very this % from target without retarget
 
-        /* Enabling this option will queue client difficulty updates to be sent when a new job
-           is available. Otherwise new difficulties will be sent immediately. */
-        //mode: 'safe'
+        /* By default new difficulties will be sent when a new job is available as stratum
+           protocol (http://mining.bitcoin.cz/stratum-mining) states that new difficulties
+           "will be applied to every next job received from the server." Some miner software
+           will almost immediately apply new difficulties. Set mode to fast for difficulty
+           to be sent immediately. */
+        //mode: 'fast'
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
