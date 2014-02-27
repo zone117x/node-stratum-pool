@@ -98,18 +98,29 @@ var pool = stratum.createPool({
     stratumPort: 3334,
     //instanceId: 37, //I recommend not to use this option as a crypto-random one will be generated
     difficulty: 32,
-    blockRefreshInterval: 2, //seconds
-    daemon: {
-        host: "localhost",
-        port: 19334,
-        user: "testnet",
-        password: "testnet"
-    },
+    blockRefreshInterval: 2000, //milliseconds
+
+    /* Recommended to have at least two daemon instances running in case one drops out-of-sync or offline. For
+       redundancy, all instances will be polled for block/transaction updates and be used for submitting blocks */
+    daemon: [
+        {   //main daemon instance
+            host: "localhost",
+            port: 19334,
+            user: "testnet",
+            password: "testnet"
+        },
+        {   //backup daemon instance
+            host: "localhost",
+            port: 19335,
+            user: "testnet",
+            password: "testnet"
+        }
+    ],
+
     varDiff: {
         enabled: true, //set to false to disable vardiff functionality
         minDifficulty: 16, //minimum difficulty. below 16 will cause problems
         maxDifficulty: 1000, //network difficulty will be used if it is lower than this
-        daemonDiffUpdateFrequency: 3600, //get the network difficulty every this many seconds
         targetTime: 30, //target time per share (i.e. try to get 1 share per this many seconds)
         retargetTime: 120, //check to see if we should retarget every this many seconds
         variancePercent: 20 //allow average time to very this % from target without retarget
