@@ -42,9 +42,8 @@ Features
 
 #### Under development
 * Skein (Skeincoin) algorithm
-* Max (Maxcoin) algorithm
+* Keccak (Maxcoin) algorithm
 * P2P functionality for highly efficient block updates from daemon as a peer node
-* Clustering to take advantage of multiple CPU cores
 
 #### To do
 * Statistics module
@@ -146,18 +145,18 @@ var pool = stratum.createPool({
         host: "localhost",
         port: 19333,
 
-        /* Found in src as the PROTOCOL_VERSION variable, for example:
-             https://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/version.h#L28
-         */
-        protocolVersion: 70002,
-
         /* Magic value is different for main/testnet and for each coin. It is found in the daemon
           source code as the pchMessageStart variable. For example, litecoin mainnet:
             http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L3059
           And for litecoin testnet:
             http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L2722-L2725
          */
-        magic: "fcc1b7dc"
+        magic: "fcc1b7dc",
+
+        /* Found in src as the PROTOCOL_VERSION variable, for example:
+             https://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/version.h#L28
+         */
+        protocolVersion: 70002
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
@@ -215,26 +214,6 @@ Start pool
 ```javascript
 pool.start();
 ```
-
-
-
-
-#### [Optional, recommended] Setting up blocknotify
-  * For stratum initialization options set `blockNotifyListener.enabled` to true
-  * Set the `blockNotifyListener.port` and `blockNotifyListener.password`
-  * For the blocknotify arguments in your daemon startup parameters or conf file, use:
-
-    ```
-    [path to blockNotify.js]
-    [pool host]:[pool blockNotifyListener port]
-    [blockNotifyListener password]
-    [coin symbol set in coin's json config]
-    %s"
-    ```
-
-    * Example: `dogecoind -blocknotify="scripts/blockNotify.js localhost:8117 mySuperSecurePassword doge %s"`
-    * If your daemon is on a different host you will have to copy over `scripts/blockNotify.js`
-
 
 
 Credits
