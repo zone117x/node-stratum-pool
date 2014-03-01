@@ -68,27 +68,12 @@ npm update
 
 #### Module usage
 
-Initialize a new Stratum object
-```javascript
-var Stratum = require('stratum-pool');
-
-var stratum = new Stratum({
-    blockNotifyListener: {
-        enabled: false,
-        port: 8117,
-        password: "test"
-    }
-});
-
-stratum.on('log', function(text){
-    console.log(text);
-});
-```
-
-
 Create and start new pool with configuration options and authentication function
 ```javascript
-var pool = stratum.createPool({
+
+var Stratum = require('stratum-pool');
+
+var pool = Stratum.createPool({
 
     coin: {
         name: "Dogecoin",
