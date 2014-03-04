@@ -83,12 +83,29 @@ var pool = Stratum.createPool({
         txMessages: false //or true
     },
 
-    pool: {
-        address: "nhfNedMmQ1Rjb62znwaiJgFhL3f4NQztSp",
-        stratumPort: 3334,
-        //instanceId: 37, //I recommend not to use this option as a crypto-random one will be generated
-        difficulty: 32,
-        blockRefreshInterval: 2000 //milliseconds
+    //instanceId: 37, //Recommend not using this because a crypto-random one will be generated
+
+
+    /* Each pool can have as many ports for your miners to connect to as you wish. Each port can
+       be configured to use its own pool difficulty and variable difficulty settings. varDiff is
+       optional and will only be used for the ports you configure it for. */
+    "ports": {
+        "3032": { //a port for your miners to connect to
+            "diff": 32, //the pool difficulty for this port
+
+            /* Variable difficulty is a feature that will automatically adjust difficulty for
+               individual miners based on their hashrate in order to lower networking overhead */
+            "varDiff": {
+                "minDiff": 8, //minimum difficulty
+                "maxDiff": 512, //network difficulty will be used if it is lower than this
+                "targetTime": 15, //try to get 1 share per this many seconds
+                "retargetTime": 90, //check to see if we should retarget every this many seconds
+                "variancePercent": 30 //allow time to very this % from target without retargeting
+            }
+        },
+        "3256": { //another port for your miners to connect to, this port does not use varDiff
+            "diff": 256 //the pool difficulty
+        }
     },
 
     /* Recommended to have at least two daemon instances running in case one drops out-of-sync
@@ -108,22 +125,6 @@ var pool = Stratum.createPool({
             password: "testnet"
         }
     ],
-
-    varDiff: {
-        enabled: true, //set to false to disable vardiff functionality
-        minDifficulty: 16, //minimum difficulty. below 16 will cause problems
-        maxDifficulty: 1000, //network difficulty will be used if it is lower than this
-        targetTime: 30, //target time per share (i.e. try to get 1 share per this many seconds)
-        retargetTime: 120, //check to see if we should retarget every this many seconds
-        variancePercent: 20 //allow average time to very this % from target without retarget
-
-        /* By default new difficulties will be sent when a new job is available as stratum
-           protocol (http://mining.bitcoin.cz/stratum-mining) states that new difficulties
-           "will be applied to every next job received from the server." Some miner software
-           will almost immediately apply new difficulties. Set mode to fast for difficulty
-           to be sent immediately. */
-        //mode: 'fast'
-    },
 
     p2p: {
         enabled: false,
