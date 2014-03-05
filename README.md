@@ -1,14 +1,16 @@
 node-stratum
 ============
 
-    Under development
-
 High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin
 pools, each with their own daemon and stratum port :)
 
-This project does not handle share rewards (payment processing). An [MPOS](https://github.com/MPOS/php-mpos)
-compatibility layer is in the works [here](https://github.com/zone117x/node-stratum-mpos). Otherwise, to setup a pool
-site, you will have to use this code as module for another project that handles share rewards. A portal (alternative to MPOS) that uses this module is [under development here](https://github.com/zone117x/node-stratum-portal). 
+This project does not handle share rewards (payment processing). A
+[fully functioning portal](https://github.com/zone117x/node-stratum-portal) is currently under development which will
+handle payments, website front-end, database layer, mutli-coin/pool support, auto-switching miners between coins/pools,
+etc.. The portal also has an [MPOS](https://github.com/MPOS/php-mpos)
+compatibility layer so that the it can function as a drop-in-replacement for
+[python-stratum-mining](https://github.com/Crypto-Expert/stratum-mining).
+
 
 [![Build Status](https://travis-ci.org/zone117x/node-stratum.png?branch=master)](https://travis-ci.org/zone117x/node-stratum)
 
