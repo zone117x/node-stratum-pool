@@ -8,7 +8,7 @@ This project does not handle share rewards (payment processing). A
 [fully functioning portal](https://github.com/zone117x/node-stratum-portal) is currently under development which will
 handle payments, website front-end, database layer, mutli-coin/pool support, auto-switching miners between coins/pools,
 etc.. The portal also has an [MPOS](https://github.com/MPOS/php-mpos)
-compatibility layer so that the it can function as a drop-in-replacement for
+compatibility mode so that the it can function as a drop-in-replacement for
 [python-stratum-mining](https://github.com/Crypto-Expert/stratum-mining).
 
 
