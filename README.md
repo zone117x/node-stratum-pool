@@ -31,6 +31,8 @@ Features
 * Optimized generation transaction building
 * Connecting to multiple daemons for redundancy
 * Process share submissions
+* Session managing for purging DDoS/flood initiated fake workers
+* Auto ban IPs that are flooding with invalid shares
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Transaction messages support
 * Vardiff (variable difficulty / share limiter)
@@ -49,7 +51,6 @@ Features
 
 #### To do
 * Statistics module
-* Auto-banning flooders
 
 
 Requirements
@@ -87,7 +88,19 @@ var pool = Stratum.createPool({
 
     //instanceId: 37, //Recommend not using this because a crypto-random one will be generated
 
+    /* Some attackers will create thousands of workers that use up all available socket connections,
+       usually the workers are zombies and don't submit shares after connecting. This features
+       detects those and disconnects them */
     "connectionTimeout": 120, //Remove workers that haven't been in contact for this many seconds
+
+    /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
+       reduce system/network load. Also useful to fight against flooding attacks. */
+    "banning": {
+        "enabled": true,
+        "time": 600, //How many seconds to ban worker for
+        "invalidPercent": 50, //What percent of invalid shares triggers ban
+        "checkThreshold": 500 //Check invalid percent when this many shares have been submitted
+    },
 
     /* Each pool can have as many ports for your miners to connect to as you wish. Each port can
        be configured to use its own pool difficulty and variable difficulty settings. varDiff is
