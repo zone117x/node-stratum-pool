@@ -25,10 +25,10 @@
         "scrypt"
     ],
     "dependencies": {
-        "scrypt256-hash": "zone117x/node-scrypt256-hash",
-        "scrypt-jane-hash": "zone117x/node-scrypt-jane-hash",
-        "quark-hash": "zone117x/node-quark-hash",
-        "x11-hash": "zone117x/node-x11-hash",
+        "scrypt256-hash": "https://github.com/zone117x/node-scrypt256-hash/archive/master.tar.gz",
+        "scrypt-jane-hash": "https://github.com/zone117x/node-scrypt-jane-hash/archive/master.tar.gz",
+        "quark-hash": "https://github.com/zone117x/node-quark-hash/archive/master.tar.gz",
+        "x11-hash": "https://github.com/zone117x/node-x11-hash/archive/master.tar.gz",
         "bignum": "*",
         "base58-native": "*",
         "async": "*"
