@@ -87,6 +87,7 @@ var pool = Stratum.createPool({
 
     //instanceId: 37, //Recommend not using this because a crypto-random one will be generated
 
+    "connectionTimeout": 120, //Remove workers that haven't been in contact for this many seconds
 
     /* Each pool can have as many ports for your miners to connect to as you wish. Each port can
        be configured to use its own pool difficulty and variable difficulty settings. varDiff is
