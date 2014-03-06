@@ -31,7 +31,7 @@ Features
 * Optimized generation transaction building
 * Connecting to multiple daemons for redundancy
 * Process share submissions
-* Session managing for purging DDoS/flood initiated fake workers
+* Session managing for purging DDoS/flood initiated zombie workers
 * Auto ban IPs that are flooding with invalid shares
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Transaction messages support
