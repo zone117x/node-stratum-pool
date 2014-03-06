@@ -86,11 +86,13 @@ var pool = Stratum.createPool({
         txMessages: false //or true
     },
 
+    "address": "mi4iBXbBsydtcc5yFmsff2zCFVX4XG7qJc", //Address to where block rewards are given
+    "blockRefreshInterval": 1000 //How often to poll RPC daemons for new blocks, in milliseconds
     //instanceId: 37, //Recommend not using this because a crypto-random one will be generated
 
     /* Some attackers will create thousands of workers that use up all available socket connections,
        usually the workers are zombies and don't submit shares after connecting. This features
-       detects those and disconnects them */
+       detects those and disconnects them. */
     "connectionTimeout": 120, //Remove workers that haven't been in contact for this many seconds
 
     /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
@@ -99,66 +101,69 @@ var pool = Stratum.createPool({
         "enabled": true,
         "time": 600, //How many seconds to ban worker for
         "invalidPercent": 50, //What percent of invalid shares triggers ban
-        "checkThreshold": 500 //Check invalid percent when this many shares have been submitted
+        "checkThreshold": 500, //Check invalid percent when this many shares have been submitted
+        "purgeInterval": 300 //Every this many seconds clear out the list of old bans
     },
 
     /* Each pool can have as many ports for your miners to connect to as you wish. Each port can
        be configured to use its own pool difficulty and variable difficulty settings. varDiff is
        optional and will only be used for the ports you configure it for. */
     "ports": {
-        "3032": { //a port for your miners to connect to
+        "3032": { //A port for your miners to connect to
             "diff": 32, //the pool difficulty for this port
 
             /* Variable difficulty is a feature that will automatically adjust difficulty for
                individual miners based on their hashrate in order to lower networking overhead */
             "varDiff": {
-                "minDiff": 8, //minimum difficulty
-                "maxDiff": 512, //network difficulty will be used if it is lower than this
-                "targetTime": 15, //try to get 1 share per this many seconds
-                "retargetTime": 90, //check to see if we should retarget every this many seconds
-                "variancePercent": 30 //allow time to very this % from target without retargeting
+                "minDiff": 8, //Minimum difficulty
+                "maxDiff": 512, //Network difficulty will be used if it is lower than this
+                "targetTime": 15, //Try to get 1 share per this many seconds
+                "retargetTime": 90, //Check to see if we should retarget every this many seconds
+                "variancePercent": 30 //Allow time to very this % from target without retargeting
             }
         },
-        "3256": { //another port for your miners to connect to, this port does not use varDiff
-            "diff": 256 //the pool difficulty
+        "3256": { //Another port for your miners to connect to, this port does not use varDiff
+            "diff": 256 //The pool difficulty
         }
     },
 
+
     /* Recommended to have at least two daemon instances running in case one drops out-of-sync
        or offline. For redundancy, all instances will be polled for block/transaction updates
-       and be used for submitting blocks */
-    daemons: [
-        {   //main daemon instance
-            host: "localhost",
-            port: 19334,
-            user: "testnet",
-            password: "testnet"
+       and be used for submitting blocks. */
+    "daemons": [
+        {   //Main daemon instance
+            "host": "localhost",
+            "port": 19332,
+            "user": "litecoinrpc",
+            "password": "testnet"
         },
-        {   //backup daemon instance
-            host: "localhost",
-            port: 19335,
-            user: "testnet",
-            password: "testnet"
+        {   //Backup daemon instance
+            "host": "localhost",
+            "port": 19344,
+            "user": "litecoinrpc",
+            "password": "testnet"
         }
     ],
 
-    p2p: {
-        enabled: false,
-        host: "localhost",
-        port: 19333,
+
+    /* This allows the pool to connect to the daemon as a node peer to recieve block updates.
+       It may be the most efficient way to get block updates (faster than polling, less
+       intensive than blocknotify script). However its still under development (not yet working). */
+    "p2p": {
+        "enabled": false,
+        "host": "localhost",
+        "port": 19333,
 
         /* Magic value is different for main/testnet and for each coin. It is found in the daemon
-          source code as the pchMessageStart variable. For example, litecoin mainnet:
-            http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L3059
-          And for litecoin testnet:
-            http://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/main.cpp#L2722-L2725
+           source code as the pchMessageStart variable.
+           For example, litecoin mainnet magic: http://git.io/Bi8YFw
+           And for litecoin testnet magic: http://git.io/NXBYJA
          */
-        magic: "fcc1b7dc",
+        "magic": "fcc1b7dc",
 
-        /* Found in src as the PROTOCOL_VERSION variable, for example:
-             https://github.com/litecoin-project/litecoin/blob/85f303d883ffff35238eaea5174b780c950c0ae4/src/version.h#L28
-         */
-        protocolVersion: 70002
+        //Found in src as the PROTOCOL_VERSION variable, for example: http://git.io/KjuCrw
+        "protocolVersion": 70002,
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
