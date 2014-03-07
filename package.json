@@ -7,9 +7,6 @@
         "vekexasia",
         "TheSeven"
     ],
-    "bin": {
-        "block-notify": "./scripts/blockNotify.js"
-    },
     "main": "lib/index.js",
     "repository": {
         "type": "git",
