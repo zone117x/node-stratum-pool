@@ -4,10 +4,10 @@ node-stratum
 High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin
 pools, each with their own daemon and stratum port :)
 
-This project does not handle share rewards (payment processing). A
-[fully functioning portal](https://github.com/zone117x/node-stratum-portal) is currently under development which will
-handle payments, website front-end, database layer, mutli-coin/pool support, auto-switching miners between coins/pools,
-etc.. The portal also has an [MPOS](https://github.com/MPOS/php-mpos)
+This project does not handle share rewards (payment processing).
+[NOMP (Node Open Mining Portal)](https://github.com/zone117x/node-open-mining-portal) - a fully functioning portal -
+is currently under development. It handles payments, website front-end, database layer, mutli-coin/pool support,
+auto-switching miners between coins/pools, etc.. The portal also has an [MPOS](https://github.com/MPOS/php-mpos)
 compatibility mode so that the it can function as a drop-in-replacement for
 [python-stratum-mining](https://github.com/Crypto-Expert/stratum-mining).
 
