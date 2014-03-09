@@ -46,6 +46,7 @@ Features
 #### Under development
 * Skein (Skeincoin) algorithm
 * Keccak (Maxcoin) algorithm
+* Scrypt-n (Vertcoin & GPUCoin) algorithm
 * P2P functionality for highly efficient block updates from daemon as a peer node
 
 #### To do
