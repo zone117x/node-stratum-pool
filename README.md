@@ -188,8 +188,13 @@ Listen to pool events
     difficulty: 64, //stratum client difficulty
     height: 443795, //block height
     networkDifficulty: 3349 //network difficulty for this block
+
     //solution is set if block was found
     solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
+
+    //tx is the coinbase transaction hash from the block
+    tx: '41bb22d6cc409f9c0bae2c39cecd2b3e3e1be213754f23d12c5d6d2003d59b1d,
+
     error: 'low share difficulty' //set if share is rejected for some reason
 */
 pool.on('share', function(isValidShare, isValidBlock, data){
