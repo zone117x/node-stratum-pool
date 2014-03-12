@@ -186,6 +186,7 @@ Listen to pool events
     ip: '71.33.19.37', //ip address of client
     worker: 'matt.worker1', //stratum worker name
     difficulty: 64, //stratum client difficulty
+    reward: 5000000000, //the number of satoshis received as payment for solving this block
     height: 443795, //block height
     networkDifficulty: 3349 //network difficulty for this block
 
