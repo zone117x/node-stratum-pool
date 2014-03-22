@@ -136,7 +136,11 @@ var pool = Stratum.createPool({
 
     /* Recommended to have at least two daemon instances running in case one drops out-of-sync
        or offline. For redundancy, all instances will be polled for block/transaction updates
-       and be used for submitting blocks. */
+       and be used for submitting blocks. Creating a backup daemon involves spawning a daemon
+       using the "-datadir=/backup" argument which creates a new daemon instance with it's own
+       RPC config. For more info on this see:
+          - https://en.bitcoin.it/wiki/Data_directory
+          - https://en.bitcoin.it/wiki/Running_bitcoind */
     "daemons": [
         {   //Main daemon instance
             "host": "localhost",
