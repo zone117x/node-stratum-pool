@@ -41,6 +41,7 @@ Features
   * __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
   * __Quark__ (Quarkcoin [QRK])
   * __X11__ (Darkcoin [DRK])
+* When started with a coin deamon that hasn't finished syncing to the network it shows the blockchain download progress and initializes once synced
 
 
 #### Under development
