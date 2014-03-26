@@ -48,6 +48,7 @@ Under development:
 * ✗ *Scrypt-n* (Vertcoin [VTC])
 * ✗ *Skein* (Skeincoin [SKC])
 * ✗ *Bcrypt* (Taojingcoin [TJC])
+* ✗ *Hefty1* (Heavycoin [HVC](
 
 
 #### Under development
