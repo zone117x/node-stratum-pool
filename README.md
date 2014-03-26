@@ -33,25 +33,26 @@ Features
 * __POW__ (proof-of-work) & __POS__ (proof-of-stake) support
 * Transaction messages support
 * Vardiff (variable difficulty / share limiter)
-* Supports the hashing algorithms:
-  * __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
-  * __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
-  * __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
-  * __Quark__ (Quarkcoin [QRK])
-  * __X11__ (Darkcoin [DRK])
 * When started with a coin deamon that hasn't finished syncing to the network it shows the blockchain download progress and initializes once synced
+
+#### Hashing algorithms supported:
+* ✓ __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
+* ✓ __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
+* ✓ __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
+* ✓ __Quark__ (Quarkcoin [QRK])
+* ✓ __X11__ (Darkcoin [DRK])
+* ✓ __Keccak__ (Maxcoin [MAX], HelixCoin [HXC])
+
+
+Under development:
+* ✗ *Scrypt-n* (Vertcoin [VTC])
+* ✗ *Skein* (Skeincoin [SKC])
+* ✗ *Bcrypt* (Taojingcoin [TJC])
 
 
 #### Under development
-* Skein (Skeincoin) algorithm
-* Keccak (Maxcoin) algorithm
-* Scrypt-n (Vertcoin & GPUCoin) algorithm
-* Bcrypt (Taojingcoin) algorithm
+
 * P2P functionality for highly efficient block updates from daemon as a peer node
-
-#### To do
-* Statistics module
-
 
 Requirements
 ------------
