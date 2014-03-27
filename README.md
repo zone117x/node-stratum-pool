@@ -41,14 +41,16 @@ Features
 * ✓ __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
 * ✓ __Quark__ (Quarkcoin [QRK])
 * ✓ __X11__ (Darkcoin [DRK])
-* ✓ __Keccak__ (Maxcoin [MAX], HelixCoin [HXC])
 
 
 Under development:
+* ✗ *Keccak* (CopperLark [CLR])
+* ✗ *Max* (Maxcoin [MAX], HelixCoin [HXC])
 * ✗ *Scrypt-n* (Vertcoin [VTC])
 * ✗ *Skein* (Skeincoin [SKC])
 * ✗ *Bcrypt* (Taojingcoin [TJC])
 * ✗ *Hefty1* (Heavycoin [HVC])
+* ✗ *Blake* (Blakecoin [BLC])
 
 
 #### Under development

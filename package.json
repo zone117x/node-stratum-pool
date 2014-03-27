@@ -33,6 +33,7 @@
         "quark-hash": "https://github.com/zone117x/node-quark-hash/archive/master.tar.gz",
         "x11-hash": "https://github.com/zone117x/node-x11-hash/archive/master.tar.gz",
         "keccak-hash": "https://github.com/zone117x/node-keccak-hash/archive/master.tar.gz",
+        "sha3": "*",
         "bignum": "*",
         "base58-native": "*",
         "async": "*"
