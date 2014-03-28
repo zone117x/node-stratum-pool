@@ -339,8 +339,12 @@ else {
     var diffLogLines = [];
 
     for (var algo in algos){
+
+
+        var whitespace = new Array(15 - algo.length).join(' ');
+
         var diff1 = TestEquality(algo, algos[algo].shift, algos[algo].nBits);
-        diffLogLines.push(algo + ':    \t\t0x' + diff1);
+        diffLogLines.push(algo + ':' + whitespace + '0x' + diff1);
     }
 
     console.log('Pools should use these difficulties:\n' + diffLogLines.join('\n'));
