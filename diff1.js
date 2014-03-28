@@ -350,3 +350,21 @@ else {
     console.log('Pools should use these difficulties:\n' + diffLogLines.join('\n'));
 
 }
+
+/*
+Test Output:
+ Pools should use these difficulties:
+ sha256d:       0x00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt:        0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt-jane:   0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt-n:      0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ x11:           0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ quark:         0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ keccak:        0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ hefty1:        0x0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ bcrypt:        0x00f8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ fugue:         0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ blake:         0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ shavite:       0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+ */
