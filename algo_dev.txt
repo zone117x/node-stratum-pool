@@ -1,22 +1,35 @@
+Most coins have diff1 in format like (~uint256(0) >> 20)
+I believe you can determine the hashrate multiplier by subtracting the 20 used in bitshift from the number 32
+so it would be 2^12 for this one. or for (~uint256(0) >> 16) it would be 2^(32 - 16)
+
+so really for every algo you simple need the bitshift on a zero value uint256.
+
+
 hefty1
+https://github.com/heavycoin/heavycoin/blob/master/src/main.cpp#L40
 00000000ffff0000000000000000000000000000000000000000000000000000
 https://github.com/heavycoin/heavycoin-hash-python
 
 
 keccak
+https://github.com/Max-Coin/maxcoin/blob/master/src/main.cpp#L42
+https://github.com/wecoin/wecoin/blob/master/src/main.cpp#L44
 https://github.com/phusion/node-sha3
 https://github.com/GalleonBank/galleon
 
 blake
+https://github.com/BlueDragon747/Blakecoin/blob/master/src/main.cpp#L38
 https://github.com/BlueDragon747/Blakecoin_Python_POW_Module
 
 
 bcrypt
+https://github.com/TaojingCoin-pd/Taojingcoin/blob/master/src/main.cpp#L35
 https://github.com/TaojingCoin-pd/Taojingcoin/blob/master/src/bcrypt.cpp
 https://github.com/TaojingCoin-pd/Taojingcoin/blob/master/src/bcrypt.h
 
 
 scrypt-n
+https://github.com/vertcoin/vertcoin/blob/master-0.8/src/main.cpp#L35
 https://github.com/scr34m/vertcoin_scrypt
 https://github.com/ahmedbodi/stratum-mining/tree/NScrypt
 
@@ -27,10 +40,12 @@ https://github.com/ahmedbodi/stratum-mining-maxcoin
 
 
 fugue
+https://github.com/fuguecoin/fuguecoin/blob/master/src/main.cpp#L40
 https://github.com/fuguecoin/fuguecoin
 
 
 SHAvite-3
+https://github.com/inkcoin/inkcoin-project/blob/master/src/main.cpp#L38
 https://github.com/inkcoin/inkcoin-project/blob/f729f1070eb6222832f34fbf087b1aea16522962/src/hashblock.h
 https://github.com/inkcoin/inkcoin-project
 http://www.cs.technion.ac.il/~orrd/SHAvite-3/
