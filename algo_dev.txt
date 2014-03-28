@@ -5,6 +5,7 @@ https://github.com/heavycoin/heavycoin-hash-python
 
 keccak
 https://github.com/phusion/node-sha3
+https://github.com/GalleonBank/galleon
 
 blake
 https://github.com/BlueDragon747/Blakecoin_Python_POW_Module
@@ -23,3 +24,14 @@ https://github.com/ahmedbodi/stratum-mining/tree/NScrypt
 max
 https://github.com/Prydie/maxcoin-hash-python
 https://github.com/ahmedbodi/stratum-mining-maxcoin
+
+
+fugue
+https://github.com/fuguecoin/fuguecoin
+
+
+SHAvite-3
+https://github.com/inkcoin/inkcoin-project/blob/f729f1070eb6222832f34fbf087b1aea16522962/src/hashblock.h
+https://github.com/inkcoin/inkcoin-project
+http://www.cs.technion.ac.il/~orrd/SHAvite-3/
+https://bitcointalk.org/index.php?topic=481516.0

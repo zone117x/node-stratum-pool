@@ -51,6 +51,8 @@ Under development:
 * ✗ *Bcrypt* (Taojingcoin [TJC])
 * ✗ *Hefty1* (Heavycoin [HVC])
 * ✗ *Blake* (Blakecoin [BLC])
+* ✗ *Fugue* (Fuguecoin [FC])
+* ✗ *SHAvite-3* (INKcoin [INK])
 
 
 #### Under development
