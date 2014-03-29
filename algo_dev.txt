@@ -1,3 +1,9 @@
+In order to implement a new algo in a pool you need three things
+   1) the C code to do the actual hashing - which I convert into a native node addon
+   2) the max difficulty (diff1) of the coin used to check if shares/blocks are valid
+   3) the share multiplier (2^16 for example) to determine the hashrate of a miner/entire pool
+
+
 Most coins have diff1 in format like (~uint256(0) >> 20)
 I believe you can determine the hashrate multiplier by subtracting the 20 used in bitshift from the number 32
 so it would be 2^12 for this one. or for (~uint256(0) >> 16) it would be 2^(32 - 16)
@@ -18,6 +24,12 @@ I believe these are the true diff1 values that should be used on pools for each 
  blake:         0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
  hefty1:        0x0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
  bcrypt:        0x00f8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+
+So remember how that list to add a new algo had 3 items, well the maxcoin devs very unforutentely did something
+that added a fourth step:
+ Step 4) Determine which parts of how work-generation / share-processing / creating-blocks work were arbitrarily
+ changed and implement them....
 
 
 Maxcoin devs, it seems, did not simply implement keccek in the way that litecoin devs implemented scrypt.
