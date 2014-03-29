@@ -25,6 +25,9 @@ I believe these are the true diff1 values that should be used on pools for each 
  hefty1:        0x0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
  bcrypt:        0x00f8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 
+To see how I generated these diff1 values see https://github.com/zone117x/node-stratum-pool/blob/master/diff1.js
+
+
 
 So remember how that list to add a new algo had 3 items, well the maxcoin devs very unforutentely did something
 that added a fourth step:
