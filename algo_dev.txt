@@ -49,6 +49,13 @@ keccak and keccak-max.
 
 
 
+One of my goals is to create a single native node.js addon that has all the hashing functions. So many of them
+share the same C code. Also it appears that some coins slightly tweak the way an algo is used which renders
+the currernt native node addon for that algo useless unless modified. Seems much better to have one big native
+node addon with all the hashing algos, and each configurable for the needs of different coins. It would make
+the process of adding a new algo much more simple as well.
+
+
 
 
 hefty1
