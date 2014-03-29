@@ -44,7 +44,8 @@ Too bad its source and binaries are only on some sketchy russian site and neithe
 system.. Anyway, it looks like several coin devs forked this maxcoin and switched out keccak with
 a different algo. This group of max-tainted algos I believe to be: keccak, fugue, blake.
 There may be more, and there may be coins that implemented those algos the regular way instead of the maxcoin
-way. So.. for each of these max-tainted algos we may have to implement, for example, blake and blake-max.
+way. So.. for each of these max-tainted algos we may have to implement, for example, blake and blake-max, or
+keccak and keccak-max.
 
 
 
