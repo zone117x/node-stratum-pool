@@ -5,6 +5,36 @@ so it would be 2^12 for this one. or for (~uint256(0) >> 16) it would be 2^(32 -
 so really for every algo you simple need the bitshift on a zero value uint256.
 
 
+I believe these are the true diff1 values that should be used on pools for each algo
+ sha256d:       0x00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt:        0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt-jane:   0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ scrypt-n:      0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ x11:           0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ quark:         0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ shavite:       0x0000f0ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ keccak:        0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ fugue:         0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ blake:         0x000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ hefty1:        0x0000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+ bcrypt:        0x00f8ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
+
+
+Maxcoin devs, it seems, did not simply implement keccek in the way that litecoin devs implemented scrypt.
+Or how the darkcoin devs implements x11, or how the quarkcoin devs implemented quark. The maxcoin devs
+decided to change several parts of how the the currency works - so that instead of simply changing the block
+hashing from sha256d to keccak, you have to change a few other parts of the block creation/submission progress.
+I believe there is actually at least one coin that implemented keccak hashing normally - copperlark coin.
+Too bad its source and binaries are only on some sketchy russian site and neither will compile/run on my
+system.. Anyway, it looks like several coin devs forked this maxcoin and switched out keccak with
+a different algo. This group of max-tainted algos I believe to be: keccak, fugue, blake.
+There may be more, and there may be coins that implemented those algos the regular way instead of the maxcoin
+way. So.. for each of these max-tainted algos we may have to implement, for example, blake and blake-max.
+
+
+
+
+
 hefty1
 https://github.com/heavycoin/heavycoin/blob/master/src/main.cpp#L40
 00000000ffff0000000000000000000000000000000000000000000000000000
