@@ -1,6 +1,6 @@
 {
     "name": "stratum-pool",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "High performance Stratum poolserver in Node.js",
     "keywords": [
         "stratum",
@@ -28,12 +28,7 @@
         "url": "https://github.com/zone117x/node-stratum-pool.git"
     },
     "dependencies": {
-        "scrypt256-hash": "https://github.com/zone117x/node-scrypt256-hash/archive/master.tar.gz",
-        "scrypt-jane-hash": "https://github.com/zone117x/node-scrypt-jane-hash/archive/master.tar.gz",
-        "quark-hash": "https://github.com/zone117x/node-quark-hash/archive/master.tar.gz",
-        "x11-hash": "https://github.com/zone117x/node-x11-hash/archive/master.tar.gz",
-        "keccak-hash": "https://github.com/zone117x/node-keccak-hash/archive/master.tar.gz",
-        "sha3": "*",
+        "multi-hashing": "https://github.com/zone117x/node-multi-hashing/archive/master.tar.gz",
         "bignum": "*",
         "base58-native": "*",
         "async": "*"

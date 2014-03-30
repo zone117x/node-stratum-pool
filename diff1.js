@@ -30,6 +30,12 @@ var bignum = require('bignum');
     galleon     [keccak]        (~uint256(0) >> 20)
         https://github.com/GalleonBank/galleon/blob/master/src/main.cpp#L51
 
+    cryptometh  [keccak]        (~uint256(0) >> 24)
+        https://github.com/cryptometh/cryptometh/blob/master/src/main.cpp#L43
+
+    365coin     [keccak]        (~uint256(0) >> 24)
+        https://github.com/365-Coin/365coin/blob/master/src/main.cpp#L42
+
     slothcoin   [keccak]        (~uint256(0) >> 24)
         https://github.com/thimod/Slothcoin/blob/master/src/main.cpp#L40
 
@@ -57,11 +63,17 @@ var bignum = require('bignum');
     yacoin      [scrypt-jane]   (~uint256(0) >> 20)
         https://github.com/yacoin/yacoin/blob/master/src/main.cpp#L36
 
+    ultracoin   [scrypt-jane]   (~uint256(0) >> 20)
+        https://github.com/ziggy909/ultracoin/blob/master/src/main.cpp#L39
+
     vertcoin    [scrypt-n]      (~uint256(0) >> 20)
         https://github.com/vertcoin/vertcoin/blob/master-0.8/src/main.cpp#L35
 
-    inkcoin     [shavite]       (~uint256(0) >> 20)
-        https://github.com/inkcoin/inkcoin-project/blob/master/src/main.cpp#L38
+    skiencoin   [skein]         (~uint256(0) >> 20)
+        https://github.com/skeincoin/skeincoin/blob/master/src/chainparams.cpp#L33
+
+    nigeriacoin [skein]         (~uint256(0) >> 20)
+        https://github.com/nigeriacoin/nigeriacoin/blob/master/src/chainparams.cpp#L35
 
     bitcoin     [sha256d]       0x1d00ffff
         https://github.com/bitcoin/bitcoin/blob/b8d9058a4d1ce28eefa65aa3339bcc52b3c014e9/src/chainparams.cpp#L136
@@ -112,7 +124,8 @@ function startAsking() {
 }
 
 function askBitshift(){
-    rl.question('\nEnter the right bitshift integer, for example with "uint256(0) >> 24", enter in the number 24\nNumber: ', function (answer) {
+    console.log('\nEnter the right bitshift integer, for example with "uint256(0) >> 24", enter in the number 24');
+    rl.question('Number: ', function (answer) {
 
         var shiftRight;
         try {
@@ -132,9 +145,10 @@ function askBitshift(){
 }
 
 function askBitsConvert(){
-    rl.question('\n(Note that this will always give truncated results as diff1 precision is ' +
+    console.log('\n(Note that this will always give truncated results as diff1 precision is ' +
         'lost when compacting to nBits. Enter the 8 character nBit hex code, for example ' +
-        'with BTC its 0x1d00ffff so enter 1d00ffff\nHex code: ', function (answer) {
+        'with BTC its 0x1d00ffff so enter 1d00ffff\n');
+    rl.question('Hex code: ', function (answer) {
 
         if (answer.length !== 8){
             console.log('Must be an 8 character hex string');
@@ -307,6 +321,10 @@ else {
             nBits: '1f00f0ff'
         },
         quark: {
+            shift: 20,
+            nBits: '1f00f0ff'
+        },
+        skein: {
             shift: 20,
             nBits: '1f00f0ff'
         },
