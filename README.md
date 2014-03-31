@@ -39,6 +39,7 @@ Features
 * ✓ __SHA256__ (Bitcoin, Freicoin, Peercoin/PPCoin, Terracoin, etc..)
 * ✓ __Scrypt__ (Litecoin, Dogecoin, Feathercoin, etc..)
 * ✓ __Scrypt-Jane__ (YaCoin, CopperBars, Pennies, Tickets, etc..)
+* ✓ __Scrypt-N__ (Vertcoin [VTC])
 * ✓ __Quark__ (Quarkcoin [QRK])
 * ✓ __X11__ (Darkcoin [DRK])
 
@@ -46,7 +47,6 @@ Features
 Under development:
 * ✗ *Keccak* (CopperLark [CLR])
 * ✗ *Max* (Maxcoin [MAX], HelixCoin [HXC])
-* ✗ *Scrypt-n* (Vertcoin [VTC])
 * ✗ *Skein* (Skeincoin [SKC])
 * ✗ *Bcrypt* (Taojingcoin [TJC])
 * ✗ *Hefty1* (Heavycoin [HVC])
@@ -87,7 +87,7 @@ var pool = Stratum.createPool({
     coin: {
         name: "Dogecoin",
         symbol: "doge",
-        algorithm: "scrypt", //or "sha256", "scrypt-jane", "quark", "x11"
+        algorithm: "scrypt", //or "sha256", "scrypt-jane", "scrypt-n", "quark", "x11"
         txMessages: false //or true
     },
 
