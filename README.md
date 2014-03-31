@@ -77,19 +77,59 @@ npm update
 
 #### Module usage
 
-Create and start new pool with configuration options and authentication function
-```javascript
+Create the configuration for your coin:
 
+```javascript
+var myCoin = {
+    "name": "Dogecoin",
+    "symbol": "DOGE",
+    "algorithm": "scrypt", //or "sha256", "scrypt-jane", "scrypt-n", "quark", "x11"
+    "txMessages": false, //or true (not required, defaults to false)
+};
+```
+
+If you are using the `scrypt-jane` algorithm there are additional configurations:
+
+```javascript
+var myCoin = {
+    "name": "Freecoin",
+    "symbol": "FEC",
+    "algorithm": "scrypt-jane",
+    "chainStartTime": 1375801200, //defaults to 1367991200 (YACoin) if not used
+    "nMin": 6, //defaults to 4 if not used
+    "nMax": 32 //defaults to 30 if not used
+};
+```
+
+If you are using the `scrypt-n` algorithm there is an additional configuration:
+```javascript
+var myCoin = {
+    "name": "Execoin",
+    "symbol": "EXE",
+    "algorithm": "scrypt-n",
+    /* This defaults to Vertcoin's timetable if not used. It is required for scrypt-n coins that have
+       modified their N-factor timetable to be different than Vertcoin's. */
+    "timeTable": {
+        "2048": 1390959880,
+        "4096": 1438295269,
+        "8192": 1485630658,
+        "16384": 1532966047,
+        "32768": 1580301436,
+        "65536": 1627636825,
+        "131072": 1674972214,
+        "262144": 1722307603
+    }
+};
+```
+
+Create and start new pool with configuration options and authentication function
+
+```javascript
 var Stratum = require('stratum-pool');
 
 var pool = Stratum.createPool({
 
-    coin: {
-        name: "Dogecoin",
-        symbol: "doge",
-        algorithm: "scrypt", //or "sha256", "scrypt-jane", "scrypt-n", "quark", "x11"
-        txMessages: false //or true
-    },
+    "coin": myCoin,
 
     "address": "mi4iBXbBsydtcc5yFmsff2zCFVX4XG7qJc", //Address to where block rewards are given
     "blockRefreshInterval": 1000, //How often to poll RPC daemons for new blocks, in milliseconds
