@@ -138,6 +138,11 @@ var pool = Stratum.createPool({
        job broadcast. */
     "txRefreshInterval": 20000,
 
+    /* Some miner software is bugged and will consider the pool offline if it doesn't receive
+       anything for around a minute, so every time we broadcast jobs, set a timeout to rebroadcast
+       in this many seconds unless we find a new job. Set to zero or remove to disable this. */
+    "jobRebroadcastTimeout": 55,
+
     //instanceId: 37, //Recommend not using this because a crypto-random one will be generated
 
     /* Some attackers will create thousands of workers that use up all available socket connections,
