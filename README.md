@@ -150,6 +150,9 @@ var pool = Stratum.createPool({
        detects those and disconnects them. */
     "connectionTimeout": 600, //Remove workers that haven't been in contact for this many seconds
 
+    /* Sometimes you want the block hashes even for shares that aren't block candidates. */
+    "emitInvalidBlockHashes": false,
+
     /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
        reduce system/network load. Also useful to fight against flooding attacks. */
     "banning": {
@@ -248,11 +251,14 @@ Listen to pool events
     height: 443795, //block height
     networkDifficulty: 3349 //network difficulty for this block
 
-    //solution is set if block was found
-    solution: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
+    //AAK the block solution - set if block was found
+    blockHash: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
 
-    //tx is the coinbase transaction hash from the block
-    tx: '41bb22d6cc409f9c0bae2c39cecd2b3e3e1be213754f23d12c5d6d2003d59b1d,
+    //Exists if "emitInvalidBlockHashes" is set to true
+    blockHashInvalid: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4'
+
+    //txHash is the coinbase transaction hash from the block
+    txHash: '41bb22d6cc409f9c0bae2c39cecd2b3e3e1be213754f23d12c5d6d2003d59b1d,
 
     error: 'low share difficulty' //set if share is rejected for some reason
 */
@@ -262,8 +268,8 @@ pool.on('share', function(isValidShare, isValidBlock, data){
         console.log('Block found');
     else if (isValidShare)
         console.log('Valid share submitted');
-    else if (data.solution)
-        console.log('We thought a block solution was found but it was rejected by the daemon');
+    else if (data.blockHash)
+        console.log('We thought a block was found but it was rejected by the daemon');
     else
         console.log('Invalid share submitted')
 
