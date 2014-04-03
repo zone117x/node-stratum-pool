@@ -153,6 +153,12 @@ var pool = Stratum.createPool({
     /* Sometimes you want the block hashes even for shares that aren't block candidates. */
     "emitInvalidBlockHashes": false,
 
+    /* We use proper maximum algorithm difficulties found in the coin daemon source code. Most
+       miners/pools that deal with scrypt use a guesstimated one that is about 5.86% off from the
+       actual one. So here we can set a tolerable threshold for if a share is slightly too low
+       due to mining apps using incorrect max diffs and this pool using correct max diffs. */
+    "shareVariancePercent": 10,
+
     /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
        reduce system/network load. Also useful to fight against flooding attacks. */
     "banning": {
