@@ -153,6 +153,12 @@ var pool = Stratum.createPool({
     /* Sometimes you want the block hashes even for shares that aren't block candidates. */
     "emitInvalidBlockHashes": false,
 
+    /* We use proper maximum algorithm difficulties found in the coin daemon source code. Most
+       miners/pools that deal with scrypt use a guesstimated one that is about 5.86% off from the
+       actual one. So here we can set a tolerable threshold for if a share is slightly too low
+       due to mining apps using incorrect max diffs and this pool using correct max diffs. */
+    "shareVariancePercent": 10,
+
     /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
        reduce system/network load. Also useful to fight against flooding attacks. */
     "banning": {
@@ -309,14 +315,14 @@ Donations
 ---------
 To support development of this project feel free to donate :)
 
-* BTC: 1KRotMnQpxu3sePQnsVLRy3EraRFYfJQFR
-* LTC: LKfavSDJmwiFdcgaP1bbu46hhyiWw5oFhE
-* VTC: VgW4uFTZcimMSvcnE4cwS3bjJ6P8bcTykN
-* MAX: mWexUXRCX5PWBmfh34p11wzS5WX2VWvTRT
-* QRK: QehPDAhzVQWPwDPQvmn7iT3PoFUGT7o8bC
-* DRK: XcQmhp8ANR7okWAuArcNFZ2bHSB81jpapQ
-* DOGE: DBGGVtwAAit1NPZpRm5Nz9VUFErcvVvHYW
-* Cryptsy Trade Key: 254ca13444be14937b36c44ba29160bd8f02ff76
+* BTC: `1KRotMnQpxu3sePQnsVLRy3EraRFYfJQFR`
+* LTC: `LKfavSDJmwiFdcgaP1bbu46hhyiWw5oFhE`
+* VTC: `VgW4uFTZcimMSvcnE4cwS3bjJ6P8bcTykN`
+* MAX: `mWexUXRCX5PWBmfh34p11wzS5WX2VWvTRT`
+* QRK: `QehPDAhzVQWPwDPQvmn7iT3PoFUGT7o8bC`
+* DRK: `XcQmhp8ANR7okWAuArcNFZ2bHSB81jpapQ`
+* DOGE: `DBGGVtwAAit1NPZpRm5Nz9VUFErcvVvHYW`
+* Cryptsy Trade Key: `254ca13444be14937b36c44ba29160bd8f02ff76`
 
 License
 -------
