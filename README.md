@@ -160,8 +160,15 @@ var pool = Stratum.createPool({
        due to mining apps using incorrect max diffs and this pool using correct max diffs. */
     "shareVariancePercent": 10,
 
-    /* If a worker is submitting a good deal of invalid shares we can temporarily ban them to
-       reduce system/network load. Also useful to fight against flooding attacks. */
+    /* Enable for client IP addresses to be detected when using a load balancer with TCP proxy
+       protocol enabled, such as HAProxy with 'send-proxy' param:
+       http://haproxy.1wt.eu/download/1.5/doc/configuration.txt */
+    "tcpProxyProtocol": false,
+
+    /* If a worker is submitting a high threshold of invalid shares we can temporarily ban their IP
+       to reduce system/network load. Also useful to fight against flooding attacks. The worker's
+       If running behind something like HAProxy be sure to enable the TCP Proxy Protocol config,
+       otherwise you'll end up banning your own IP address (and therefore all workers). */
     "banning": {
         "enabled": true,
         "time": 600, //How many seconds to ban worker for
@@ -202,13 +209,13 @@ var pool = Stratum.createPool({
           - https://en.bitcoin.it/wiki/Running_bitcoind */
     "daemons": [
         {   //Main daemon instance
-            "host": "localhost",
+            "host": "127.0.0.1",
             "port": 19332,
             "user": "litecoinrpc",
             "password": "testnet"
         },
         {   //Backup daemon instance
-            "host": "localhost",
+            "host": "127.0.0.1",
             "port": 19344,
             "user": "litecoinrpc",
             "password": "testnet"
@@ -221,7 +228,7 @@ var pool = Stratum.createPool({
        intensive than blocknotify script). However its still under development (not yet working). */
     "p2p": {
         "enabled": false,
-        "host": "localhost",
+        "host": "127.0.0.1",
         "port": 19333,
 
         /* Magic value is different for main/testnet and for each coin. It is found in the daemon
