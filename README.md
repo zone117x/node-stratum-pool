@@ -46,15 +46,15 @@ Features
 
 
 Under development:
-* ✗ *Keccak* (CopperLark [CLR])
-* ✗ *Max* (Maxcoin [MAX], HelixCoin [HXC])
+* ✗ *Keccak* (Maxcoin [MAX], HelixCoin, CryptoMeth, eCoin, CopperLark)
 * ✗ *Skein* (Skeincoin [SKC])
-* ✗ *Bcrypt* (Taojingcoin [TJC])
+* ✗ *Groestl* (MyriadCoin [MYR]
+* ✗ *Qubit* (QubitCoin [Q2C], MyriadCoin [MYR])
 * ✗ *Hefty1* (Heavycoin [HVC])
 * ✗ *Blake* (Blakecoin [BLC])
 * ✗ *Fugue* (Fuguecoin [FC])
 * ✗ *SHAvite-3* (INKcoin [INK])
-
+* ✗ *Bcrypt* (Taojingcoin [TJC])
 
 #### Under development
 
@@ -223,23 +223,29 @@ var pool = Stratum.createPool({
     ],
 
 
-    /* This allows the pool to connect to the daemon as a node peer to recieve block updates.
+    /* This allows the pool to connect to the daemon as a node peer to receive block updates.
        It may be the most efficient way to get block updates (faster than polling, less
-       intensive than blocknotify script). However its still under development (not yet working). */
+       intensive than blocknotify script). It requires additional setup: the 'magic' field must
+       be exact (extracted from the coin source code). */
     "p2p": {
         "enabled": false,
+
+        /* Host for daemon */
         "host": "127.0.0.1",
+
+        /* Port configured for daemon (this is the actual peer port not RPC port) */
         "port": 19333,
+
+        /* If your coin daemon is new enough (i.e. not a shitcoin) then it will support a p2p feature
+           that prevents the daemon from spamming our peer node with unnecessary transaction data.
+           Assume its supported but if you have problems try disabling it. */
+        "disableTransactions": true,
 
         /* Magic value is different for main/testnet and for each coin. It is found in the daemon
            source code as the pchMessageStart variable.
            For example, litecoin mainnet magic: http://git.io/Bi8YFw
-           And for litecoin testnet magic: http://git.io/NXBYJA
-         */
-        "magic": "fcc1b7dc",
-
-        //Found in src as the PROTOCOL_VERSION variable, for example: http://git.io/KjuCrw
-        "protocolVersion": 70002,
+           And for litecoin testnet magic: http://git.io/NXBYJA */
+        "magic": "fcc1b7dc"
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
@@ -311,6 +317,7 @@ pool.start();
 Credits
 -------
 * [vekexasia](https://github.com/vekexasia) - co-developer & great tester
+* [LucasJones(//github.com/LucasJones) - getting p2p block notify script working
 * [TheSeven](https://github.com/TheSeven) - answering an absurd amount of my questions, found the block 1-16 problem, provided example code for peer node functionality
 * [pronooob](https://dogehouse.org) - knowledgeable & helpful
 * [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
