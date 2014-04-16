@@ -108,8 +108,8 @@ var myCoin = {
     "name": "Execoin",
     "symbol": "EXE",
     "algorithm": "scrypt-n",
-    /* This defaults to Vertcoin's timetable if not used. It is required for scrypt-n coins that have
-       modified their N-factor timetable to be different than Vertcoin's. */
+    /* This defaults to Vertcoin's timetable if not used. It is required for scrypt-n coins that
+       have modified their N-factor timetable to be different than Vertcoin's. */
     "timeTable": {
         "2048": 1390959880,
         "4096": 1438295269,
@@ -236,9 +236,9 @@ var pool = Stratum.createPool({
         /* Port configured for daemon (this is the actual peer port not RPC port) */
         "port": 19333,
 
-        /* If your coin daemon is new enough (i.e. not a shitcoin) then it will support a p2p feature
-           that prevents the daemon from spamming our peer node with unnecessary transaction data.
-           Assume its supported but if you have problems try disabling it. */
+        /* If your coin daemon is new enough (i.e. not a shitcoin) then it will support a p2p
+           feature that prevents the daemon from spamming our peer node with unnecessary
+           transaction data. Assume its supported but if you have problems try disabling it. */
         "disableTransactions": true,
 
         /* Magic value is different for main/testnet and for each coin. It is found in the daemon
