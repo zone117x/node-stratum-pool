@@ -280,14 +280,16 @@ var pool = Stratum.createPool({
 Listen to pool events
 ```javascript
 /*
+
 'data' object contains:
     job: 4, //stratum work job ID
     ip: '71.33.19.37', //ip address of client
     worker: 'matt.worker1', //stratum worker name
-    difficulty: 64, //stratum client difficulty
-    reward: 5000000000, //the number of satoshis received as payment for solving this block
     height: 443795, //block height
-    networkDifficulty: 3349 //network difficulty for this block
+    reward: 5000000000, //the number of satoshis received as payment for solving this block
+    difficulty: 64, //stratum worker difficulty
+    shareDiff: 78, //actual difficulty of the share
+    blockDiff: 3349 //difficulty for this block
 
     //AAK the block solution - set if block was found
     blockHash: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
