@@ -289,9 +289,11 @@ Listen to pool events
     reward: 5000000000, //the number of satoshis received as payment for solving this block
     difficulty: 64, //stratum worker difficulty
     shareDiff: 78, //actual difficulty of the share
-    blockDiff: 3349 //difficulty for this block
+    blockDiff: 3349, //block difficulty adjusted for share padding
+    blockDiffActual: 3349 //actual difficulty for this block
 
-    //AAK the block solution - set if block was found
+
+    //AKA the block solution - set if block was found
     blockHash: '110c0447171ad819dd181216d5d80f41e9218e25d833a2789cb8ba289a52eee4',
 
     //Exists if "emitInvalidBlockHashes" is set to true
