@@ -46,13 +46,15 @@ Features
 * ✓ __X11__ (Darkcoin [DRK], Hirocoin, Limecoin)
 * ✓ __Keccak__ (Maxcoin [MAX], HelixCoin, CryptoMeth, Galleon, 365coin, Slothcoin, BitcointalkCoin, eCoin, CopperLark)
 
+May be working (needs additional testing):
+* ? *Blake* (Blakecoin [BLC])
+* ? *Fugue* (Fuguecoin [FC])
+* ? *Skein* (Skeincoin [SKC])
+* ? *Groestl* (Groestlcoin [GRS], Myriadcoin [MYR)
+
 Under development:
-* ✗ *Skein* (Skeincoin [SKC])
-* ✗ *Groestl* (MyriadCoin [MYR]
-* ✗ *Qubit* (QubitCoin [Q2C], MyriadCoin [MYR])
+* ✗ *Qubit* (Qubitcoin [Q2C], Myriadcoin [MYR])
 * ✗ *Hefty1* (Heavycoin [HVC])
-* ✗ *Blake* (Blakecoin [BLC])
-* ✗ *Fugue* (Fuguecoin [FC])
 * ✗ *SHAvite-3* (INKcoin [INK])
 * ✗ *Bcrypt* (Taojingcoin [TJC])
 
@@ -124,7 +126,7 @@ var myCoin = {
 ```
 
 If you are using the `keccak` algorithm there are additional configurations *(The rare `normalHashing` keccak coins
-such as Copperlark and eCoin don't appear to work yet, byt the popular ones like Maxcoin are)*:
+such as Copperlark and eCoin don't appear to work yet - only the popular ones like Maxcoin are)*:
 ```javascript
 var myCoin = {
     "name": "eCoin",
@@ -133,10 +135,7 @@ var myCoin = {
 
     /* This is not required and set to false by default. Some coins such as Copperlark and eCoin
        require it to be set to true. Maxcoin and most others are false. */
-    "normalHashing": true,
-    /* The rare normalHashing coins also require diff to be manually set here. Do not use for
-       typical keccak coins like Maxcoin. */
-    "diffShift": 32
+    "normalHashing": true
 };
 ```
 
