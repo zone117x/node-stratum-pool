@@ -58,9 +58,6 @@ Under development:
 * ✗ *SHAvite-3* (INKcoin [INK])
 * ✗ *Bcrypt* (Taojingcoin [TJC])
 
-#### Under development
-
-* P2P functionality for highly efficient block updates from daemon as a peer node
 
 Requirements
 ------------
