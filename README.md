@@ -338,14 +338,14 @@ pool.start();
 
 Credits
 -------
-* [vekexasia](https://github.com/vekexasia) - co-developer & great tester
-* [LucasJones(//github.com/LucasJones) - getting p2p block notify script working
-* [TheSeven](https://github.com/TheSeven) - answering an absurd amount of my questions, found the block 1-16 problem, provided example code for peer node functionality
+* [vekexasia](//github.com/vekexasia) - co-developer & great tester
+* [LucasJones(//github.com/LucasJones) - getting p2p block notify script working and fixed block hashing for various new algos
+* [TheSeven](//github.com/TheSeven) - answering an absurd amount of my questions, found the block 1-16 problem, provided example code for peer node functionality
 * [pronooob](https://dogehouse.org) - knowledgeable & helpful
-* [Slush0](https://github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
-* [viperaus](https://github.com/viperaus/stratum-mining) - scrypt adaptions to python code
-* [ahmedbodi](https://github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
-* [steveshit](https://github.com/steveshit) - ported X11 hashing algo from python to node module
+* [Slush0](//github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
+* [viperaus](//github.com/viperaus/stratum-mining) - scrypt adaptions to python code
+* [ahmedbodi](//github.com/ahmedbodi/stratum-mining) - more algo adaptions to python code
+* [steveshit](//github.com/steveshit) - ported X11 hashing algo from python to node module
 
 
 Donations
