@@ -50,13 +50,12 @@ May be working (needs additional testing):
 * ? *Blake* (Blakecoin [BLC])
 * ? *Fugue* (Fuguecoin [FC])
 * ? *Skein* (Skeincoin [SKC])
-* ? *Groestl* (Groestlcoin [GRS], Myriadcoin [MYR)
+* ? *Groestl* (Groestlcoin [GRS], Myriadcoin [MYR])
+* ? *Qubit* (Qubitcoin [Q2C], Myriadcoin [MYR])
+* ? *Hefty1* (Heavycoin [HVC])
+* ? *SHAvite-3* (INKcoin [INK])
 
-Under development:
-* ✗ *Qubit* (Qubitcoin [Q2C], Myriadcoin [MYR])
-* ✗ *Hefty1* (Heavycoin [HVC])
-* ✗ *SHAvite-3* (INKcoin [INK])
-* ✗ *Bcrypt* (Taojingcoin [TJC])
+
 
 
 Requirements
@@ -79,11 +78,14 @@ npm update
 
 Create the configuration for your coin:
 
+Possible options for `algorithm`: *sha256, scrypt, scrypt-jane, scrypt-n, quark, x11, keccak, blake,
+skein, groestl, fugue, shavite3, hefty1, or qubit*.
+
 ```javascript
 var myCoin = {
     "name": "Dogecoin",
     "symbol": "DOGE",
-    "algorithm": "scrypt", //or "sha256", "scrypt-jane", "scrypt-n", "quark", "x11"
+    "algorithm": "scrypt",
     "txMessages": false, //or true (not required, defaults to false)
 };
 ```
