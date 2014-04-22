@@ -340,7 +340,7 @@ pool.start();
 Credits
 -------
 * [vekexasia](//github.com/vekexasia) - co-developer & great tester
-* [LucasJones(//github.com/LucasJones) - getting p2p block notify script working and fixed block hashing for various new algos
+* [LucasJones](//github.com/LucasJones) - got p2p block notify working and implemented additional hashing algos
 * [TheSeven](//github.com/TheSeven) - answering an absurd amount of my questions, found the block 1-16 problem, provided example code for peer node functionality
 * [pronooob](https://dogehouse.org) - knowledgeable & helpful
 * [Slush0](//github.com/slush0/stratum-mining) - stratum protocol, documentation and original python code
