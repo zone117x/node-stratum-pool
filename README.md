@@ -89,6 +89,8 @@ var myCoin = {
     "name": "Dogecoin",
     "symbol": "DOGE",
     "algorithm": "scrypt",
+    "nValue": 1024, //optional. Defaults to 1024
+    "rValue": 1, //optional. Defaults to 1
     "txMessages": false, //or true (not required, defaults to false)
 };
 ```
