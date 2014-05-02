@@ -89,9 +89,16 @@ var myCoin = {
     "name": "Dogecoin",
     "symbol": "DOGE",
     "algorithm": "scrypt",
-    "nValue": 1024, //optional. Defaults to 1024
-    "rValue": 1, //optional. Defaults to 1
-    "txMessages": false, //or true (not required, defaults to false)
+    "nValue": 1024, //optional - defaults to 1024
+    "rValue": 1, //optional - defaults to 1
+    "txMessages": false, //optional - defaults to false,
+
+    /* Magic value only required for setting up p2p block notifications. It is found in the daemon
+       source code as the pchMessageStart variable.
+       For example, litecoin mainnet magic: http://git.io/Bi8YFw
+       And for litecoin testnet magic: http://git.io/NXBYJA */
+     "peerMagic": "fbc0b6db" //optional
+     "peerMagicTestnet": "fcc1b7dc" //optional
 };
 ```
 
@@ -154,6 +161,18 @@ var pool = Stratum.createPool({
     "coin": myCoin,
 
     "address": "mi4iBXbBsydtcc5yFmsff2zCFVX4XG7qJc", //Address to where block rewards are given
+
+    /* Block rewards go to the configured pool wallet address to later be paid out to miners,
+       except for a percentages that can go to pool operator(s) as pool fees or donations.
+       Addresses or hashed public keys can be used. */
+    "rewardRecipients": {
+        "n37vuNFkXfk15uFnGoVyHZ6PYQxppD3QqK": 1.5, //1.5% goes to pool op
+        "mirj3LtZxbSTharhtXvotqtJXUY7ki5qfx": 0.5, //0.5% goes to a pool co-owner
+
+        //0.1% donation to NOMP to help support development
+        "22851477d63a085dbc2398c8430af1c09e7343f6": 0.1
+    },
+
     "blockRefreshInterval": 1000, //How often to poll RPC daemons for new blocks, in milliseconds
 
     /* How many milliseconds should have passed before new block transactions will trigger a new
@@ -220,7 +239,6 @@ var pool = Stratum.createPool({
         }
     },
 
-
     /* Recommended to have at least two daemon instances running in case one drops out-of-sync
        or offline. For redundancy, all instances will be polled for block/transaction updates
        and be used for submitting blocks. Creating a backup daemon involves spawning a daemon
@@ -246,8 +264,8 @@ var pool = Stratum.createPool({
 
     /* This allows the pool to connect to the daemon as a node peer to receive block updates.
        It may be the most efficient way to get block updates (faster than polling, less
-       intensive than blocknotify script). It requires additional setup: the 'magic' field must
-       be exact (extracted from the coin source code). */
+       intensive than blocknotify script). It requires the additional field "peerMagic" in
+       the coin config. */
     "p2p": {
         "enabled": false,
 
@@ -260,13 +278,8 @@ var pool = Stratum.createPool({
         /* If your coin daemon is new enough (i.e. not a shitcoin) then it will support a p2p
            feature that prevents the daemon from spamming our peer node with unnecessary
            transaction data. Assume its supported but if you have problems try disabling it. */
-        "disableTransactions": true,
+        "disableTransactions": true
 
-        /* Magic value is different for main/testnet and for each coin. It is found in the daemon
-           source code as the pchMessageStart variable.
-           For example, litecoin mainnet magic: http://git.io/Bi8YFw
-           And for litecoin testnet magic: http://git.io/NXBYJA */
-        "magic": "fcc1b7dc"
     }
 
 }, function(ip, workerName, password, callback){ //stratum authorization function
@@ -289,7 +302,8 @@ Listen to pool events
     ip: '71.33.19.37', //ip address of client
     worker: 'matt.worker1', //stratum worker name
     height: 443795, //block height
-    reward: 5000000000, //the number of satoshis received as payment for solving this block
+    poolReward: 4900000000, //the number of satoshis sent to the configured pool address
+    blockReward: 5000000000, //the number of satoshis received as payment for solving this block
     difficulty: 64, //stratum worker difficulty
     shareDiff: 78, //actual difficulty of the share
     blockDiff: 3349, //block difficulty adjusted for share padding
