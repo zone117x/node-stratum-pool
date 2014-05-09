@@ -293,6 +293,7 @@ Listen to pool events
 'data' object contains:
     job: 4, //stratum work job ID
     ip: '71.33.19.37', //ip address of client
+    port: 3333, //port of the client
     worker: 'matt.worker1', //stratum worker name
     height: 443795, //block height
     blockReward: 5000000000, //the number of satoshis received as payment for solving this block
