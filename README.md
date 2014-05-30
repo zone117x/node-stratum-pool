@@ -44,6 +44,7 @@ Features
 * ✓ __Scrypt-N__ (Vertcoin [VTC])
 * ✓ __Quark__ (Quarkcoin [QRK])
 * ✓ __X11__ (Darkcoin [DRK], Hirocoin, Limecoin)
+* ✓ __X13__ (MaruCoin, BoostCoin)
 * ✓ __Keccak__ (Maxcoin [MAX], HelixCoin, CryptoMeth, Galleon, 365coin, Slothcoin, BitcointalkCoin)
 * ✓ __Skein__ (Skeincoin [SKC])
 * ✓ __Groestl__ (Groestlcoin [GRS])
