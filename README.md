@@ -276,7 +276,7 @@ var pool = Stratum.createPool({
 
     }
 
-}, function(ip, workerName, password, callback){ //stratum authorization function
+}, function(ip, port , workerName, password, callback){ //stratum authorization function
     console.log("Authorize " + workerName + ":" + password + "@" + ip);
     callback({
         error: null,
