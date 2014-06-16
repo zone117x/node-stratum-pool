@@ -45,6 +45,7 @@ Features
 * ✓ __Quark__ (Quarkcoin [QRK])
 * ✓ __X11__ (Darkcoin [DRK], Hirocoin, Limecoin)
 * ✓ __X13__ (MaruCoin, BoostCoin)
+* ✓ __NIST5__ (Talkcoin)
 * ✓ __Keccak__ (Maxcoin [MAX], HelixCoin, CryptoMeth, Galleon, 365coin, Slothcoin, BitcointalkCoin)
 * ✓ __Skein__ (Skeincoin [SKC])
 * ✓ __Groestl__ (Groestlcoin [GRS])
@@ -53,13 +54,12 @@ May be working (needs additional testing):
 * ? *Blake* (Blakecoin [BLC])
 * ? *Fugue* (Fuguecoin [FC])
 * ? *Qubit* (Qubitcoin [Q2C], Myriadcoin [MYR])
-* ? *Hefty1* (Heavycoin [HVC])
 * ? *SHAvite-3* (INKcoin [INK])
 
 Not working currently:
 * *Groestl* - for Myriadcoin
 * *Keccak* - for eCoin & Copperlark
-
+* *Hefty1* (Heavycoin [HVC])
 
 
 Requirements
