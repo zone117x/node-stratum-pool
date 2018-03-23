@@ -1,3 +1,9 @@
+## This repo is not maintained. Pull requests that are critical or of high quality and well tested are accepted - but not much more.
+### Looking for maintainers. Please open an issue if interested. 
+
+--------
+
+
 High performance Stratum poolserver in Node.js. One instance of this software can startup and manage multiple coin
 pools, each with their own daemon and stratum port :)
 
