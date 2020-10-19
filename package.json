@@ -28,9 +28,9 @@
         "url": "https://github.com/krisklosterman/node-stratum-pool.git"
     },
     "dependencies": {
-        "async": "^2.5.0",
-        "base58-native": "^0.1.4",
-        "bignum": "^0.12.5",
+        "async": "*",
+        "base58-native": "*",
+        "bignum": "0.12.5",
         "multi-hashing": "git://github.com/krisklosterman/node-multi-hashing.git"
     },
     "engines": {
