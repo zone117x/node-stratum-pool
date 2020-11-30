@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git",
-        "bignum": "0.12.5",
+        "bignum": "0.13.1",
         "base58-native": "*",
         "async": "*"
     },
