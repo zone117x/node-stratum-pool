@@ -28,10 +28,13 @@
         "url": "https://github.com/zone117x/node-stratum-pool.git"
     },
     "dependencies": {
-        "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git",
-        "bignum": "0.13.1",
+        "async": "*",
         "base58-native": "*",
-        "async": "*"
+        "bigint-buffer": "^1.1.5",
+        "bignum": "0.13.1",
+        "blake2": "^4.0.2",
+        "json-bigint": "^1.0.0",
+        "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git"
     },
     "engines": {
         "node": ">=0.10"
