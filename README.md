@@ -1,4 +1,3 @@
-<<<<<<< master
 A Stratum mining pool for ergo.
 
 this project based on [Node stratum server](https://github.com/zone117x/node-stratum-pool) 
@@ -33,5 +32,4 @@ node start.js
 ```
 =======
 
->>>>>>> master
 
