@@ -188,4 +188,6 @@ pool.on('log', function(severity, logKey, logText){
     console.log(severity + ': ' + '[' + logKey + '] ' + logText);
 });
 
+var uint64be = require('uint64be')
+
 pool.start();

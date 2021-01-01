@@ -34,7 +34,8 @@
         "bignum": "0.13.1",
         "blake2": "^4.0.2",
         "json-bigint": "^1.0.0",
-        "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git"
+        "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git",
+        "uint64be": "^3.0.0"
     },
     "engines": {
         "node": ">=0.10"
