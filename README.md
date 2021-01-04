@@ -5,13 +5,13 @@ and updated to working on ergo
 
 Some changes added to it to work with ergo node.
 
-Requirements
+# Requirements
 ------------
-* node v0.10+
+* Node v0.10+
 * Ergo node
 
 
-Example Usage
+# Example Usage
 -------------
 
 #### Clone project
@@ -30,3 +30,5 @@ then run start.js
 ```js
 node start.js
 ```
+# Ref
+[Stratum V1 Docs](https://braiins.com/stratum-v1/docs)
