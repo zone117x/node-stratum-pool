@@ -6,13 +6,12 @@ and updated to working on ergo
 Some changes added to it to work with ergo node.
 
 # Requirements
-------------
 * Node v0.10+
 * Ergo node
 
 
 # Example Usage
--------------
+
 
 #### Clone project
 
