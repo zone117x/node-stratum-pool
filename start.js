@@ -18,8 +18,8 @@ var myCoin = {
 var pool = Stratum.createPool({
 
     "coin": myCoin,
-    "testnet" : true,
-    "address": "3Wx8uqKzEYrLLBNEYg56kY7X4RqL4iJooopeCDL1VEcifziGxAim", //Address to where block rewards are given
+
+    "address": "9fs2EgK8MD8ALEEjsE9oVFjexZdYFQoQWxBTPnxCdsU6ubxVLqX", //Address to where block rewards are given
 
     /* Block rewards go to the configured pool wallet address to later be paid out to miners,
        except for a percentage that can go to, for examples, pool operator(s) as pool fees or
@@ -100,8 +100,8 @@ var pool = Stratum.createPool({
           - https://en.bitcoin.it/wiki/Running_bitcoind */
     "daemons": [
         {   //Main daemon instance
-            "host": "10.10.10.1",
-            "port": 9052,
+            "host": "88.198.13.202",
+            "port": 9053,
             "user": "litecoinrpc",
             "password": "testnet"
         }
