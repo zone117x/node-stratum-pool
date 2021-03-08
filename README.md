@@ -1,9 +1,8 @@
-Stratum mining pool for Ergo.
+Stratum mining server for Ergo.
 
 This project is based on [Node stratum server](https://github.com/zone117x/node-stratum-pool) 
 with necessary modifications to support Ergo.
 
-<p>&nbsp;</p>
 
 # Requirements
 * Node v10+ (tested with v12+) 
@@ -12,7 +11,6 @@ with necessary modifications to support Ergo.
   - wallet initialized and unlocked
   - mining = true in node's config
 
-<p>&nbsp;</p>
 
 # Simple Usage
 
@@ -34,6 +32,7 @@ with necessary modifications to support Ergo.
               "user": "litecoinrpc", // anything, not used
               "password": "testnet" // anything, not used
           }
+          ...
   ```
 - Run start.js
 
@@ -41,7 +40,6 @@ with necessary modifications to support Ergo.
   node start.js
   ```
 
-  <p>&nbsp;</p>
 
 # Mapping
 Note that Ergo node generates the candidate block and this process cannot be outsourced to miners.
@@ -62,7 +60,7 @@ Here is the mapping between Stratum parameters and thier usage in the ergo imple
 | clean job                | clean jobs                            | 5 character                | boolean with 'true' or 'false' value                |
 
 </center>
-<p>&nbsp;</p><p>&nbsp;</p>
+<p>&nbsp;</p>
 
 Here is the Autolykos v2 variable sizes: 
  <center>
@@ -79,7 +77,7 @@ Here is the Autolykos v2 variable sizes:
 | k | 32 |
 
 </center>
-<p>&nbsp;</p>
+
 
 # Methods
 
@@ -91,7 +89,7 @@ All methods are same as Stratum v1 methods; just for clarification see the detai
 
 - Set difficulty: in order to update difficulty `mining.set_difficulty` method is used in stratum. If zero, `b` is used as is; otherwise, for any number greater that zero, proxy multiplies this value to `b` and passes it to miner.
 
-<p>&nbsp;</p>
+
 
 # Configurations (for pool operators)
 
@@ -114,10 +112,6 @@ used:
  - "ports"
  - "daemons"
 
-
-
-
-<p>&nbsp;</p>
 
 # Reference
 1. [Stratum V1 Docs](https://braiins.com/stratum-v1/docs)
