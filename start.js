@@ -75,7 +75,13 @@ var pool = Stratum.createPool({
     "ports": {
         "3032": { //A port for your miners to connect to
             "diff": 32, //the pool difficulty for this port
-
+            /*
+            * use this parameter to multiply difficulty to b for each request.
+            * some miner like NBMiner does not support difficulty method of stratum.
+            * if you want your pool work with these miners set this parameters.
+            *
+            * */
+            "multiplyDifficulty": true,
             /* Variable difficulty is a feature that will automatically adjust difficulty for
                individual miners based on their hashrate in order to lower networking overhead */
             "varDiff": {
