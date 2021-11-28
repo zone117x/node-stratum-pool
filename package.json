@@ -31,7 +31,8 @@
         "blake3": "2.1.7",
         "bignum": "0.13.1",
         "base58-native": "*",
-        "async": "*"
+        "async": "*",
+        "binary-parser": "2.0.2"
     },
     "engines": {
         "node": ">=0.10"
