@@ -28,10 +28,14 @@
         "url": "https://github.com/zone117x/node-stratum-pool.git"
     },
     "dependencies": {
+        "async": "^3.2.2",
         "base58-native": "*",
         "bignum": "0.13.1",
         "binary-parser": "2.0.2",
-        "blake3": "2.1.7"
+        "blake3": "2.1.7",
+        "ioredis": "^4.28.2",
+        "winston": "^3.3.3",
+        "winston-daily-rotate-file": "^4.5.5"
     },
     "engines": {
         "node": ">=14"
