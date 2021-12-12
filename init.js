@@ -74,6 +74,12 @@ var config = {
 global.diff1Target = Math.pow(2, 256 - config.diff1TargetNumZero) - 1;
 
 var logger = winston.createLogger({
+    format: winston.format.combine(
+        winston.format.timestamp({
+            format: 'YYYY-MM-DD HH:mm:ss'
+        }),
+        winston.format.json()
+    ),
     transports: [
         new winston.transports.DailyRotateFile({
             filename: config.logPath + 'pool-%DATE%-debug.log',
@@ -96,6 +102,9 @@ var logger = winston.createLogger({
             maxFiles: '10d',
             level: 'error'
         }),
+        new winston.transports.Console({
+            level: 'info'
+        })
     ]
 });
 
