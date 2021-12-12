@@ -1,8 +1,0 @@
-language: node_js
-node_js:
-- '0.10'
-deploy:
-  provider: npm
-  email: zone117x@gmail.com
-  api_key:
-    secure: D9lpUDAx1OudPBji3mapnAhOug3wcEBqFrNgWaFh5XiYesa/f/X0gMOJggLlvzyhLHKs8VdTHShdu3XzlC3EDwr5wCdgYO1JSOyDo93FG7Y/qhPDVFnzdtsKmr813Qtj2UDKIh2ZP+JnjKaITrvUwRmdi/8+B9Enr5o9ulFb/a0=
