@@ -28,7 +28,6 @@
         "url": "https://github.com/zone117x/node-stratum-pool.git"
     },
     "dependencies": {
-        "async": "^3.2.2",
         "base58-native": "*",
         "bignum": "0.13.1",
         "binary-parser": "2.0.2",
