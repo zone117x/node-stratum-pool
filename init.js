@@ -47,7 +47,8 @@ var config = {
         "port": 6379
     },
 
-    "scanBlockInterval": 20, // scan pending blocks every 10 minutes
+    "withholdPercent": "0.005",  // used for tx fee
+    "rewardInterval": 20, // scan pending blocks every 10 minutes
     //"lockDuration": 3000,     // block reward lock duration, 500 minutes for mainnet
     "lockDuration": 600,     // block reward lock duration, 10 minutes for mainnet
 
