@@ -1,5 +1,6 @@
 const Pool = require("./lib/pool");
 const winston = require('winston');
+const bignum = require('bignum');
 require('winston-daily-rotate-file');
 const fs = require('fs');
 
@@ -10,7 +11,7 @@ if (!fs.existsSync('config.json')){
 
 var config = JSON.parse(fs.readFileSync("config.json", {encoding: 'utf8'}));
 
-global.diff1Target = Math.pow(2, 256 - config.diff1TargetNumZero) - 1;
+global.diff1Target = bignum.pow(2, 256 - config.diff1TargetNumZero).sub(1);
 
 var logger = winston.createLogger({
     format: winston.format.combine(
