@@ -1,0 +1,58 @@
+{
+    "logPath": "./logs/",
+
+    "connectionTimeout": 600,
+
+    "banning": {
+        "enabled": true,
+        "time": 600,
+        "invalidPercent": 50,
+        "checkThreshold": 500,
+        "purgeInterval": 300
+    },
+
+    "diff1TargetNumZero": 24,
+    "pool": {
+        "port": 20032,
+        "diff": 64,
+
+        "varDiff": {
+            "minDiff": 16,
+            "maxDiff": 4096,
+            "targetTime": 15,
+            "retargetTime": 90,
+            "variancePercent": 30
+        }
+    },
+
+    "daemon": {
+        "host": "127.0.0.1",
+        "port": 12973,
+        "minerApiPort": 10973
+    },
+
+    "redis": {
+        "host": "127.0.0.1",
+        "port": 6379
+    },
+
+    "withholdPercent": "0.005",
+    "rewardInterval": 720,
+    "lockDuration": 600,
+
+    "minPaymentCoins": "3.5",
+    "paymentInterval": 900,
+
+    "addresses": [
+        "1khyjTYdKEyCSyg6SqyDf97Vq3EmSJF9zPugb3KYERP8",
+        "13pXgLvCjV5UoNaJR3wD7MGEHBrphueamQ4Cam912QBBe",
+        "13M4XJq8tw3qkuNtbregvAtkvZPYndJzDM69fFgTYNpqp",
+        "14fit4qewEkLCh8UKPhMTZqHj96FFqpApCvU4iSouUNU9"
+    ],
+
+    "wallet": {
+        "name": "mywallet",
+        "password": "123456",
+        "mnemonicPassphrase": ""
+    }
+}
