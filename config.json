@@ -43,16 +43,11 @@
     "minPaymentCoins": "3.5",
     "paymentInterval": 900,
 
-    "addresses": [
-        "1khyjTYdKEyCSyg6SqyDf97Vq3EmSJF9zPugb3KYERP8",
-        "13pXgLvCjV5UoNaJR3wD7MGEHBrphueamQ4Cam912QBBe",
-        "13M4XJq8tw3qkuNtbregvAtkvZPYndJzDM69fFgTYNpqp",
-        "14fit4qewEkLCh8UKPhMTZqHj96FFqpApCvU4iSouUNU9"
-    ],
+    "addresses": [],
 
     "wallet": {
-        "name": "mywallet",
-        "password": "123456",
+        "name": "",
+        "password": "",
         "mnemonicPassphrase": ""
     }
 }

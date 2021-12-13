@@ -6,6 +6,8 @@
 
 ## Run
 
+set addresses and wallet config in `config.json`
+
 ```shell
 npm install
 npm init
