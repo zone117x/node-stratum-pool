@@ -75,10 +75,8 @@ global.diff1Target = Math.pow(2, 256 - config.diff1TargetNumZero) - 1;
 
 var logger = winston.createLogger({
     format: winston.format.combine(
-        winston.format.timestamp({
-            format: 'YYYY-MM-DD HH:mm:ss'
-        }),
-        winston.format.json()
+        winston.format.timestamp(),
+        winston.format.printf(i => `${i.timestamp} | ${i.level} | ${i.message}`)
     ),
     transports: [
         new winston.transports.DailyRotateFile({
