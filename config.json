@@ -11,13 +11,13 @@
         "purgeInterval": 300
     },
 
-    "diff1TargetNumZero": 24,
+    "diff1TargetNumZero": 30,
     "pool": {
         "port": 20032,
-        "diff": 64,
+        "diff": 1,
 
         "varDiff": {
-            "minDiff": 16,
+            "minDiff": 1,
             "maxDiff": 4096,
             "targetTime": 15,
             "retargetTime": 90,
