@@ -1,20 +1,15 @@
 {
-    "name": "stratum-pool",
-    "version": "0.1.9",
-    "description": "High performance Stratum poolserver in Node.js",
+    "name": "alephium-mining-pool",
+    "version": "0.0.1",
+    "description": "Alephium mining pool in Node.js",
     "keywords": [
-        "stratum",
+        "alephium",
         "mining",
-        "pool",
-        "server",
-        "poolserver",
-        "bitcoin",
-        "litecoin",
-        "scrypt"
+        "pool"
     ],
-    "homepage": "https://github.com/zone117x/node-stratum-pool",
+    "homepage": "https://github.com/alephium/mining-pool",
     "bugs": {
-        "url": "https://github.com/zone117x/node-stratum-pool/issues"
+        "url": "https://github.com/alephium/mining-pool/issues"
     },
     "license": "GPL-2.0",
     "author": "Matthew Little",
@@ -22,10 +17,13 @@
         "vekexasia",
         "TheSeven"
     ],
-    "main": "lib/index.js",
+    "main": "./init.js",
+    "scripts": {
+        "start": "node ./init.js"
+    },
     "repository": {
         "type": "git",
-        "url": "https://github.com/zone117x/node-stratum-pool.git"
+        "url": "https://github.com/alephium/mining-pool.git"
     },
     "dependencies": {
         "base58-native": "*",
