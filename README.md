@@ -8,7 +8,7 @@
 
 configs explanation:
 
-```json
+```javascript
 {
     "logPath": "./logs/",            // log path
 
