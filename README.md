@@ -2,7 +2,7 @@
 
 1. install redis
 2. install alephium full node
-3. install node.js(>14) and npm(>8)
+3. install node.js(>=14) and npm(>=8)
 
 ## Run
 
