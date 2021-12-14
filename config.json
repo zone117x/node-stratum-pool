@@ -36,7 +36,7 @@
         "port": 6379
     },
 
-    "withholdPercent": "0.005",
+    "withholdPercent": 0.005,
     "rewardInterval": 720,
     "lockDuration": 600,
 

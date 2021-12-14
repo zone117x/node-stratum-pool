@@ -10,6 +10,10 @@ if (!fs.existsSync('config.json')){
 }
 
 var config = JSON.parse(fs.readFileSync("config.json", {encoding: 'utf8'}));
+if ((config.withholdPercent < 0) || (config.withholdPercent >= 1)){
+    console.log('invalid withhold percent');
+    process.exit(1);
+}
 
 global.diff1Target = bignum.pow(2, 256 - config.diff1TargetNumZero).sub(1);
 
