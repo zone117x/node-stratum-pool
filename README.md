@@ -90,8 +90,8 @@ npm update
 
 Create the configuration for your coin:
 
-Possible options for `algorithm`: *sha256, scrypt, scrypt-jane, scrypt-n, quark, x11, keccak, blake,
-skein, groestl, fugue, shavite3, hefty1, qubit, or sha1*.
+Possible options for `algorithm`: *argon2d, argon2i, argon2id, sha256, scrypt, scrypt-jane, scrypt-n, quark, x11, 
+keccak, blake, skein, groestl, fugue, shavite3, hefty1, qubit, or sha1*.
 
 ```javascript
 var myCoin = {
@@ -156,6 +156,18 @@ var myCoin = {
     /* This is not required and set to false by default. Some coins such as Copperlark and eCoin
        require it to be set to true. Maxcoin and most others are false. */
     "normalHashing": true
+};
+```
+
+If you are using the `argon2d`, `argon2i`, or `argon2id` algorithm there are additional configurations:
+```javascript
+var myCoin = {
+    "name": "Unitus",
+    "symbol": "UIS",
+    "algorithm": "argon2d",
+    "tValue": 1, //optional - defaults to 1
+    "mValue": 4096, //optional - defaults to 4096
+    "pValue": 1 //optional - defaults to 1
 };
 ```
 
